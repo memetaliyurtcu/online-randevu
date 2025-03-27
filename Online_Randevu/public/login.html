@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - Randevu Yönetim Sistemi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <h2>Giriş Yap</h2>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="E-posta" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Şifre" required>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+                <button type="submit" class="btn primary">Giriş Yap</button>
+                <a href="#" class="forgot-password">Şifreni mi unuttun?</a>
+                <div class="form-footer">
+                    Hesabınız yok mu? <a href="register.html">Kayıt olun</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            const errorMessage = document.getElementById('errorMessage');
+
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Giriş işlemi başarısız');
+                }
+
+                // Token ve kullanıcı bilgilerini localStorage'a kaydet
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                // Başarılı giriş sonrası yönlendirme
+                if (data.user.role === 'business_owner') {
+                    window.location.href = '/business-dashboard.html';
+                } else {
+                    window.location.href = '/customer-dashboard.html';
+                }
+                
+            } catch (error) {
+                errorMessage.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html> 
