@@ -5,19 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Randevu Yönetim Sistemi</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div class="container">
+        <nav class="top-nav">
+            <div class="nav-right auth-buttons">
+                <a href="login.html" class="btn">Giriş Yap</a>
+                <a href="register.html" class="btn primary">Kayıt Ol</a>
+            </div>
+            <div class="nav-right profile-menu" style="display: none;">
+                <a href="#" class="btn">
+                    <span class="material-icons">person_outline</span>
+                    <span>Profilim</span>
+                </a>
+            </div>
+        </nav>
         <header>
             <h1>Randevularınızı Kolayca Yönetin</h1>
             <p>İşletme veya müşteri olarak sisteme kayıt olun, randevularınızı kolayca yönetin.</p>
         </header>
         <main>
-            <div class="buttons">
-                <a href="login.html" class="btn">Giriş Yap</a>
-                <a href="register.html" class="btn primary">Kayıt Ol</a>
+            <div class="search-container">
+                <input type="text" placeholder="Hizmet veya işletme ara..." class="search-input">
             </div>
         </main>
     </div>
+
+    <script>
+        // Giriş durumunu kontrol et
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const authButtons = document.querySelector('.auth-buttons');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        if (isLoggedIn === 'true') {
+            authButtons.style.display = 'none';
+            profileMenu.style.display = 'flex';
+        }
+    </script>
 </body>
 </html> 

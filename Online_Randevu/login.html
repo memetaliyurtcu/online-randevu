@@ -10,17 +10,58 @@
     <div class="container">
         <div class="login-card">
             <h2>Giriş Yap</h2>
-            <form class="login-form">
+            <form class="login-form" onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <input type="email" placeholder="E-posta" required>
+                    <input type="email" name="email" placeholder="E-posta" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" placeholder="Şifre" required>
+                    <input type="password" name="password" placeholder="Şifre" required>
                 </div>
                 <button type="submit" class="btn primary">Giriş Yap</button>
                 <a href="#" class="forgot-password">Şifreni mi unuttun?</a>
             </form>
         </div>
     </div>
+
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const form = event.target;
+            const email = form.email.value;
+            const password = form.password.value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Giriş başarılı
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userRole', data.user.role);
+
+                    // Kullanıcı rolüne göre yönlendirme
+                    if (data.user.role === 'business_owner') {
+                        window.location.href = '/business-dashboard.html';
+                    } else {
+                        window.location.href = '/customer-dashboard.html';
+                    }
+                } else {
+                    // Hata mesajını göster
+                    alert(data.message || 'Giriş yapılırken bir hata oluştu');
+                }
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert('Giriş yapılırken bir hata oluştu');
+            }
+        }
+    </script>
 </body>
 </html> 

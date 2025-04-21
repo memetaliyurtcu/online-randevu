@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Kaydı - Online Randevu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .register-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: none;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            background-color: white;
+            transition: border-color 0.3s ease;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        select::placeholder, input::placeholder, textarea::placeholder {
+            color: #666;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #14171A;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2C3E50;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <h2>İşletme Kaydı</h2>
+        <form id="businessRegisterForm">
+            <div class="form-group">
+                <label for="businessType">İşletme Türü</label>
+                <select id="businessType" name="businessType" required>
+                    <option value="" disabled selected>İşletme Türü Seçin</option>
+                    <option value="dental">Diş Hekimi</option>
+                    <option value="football">Halısaha</option>
+                    <option value="hairdresser">Kuaför</option>
+                    <option value="hotel">Otel</option>
+                    <option value="psychologist">Psikolog</option>
+                    <option value="restaurant">Restoran/Cafe</option>
+                    <option value="spa">Spa Salonu</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="identityNumber">TC Kimlik No</label>
+                <input type="text" id="identityNumber" name="identityNumber" 
+                    placeholder="TC Kimlik No" 
+                    pattern="[0-9]{11}" 
+                    maxlength="11"
+                    title="TC Kimlik No 11 haneli olmalıdır"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="businessPhone">İşletme Telefon Numarası</label>
+                <input type="tel" id="businessPhone" name="businessPhone" 
+                    placeholder="İşletme Telefon Numarası" 
+                    pattern="[0-9]{10,11}"
+                    maxlength="11"
+                    title="Telefon numarası 10 veya 11 haneli olmalıdır"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="city">İl</label>
+                <select id="city" name="city" required>
+                    <option value="" disabled selected>İl</option>
+                    <option value="istanbul">İstanbul</option>
+                    <option value="ankara">Ankara</option>
+                    <option value="izmir">İzmir</option>
+                    <option value="bursa">Bursa</option>
+                    <option value="antalya">Antalya</option>
+                    <option value="adana">Adana</option>
+                    <option value="konya">Konya</option>
+                    <option value="gaziantep">Gaziantep</option>
+                    <option value="mersin">Mersin</option>
+                    <option value="diyarbakir">Diyarbakır</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="district">İlçe</label>
+                <select id="district" name="district" required>
+                    <option value="" disabled selected>İlçe</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Tam Adres</label>
+                <textarea id="address" name="address" placeholder="Tam Adres" required></textarea>
+            </div>
+
+            <button type="submit">Kaydı Tamamla</button>
+        </form>
+    </div>
+
+    <script>
+        // İl-ilçe eşleştirmeleri
+        const cityDistricts = {
+            istanbul: ['Kadıköy', 'Beşiktaş', 'Üsküdar', 'Şişli', 'Beyoğlu', 'Bakırköy', 'Ataşehir', 'Maltepe', 'Kartal', 'Pendik'],
+            ankara: ['Çankaya', 'Keçiören', 'Mamak', 'Yenimahalle', 'Etimesgut', 'Sincan', 'Altındağ', 'Pursaklar', 'Gölbaşı', 'Polatlı'],
+            izmir: ['Konak', 'Karşıyaka', 'Bornova', 'Buca', 'Çiğli', 'Karabağlar', 'Bayraklı', 'Çeşme', 'Aliağa', 'Tire'],
+            bursa: ['Nilüfer', 'Osmangazi', 'Yıldırım', 'Mudanya', 'Gürsu', 'Kestel', 'İnegöl', 'Gemlik', 'Orhangazi', 'İznik'],
+            antalya: ['Muratpaşa', 'Kepez', 'Konyaaltı', 'Lara', 'Kemer', 'Serik', 'Alanya', 'Manavgat', 'Kaş', 'Finike'],
+            adana: ['Seyhan', 'Yüreğir', 'Çukurova', 'Karaisalı', 'Kozan', 'Ceyhan', 'İmamoğlu', 'Pozantı', 'Tufanbeyli', 'Saimbeyli'],
+            konya: ['Selçuklu', 'Meram', 'Karatay', 'Beyşehir', 'Akşehir', 'Ereğli', 'Ilgın', 'Cihanbeyli', 'Seydişehir', 'Kulu'],
+            gaziantep: ['Şahinbey', 'Şehitkamil', 'Oğuzeli', 'Nizip', 'İslahiye', 'Araban', 'Yavuzeli', 'Nurdağı', 'Karkamış', 'Oğuzeli'],
+            mersin: ['Yenişehir', 'Toroslar', 'Akdeniz', 'Mezitli', 'Tarsus', 'Erdemli', 'Silifke', 'Mut', 'Anamur', 'Gülnar'],
+            diyarbakir: ['Bağlar', 'Kayapınar', 'Sur', 'Yenişehir', 'Bismil', 'Çermik', 'Çınar', 'Ergani', 'Hani', 'Kulp']
+        };
+
+        // İl seçildiğinde ilçeleri güncelle
+        document.getElementById('city').addEventListener('change', function() {
+            const districtSelect = document.getElementById('district');
+            const selectedCity = this.value;
+            
+            districtSelect.innerHTML = '<option value="" disabled selected>İlçe</option>';
+            
+            if (selectedCity && cityDistricts[selectedCity]) {
+                cityDistricts[selectedCity].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.toLowerCase();
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Form gönderimi
+        document.getElementById('businessRegisterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Oturum bilgisi bulunamadı. Lütfen tekrar giriş yapın.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // TC Kimlik No kontrolü
+            const identityNumber = document.getElementById('identityNumber').value;
+            if (identityNumber.length !== 11 || !/^\d+$/.test(identityNumber)) {
+                alert('Geçerli bir TC Kimlik No giriniz (11 haneli)');
+                return;
+            }
+
+            // Telefon numarası kontrolü
+            const businessPhone = document.getElementById('businessPhone').value;
+            if (businessPhone.length < 10 || businessPhone.length > 11 || !/^\d+$/.test(businessPhone)) {
+                alert('Geçerli bir telefon numarası giriniz (10 veya 11 haneli)');
+                return;
+            }
+
+            const formData = {
+                businessType: document.getElementById('businessType').value,
+                identityNumber: identityNumber,
+                businessPhone: businessPhone,
+                city: document.getElementById('city').value,
+                district: document.getElementById('district').value,
+                address: document.getElementById('address').value
+            };
+
+            try {
+                const response = await fetch('/api/business/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('İşletme kaydı başarıyla tamamlandı!');
+                    window.location.href = '/login.html';
+                } else {
+                    alert(data.error || 'Kayıt sırasında bir hata oluştu.');
+                }
+            } catch (error) {
+                console.error('İşletme kayıt hatası:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    </script>
+</body>
+</html> 

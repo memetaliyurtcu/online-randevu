@@ -18,9 +18,11 @@
                     <input type="email" id="email" name="email" placeholder="E-posta" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" id="phone" name="phone" placeholder="Telefon Numarası (5XX XXX XX XX)" 
-                           pattern="[5][0-9]{9}" 
-                           title="Telefon numarası 5 ile başlamalı ve 10 haneli olmalıdır" required>
+                    <input type="tel" id="phone" name="phone" placeholder="Telefon Numarası" 
+                           pattern="[0-9]{10,11}"
+                           maxlength="11"
+                           title="Telefon numarası 10 veya 11 haneli olmalıdır"
+                           required>
                 </div>
                 <div class="form-group">
                     <input type="password" id="password" name="password" placeholder="Şifre" required>
@@ -50,57 +52,73 @@
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
-            const passwordConfirm = document.getElementById('passwordConfirm').value;
-            const errorMessage = document.getElementById('errorMessage');
+            const confirmPassword = document.getElementById('passwordConfirm').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
 
-            if (password !== passwordConfirm) {
-                errorMessage.textContent = 'Şifreler eşleşmiyor';
+            // Form verilerini kontrol et
+            if (password !== confirmPassword) {
+                showError('Şifreler eşleşmiyor!');
                 return;
             }
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                password: password,
-                role: document.querySelector('input[name="role"]:checked').value
-            };
+            if (phone.length < 10 || phone.length > 11 || !/^\d+$/.test(phone)) {
+                showError('Geçerli bir telefon numarası giriniz (10 veya 11 haneli)');
+                return;
+            }
 
             try {
-                const response = await fetch('http://localhost:3000/api/register', {
+                const registerData = { name, email, phone, password, role };
+                console.log('Gönderilen kayıt verileri:', registerData);
+
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify(registerData)
                 });
 
                 const data = await response.json();
+                console.log('Sunucu yanıtı:', data);
 
-                if (!response.ok) {
-                    throw new Error(data.message || 'Kayıt işlemi başarısız');
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userRole', data.user.role);
+
+                    if (role === 'business_owner') {
+                        window.location.href = '/business-register.html';
+                    } else {
+                        window.location.href = '/login.html';
+                    }
+                } else {
+                    showError(data.error || 'Kayıt sırasında bir hata oluştu.');
                 }
-
-                // Token'ı localStorage'a kaydet
-                localStorage.setItem('token', data.token);
-                
-                // Başarılı kayıt sonrası yönlendirme
-                window.location.href = '/login.html';
-                
             } catch (error) {
-                errorMessage.textContent = error.message;
+                console.error('Kayıt hatası:', error);
+                showError('Sunucu bağlantısında bir hata oluştu. Lütfen tekrar deneyin.');
             }
         });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
 
         // Telefon numarası formatlaması
         document.getElementById('phone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, ''); // Sadece rakamları al
-            if (value.length > 10) value = value.slice(0, 10); // Maksimum 10 karakter
-            if (value.length > 0 && value[0] !== '5') value = '5' + value.slice(1); // 5 ile başlamasını sağla
+            if (value.length > 11) value = value.slice(0, 11); // Maksimum 11 karakter
             e.target.value = value;
         });
     </script>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müşteri Dashboard - Online Randevu</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-left, .nav-center, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .nav-btn .material-icons {
+            margin-right: 8px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 8px 16px;
+            width: 400px;
+        }
+
+        .search-box input {
+            border: none;
+            background: none;
+            padding: 8px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-box .material-icons {
+            color: #666;
+        }
+
+        /* Profil menüsü için stil */
+        .profile-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+            min-width: 150px;
+            z-index: 1000;
+        }
+
+        .profile-menu.active {
+            display: block;
+        }
+
+        .profile-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .profile-menu a:hover {
+            background: #f5f5f5;
+        }
+
+        .profile-menu .logout {
+            border-top: 1px solid #eee;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="nav-bar">
+            <div class="nav-left">
+                <div class="nav-btn" onclick="toggleProfileMenu(event)">
+                    <span class="material-icons">account_circle</span>
+                    <span>Profil</span>
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="/profile">Profilim</a>
+                        <a href="#" class="logout" onclick="logout(event)">Çıkış Yap</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div class="search-box">
+                    <span class="material-icons">search</span>
+                    <input type="text" placeholder="İşletme veya hizmet ara...">
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="#" class="nav-btn">
+                    <span class="material-icons">category</span>
+                    <span>Kategoriler</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde token kontrolü
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+            }
+        });
+
+        // Profil menüsünü aç/kapat
+        function toggleProfileMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Sayfa tıklamasında menüyü kapat
+        document.addEventListener('click', (event) => {
+            const menu = document.getElementById('profileMenu');
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            }
+        });
+
+        // Çıkış yapma fonksiyonu
+        function logout(event) {
+            event.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('userRole');
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html> 
