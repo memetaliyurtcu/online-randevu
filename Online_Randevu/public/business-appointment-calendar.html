@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevu Takvimi</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .business-calendar-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-date {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #e9ecef;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .day-column {
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .appointment-slots {
+            padding: 10px;
+        }
+
+        .appointment-slot {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .slot-time {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .slot-status {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .slot-status .material-icons {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+
+        .slot-status.available {
+            color: #27ae60;
+        }
+
+        .slot-status.booked {
+            color: #e74c3c;
+        }
+
+        .slot-status.past {
+            color: #95a5a6;
+        }
+
+        .appointment-details {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .customer-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f39c12;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .customer-name {
+            font-weight: 500;
+        }
+
+        .service-tag {
+            display: inline-block;
+            background: #f1c40f;
+            color: #34495e;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            background: #3498db;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="business-calendar-container">
+        <div class="form-header">
+            <h1>Görüşme Takvimi</h1>
+            <p>Çalışma saatlerinize göre randevu durumlarını görüntüleyin ve yönetin</p>
+        </div>
+        
+        <div class="calendar-controls">
+            <div class="calendar-date" id="currentWeekDisplay">21 Nisan 2025 Pazartesi</div>
+            <div class="calendar-nav">
+                <button class="nav-button" id="prevWeekBtn">Önceki Hafta</button>
+                <button class="nav-button" id="nextWeekBtn">Sonraki Hafta</button>
+            </div>
+        </div>
+        
+        <div class="calendar-grid" id="appointmentCalendar">
+            <!-- Günler JavaScript ile dinamik olarak oluşturulacak -->
+        </div>
+
+        <a href="business-dashboard.html" class="back-btn">İşletme Paneline Dön</a>
+    </div>
+
+    <script>
+        // Kullanıcı token kontrolü
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // İşletme profil bilgilerini al
+            try {
+                const businessProfileResponse = await fetch('/api/business/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!businessProfileResponse.ok) {
+                    throw new Error('İşletme profili bulunamadı');
+                }
+
+                const businessProfile = await businessProfileResponse.json();
+
+                // Çalışma saatlerini al
+                const scheduleResponse = await fetch('/api/business/schedule', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!scheduleResponse.ok) {
+                    throw new Error('Çalışma saatleri bulunamadı');
+                }
+
+                const schedule = await scheduleResponse.json();
+
+                // Randevuları al
+                const appointmentsResponse = await fetch('/api/business/appointments', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!appointmentsResponse.ok) {
+                    throw new Error('Randevular bulunamadı');
+                }
+
+                const appointments = await appointmentsResponse.json();
+
+                // Takvimi oluştur
+                initializeCalendar(schedule, appointments);
+
+            } catch (error) {
+                console.error('Veri alma hatası:', error);
+                alert(`Hata: ${error.message}`);
+            }
+        });
+
+        // Takvimi oluşturan fonksiyon
+        function initializeCalendar(schedule, appointments) {
+            const calendarGrid = document.getElementById('appointmentCalendar');
+            const currentDate = new Date();
+            let currentWeekStart = getWeekStart(currentDate);
+            
+            renderCalendar(currentWeekStart, schedule, appointments);
+
+            // Önceki hafta butonu
+            document.getElementById('prevWeekBtn').addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+                renderCalendar(currentWeekStart, schedule, appointments);
+            });
+
+            // Sonraki hafta butonu
+            document.getElementById('nextWeekBtn').addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+                renderCalendar(currentWeekStart, schedule, appointments);
+            });
+        }
+
+        // Haftanın başlangıç gününü bulan fonksiyon (Pazartesi)
+        function getWeekStart(date) {
+            const dayOfWeek = date.getDay() || 7; // 0 = Pazar, 1-6 = Pazartesi-Cumartesi
+            const weekStart = new Date(date);
+            if (dayOfWeek !== 1) {
+                weekStart.setDate(date.getDate() - (dayOfWeek - 1));
+            }
+            return weekStart;
+        }
+
+        // Takvimi render eden fonksiyon
+        function renderCalendar(weekStart, schedule, appointments) {
+            const calendarGrid = document.getElementById('appointmentCalendar');
+            const currentWeekDisplay = document.getElementById('currentWeekDisplay');
+            
+            // Tarih formatını ayarla
+            const options = { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' };
+            currentWeekDisplay.textContent = weekStart.toLocaleDateString('tr-TR', options);
+            
+            // Takvimi temizle
+            calendarGrid.innerHTML = '';
+            
+            // Hafta içi günleri oluştur (Pazartesi-Cuma)
+            for (let i = 0; i < 5; i++) {
+                const dayDate = new Date(weekStart);
+                dayDate.setDate(weekStart.getDate() + i);
+                
+                const dayOfWeek = dayDate.getDay() || 7; // 0 = Pazar, 1-6 = Pazartesi-Cumartesi
+                const daySchedule = schedule.find(s => s.day_of_week === dayOfWeek);
+                
+                const dayColumn = createDayColumn(dayDate, daySchedule, appointments);
+                calendarGrid.appendChild(dayColumn);
+            }
+        }
+
+        // Gün kolonunu oluşturan fonksiyon
+        function createDayColumn(date, daySchedule, appointments) {
+            const dayColumn = document.createElement('div');
+            dayColumn.className = 'day-column';
+            
+            // Gün başlığı
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'day-header';
+            
+            const dayOptions = { weekday: 'long' };
+            const dateOptions = { day: 'numeric', month: 'numeric' };
+            
+            dayHeader.textContent = `${date.toLocaleDateString('tr-TR', dayOptions)}\n${date.toLocaleDateString('tr-TR', dateOptions)}`;
+            dayColumn.appendChild(dayHeader);
+            
+            // Randevu slotları
+            const appointmentSlots = document.createElement('div');
+            appointmentSlots.className = 'appointment-slots';
+            
+            // Eğer çalışma günü ise randevu slotlarını ekle
+            if (daySchedule && daySchedule.is_working) {
+                const startTime = new Date(`1970-01-01T${daySchedule.start_time}`);
+                const endTime = new Date(`1970-01-01T${daySchedule.end_time}`);
+                
+                // Her saat için randevu slotu oluştur
+                for (let hour = startTime.getHours(); hour < endTime.getHours(); hour++) {
+                    const slotTime = new Date(date);
+                    slotTime.setHours(hour, 0, 0, 0);
+                    
+                    // Geçmiş zaman kontrolü
+                    const now = new Date();
+                    const isPast = slotTime < now;
+                    
+                    // Randevusu var mı kontrolü
+                    const appointment = appointments.find(a => {
+                        const appDate = new Date(a.appointment_date);
+                        return appDate.getDate() === slotTime.getDate() && 
+                               appDate.getMonth() === slotTime.getMonth() && 
+                               appDate.getFullYear() === slotTime.getFullYear() && 
+                               appDate.getHours() === slotTime.getHours();
+                    });
+                    
+                    const slot = createAppointmentSlot(slotTime, isPast, appointment);
+                    appointmentSlots.appendChild(slot);
+                }
+            } else {
+                // Çalışma günü değilse bilgi mesajı göster
+                const noWorkingDay = document.createElement('div');
+                noWorkingDay.className = 'appointment-slot';
+                noWorkingDay.innerHTML = '<div class="slot-status">Bu gün çalışma saatiniz bulunmamaktadır.</div>';
+                appointmentSlots.appendChild(noWorkingDay);
+            }
+            
+            dayColumn.appendChild(appointmentSlots);
+            return dayColumn;
+        }
+
+        // Randevu slotu oluşturan fonksiyon
+        function createAppointmentSlot(time, isPast, appointment) {
+            const slot = document.createElement('div');
+            slot.className = 'appointment-slot';
+            
+            // Saat bilgisi
+            const slotTime = document.createElement('div');
+            slotTime.className = 'slot-time';
+            slotTime.textContent = time.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            slot.appendChild(slotTime);
+            
+            // Durum bilgisi
+            const slotStatus = document.createElement('div');
+            
+            if (isPast) {
+                // Geçmiş zaman
+                slotStatus.className = 'slot-status past';
+                slotStatus.innerHTML = '<span class="material-icons">lock</span> Geçmiş zaman';
+            } else if (appointment) {
+                // Randevu dolu
+                slotStatus.className = 'slot-status booked';
+                slotStatus.innerHTML = '<span class="material-icons">event_busy</span> Randevu Talepleri (1/5)';
+                
+                // Randevu detayları
+                const appointmentDetails = document.createElement('div');
+                appointmentDetails.className = 'appointment-details';
+                
+                // Müşteri bilgisi
+                const customerInfo = document.createElement('div');
+                customerInfo.className = 'customer-info';
+                
+                const customerAvatar = document.createElement('div');
+                customerAvatar.className = 'customer-avatar';
+                customerAvatar.textContent = appointment.customer_name ? appointment.customer_name.charAt(0).toUpperCase() : 'A';
+                
+                const customerName = document.createElement('div');
+                customerName.className = 'customer-name';
+                customerName.textContent = appointment.customer_name || 'Ali Biçer';
+                
+                customerInfo.appendChild(customerAvatar);
+                customerInfo.appendChild(customerName);
+                
+                // Hizmet etiketi
+                const serviceTag = document.createElement('div');
+                serviceTag.className = 'service-tag';
+                serviceTag.textContent = appointment.service_name || 'Bekliyor';
+                
+                appointmentDetails.appendChild(customerInfo);
+                appointmentDetails.appendChild(serviceTag);
+                
+                slot.appendChild(appointmentDetails);
+            } else {
+                // Randevu boş
+                slotStatus.className = 'slot-status available';
+                slotStatus.innerHTML = '<span class="material-icons">event_available</span> Giriş yapınız';
+            }
+            
+            slot.appendChild(slotStatus);
+            return slot;
+        }
+
+        // Tarih formatını düzenleyen yardımcı fonksiyon
+        function formatDate(date) {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+    </script>
+</body>
+</html>

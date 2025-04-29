@@ -280,13 +280,40 @@
                 opacity: 1;
             }
         }
+
+        .upgrade-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .upgrade-button:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+
+        .upgrade-button .material-icons {
+            font-size: 24px;
+        }
     </style>
 </head>
 <body>
     <div class="profile-container">
         <div class="header">
             <h2>Profil</h2>
-            <button class="logout-btn" onclick="logout()">
+            <button class="logout-btn" onclick="handleLogout()">
                 <span class="material-icons">logout</span>
                 Çıkış Yap
             </button>
@@ -297,209 +324,51 @@
                 <span class="material-icons">person</span>
                 Kullanıcı Bilgileri
             </div>
-            <div class="tab" onclick="switchTab('active-appointments')">
+            <div class="tab" onclick="switchTab('active')">
                 <span class="material-icons">event</span>
                 Aktif Randevular
             </div>
-            <div class="tab" onclick="switchTab('appointments')">
+            <div class="tab" onclick="switchTab('history')">
                 <span class="material-icons">history</span>
                 Randevu Geçmişi
             </div>
         </div>
 
-        <div id="profile" class="tab-content active">
+        <div id="profileTab" class="tab-content active">
             <div class="profile-info">
                 <div class="profile-card">
                     <strong>Ad Soyad</strong>
-                    <span id="userName">Yükleniyor...</span>
+                    <span id="userName"></span>
                 </div>
                 <div class="profile-card">
                     <strong>E-posta</strong>
-                    <span id="userEmail">Yükleniyor...</span>
+                    <span id="userEmail"></span>
                 </div>
                 <div class="profile-card">
                     <strong>Telefon</strong>
-                    <span id="userPhone">Yükleniyor...</span>
+                    <span id="userPhone"></span>
                 </div>
                 <div class="profile-card">
                     <strong>Hesap Türü</strong>
-                    <span id="userRole">Yükleniyor...</span>
+                    <span id="userRole"></span>
                 </div>
             </div>
+            <div id="upgradeButtonContainer"></div>
         </div>
 
-        <div id="active-appointments" class="tab-content">
-            <div id="activeAppointmentsList">
-                <!-- Aktif randevular buraya dinamik olarak eklenecek -->
-            </div>
+        <div id="activeTab" class="tab-content">
+            <div id="activeAppointments"></div>
         </div>
 
-        <div id="appointments" class="tab-content">
-            <div id="appointmentsList">
-                <!-- Geçmiş randevular buraya dinamik olarak eklenecek -->
-            </div>
+        <div id="historyTab" class="tab-content">
+            <div id="appointmentHistory"></div>
         </div>
     </div>
 
     <script>
-        // Sekme değiştirme fonksiyonu
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+        let userRole = '';
 
-            if (tabName === 'appointments') {
-                loadAppointments('past');
-            } else if (tabName === 'active-appointments') {
-                loadAppointments('active');
-            }
-        }
-
-        // Kullanıcı bilgilerini yükle
-        async function loadUserInfo() {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch('/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const data = await response.json();
-                
-                document.getElementById('userName').textContent = data.name;
-                document.getElementById('userEmail').textContent = data.email;
-                document.getElementById('userPhone').textContent = data.phone;
-                document.getElementById('userRole').textContent = 
-                    data.role === 'customer' ? 'Müşteri' : 'İşletme Sahibi';
-            } catch (error) {
-                console.error('Kullanıcı bilgileri yüklenirken hata:', error);
-            }
-        }
-
-        // Randevuları yükle
-        async function loadAppointments(type) {
-            try {
-                const token = localStorage.getItem('token');
-                const endpoint = type === 'active' ? '/api/appointments/active' : '/api/appointments/history';
-                const response = await fetch(endpoint, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const appointments = await response.json();
-                
-                const container = type === 'active' ? 'activeAppointmentsList' : 'appointmentsList';
-                const listElement = document.getElementById(container);
-                
-                if (appointments.length === 0) {
-                    listElement.innerHTML = `
-                        <div class="no-appointments">
-                            <span class="material-icons">${type === 'active' ? 'event_busy' : 'history'}</span>
-                            <p>${type === 'active' ? 'Aktif randevunuz bulunmuyor.' : 'Geçmiş randevunuz bulunmuyor.'}</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                listElement.innerHTML = '';
-                appointments.forEach(appointment => {
-                    const actionButtons = type === 'active' ? `
-                        <div class="action-buttons">
-                            <button class="btn btn-reschedule" onclick="rescheduleAppointment(${appointment.id})">
-                                <span class="material-icons">event</span>
-                                Yeniden Planla
-                            </button>
-                            <button class="btn btn-cancel" onclick="cancelAppointment(${appointment.id})">
-                                <span class="material-icons">cancel</span>
-                                İptal Et
-                            </button>
-                        </div>
-                    ` : '';
-
-                    listElement.innerHTML += `
-                        <div class="appointment-card">
-                            <div class="status ${appointment.status}">${getStatusText(appointment.status)}</div>
-                            <h3>${appointment.serviceName}</h3>
-                            <div class="appointment-info">
-                                <p><strong>Tarih:</strong> ${formatDate(appointment.date)}</p>
-                                <p><strong>Saat:</strong> ${appointment.time}</p>
-                                <p><strong>İşletme:</strong> ${appointment.businessName}</p>
-                                <p><strong>Durum:</strong> ${getStatusText(appointment.status)}</p>
-                            </div>
-                            ${actionButtons}
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                console.error('Randevular yüklenirken hata:', error);
-            }
-        }
-
-        // Randevu iptal etme
-        async function cancelAppointment(appointmentId) {
-            if (!confirm('Randevuyu iptal etmek istediğinizden emin misiniz?')) {
-                return;
-            }
-
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`/api/appointments/${appointmentId}/cancel`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (response.ok) {
-                    alert('Randevu başarıyla iptal edildi.');
-                    loadAppointments('active');
-                } else {
-                    const data = await response.json();
-                    alert(data.error || 'Randevu iptal edilirken bir hata oluştu.');
-                }
-            } catch (error) {
-                console.error('Randevu iptal hatası:', error);
-                alert('Randevu iptal edilirken bir hata oluştu.');
-            }
-        }
-
-        // Randevu yeniden planlama
-        function rescheduleAppointment(appointmentId) {
-            // Yeniden planlama sayfasına yönlendir
-            window.location.href = `/reschedule.html?id=${appointmentId}`;
-        }
-
-        // Çıkış yapma fonksiyonu
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userRole');
-            window.location.href = '/login.html';
-        }
-
-        // Tarih formatla
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('tr-TR', options);
-        }
-
-        // Randevu durumu metni
-        function getStatusText(status) {
-            const statusMap = {
-                'active': 'Aktif',
-                'completed': 'Tamamlandı',
-                'cancelled': 'İptal Edildi'
-            };
-            return statusMap[status] || status;
-        }
-
-        // Aktif randevuları yükle
-        async function loadActiveAppointments() {
+        async function fetchUserProfile() {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -507,6 +376,104 @@
                     return;
                 }
 
+                const response = await fetch('/api/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Profil bilgileri alınamadı');
+                }
+
+                const data = await response.json();
+                
+                document.getElementById('userName').textContent = data.name || '';
+                document.getElementById('userEmail').textContent = data.email || '';
+                document.getElementById('userPhone').textContent = data.phone || '';
+                document.getElementById('userRole').textContent = data.role === 'customer' ? 'Müşteri' : 'İşletme Sahibi';
+                
+                userRole = data.role;
+                
+                // İşletme hesabına geçiş butonu kontrolü
+                const upgradeContainer = document.getElementById('upgradeButtonContainer');
+                if (data.role === 'customer') {
+                    upgradeContainer.innerHTML = `
+                        <button class="upgrade-button" onclick="handleUpgrade()">
+                            <span class="material-icons">business</span>
+                            İşletme Hesabına Geç
+                        </button>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Profil yükleme hatası:', error);
+                alert('Profil bilgileri yüklenirken bir hata oluştu');
+            }
+        }
+
+        async function handleUpgrade() {
+            try {
+                const confirmed = confirm('Hesabınızı işletme hesabına yükseltmek istediğinizden emin misiniz?');
+                
+                if (!confirmed) return;
+
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/upgrade-to-business', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Hesap yükseltme işlemi başarısız oldu');
+                }
+
+                const data = await response.json();
+                
+                // Token'ı güncelle
+                localStorage.setItem('token', data.token);
+                
+                alert('Hesabınız başarıyla işletme hesabına yükseltildi! İşletme profilinizi oluşturmak için yönlendiriliyorsunuz...');
+                window.location.href = '/business-profile.html';
+
+            } catch (error) {
+                console.error('Hesap yükseltme hatası:', error);
+                alert('Hesap yükseltme işlemi sırasında bir hata oluştu');
+            }
+        }
+
+        async function handleLogout() {
+            const confirmed = confirm('Çıkış yapmak istediğinizden emin misiniz?');
+            
+            if (confirmed) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userRole');
+                window.location.href = '/login.html';
+            }
+        }
+
+        function switchTab(tabName) {
+            // Tüm tabları ve içerikleri pasif yap
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Seçilen tabı ve içeriğini aktif yap
+            document.querySelector(`.tab:nth-child(${tabName === 'profile' ? 1 : tabName === 'active' ? 2 : 3})`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+
+            // Seçilen taba göre içeriği yükle
+            if (tabName === 'active') {
+                fetchActiveAppointments();
+            } else if (tabName === 'history') {
+                fetchAppointmentHistory();
+            }
+        }
+
+        async function fetchActiveAppointments() {
+            try {
+                const token = localStorage.getItem('token');
                 const response = await fetch('/api/appointments/active', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -514,18 +481,23 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Randevular yüklenemedi');
+                    throw new Error('Aktif randevular yüklenemedi');
                 }
 
                 const appointments = await response.json();
-                const container = document.getElementById('activeAppointmentsContent');
-                
+                const container = document.getElementById('activeAppointments');
+
                 if (appointments.length === 0) {
-                    container.innerHTML = '<p class="text-center">Aktif randevunuz bulunmamaktadır.</p>';
+                    container.innerHTML = `
+                        <div class="no-appointments">
+                            <span class="material-icons">event_busy</span>
+                            <p>Aktif randevunuz bulunmuyor.</p>
+                        </div>
+                    `;
                     return;
                 }
 
-                const html = appointments.map(appointment => `
+                container.innerHTML = appointments.map(appointment => `
                     <div class="appointment-card">
                         <div class="appointment-info">
                             <h3>${appointment.businessName || appointment.customerName}</h3>
@@ -534,26 +506,80 @@
                             <p><strong>Saat:</strong> ${appointment.time}</p>
                         </div>
                         <div class="appointment-actions">
-                            <button onclick="cancelAppointment(${appointment.id})" class="btn btn-danger">İptal Et</button>
-                            <button onclick="rescheduleAppointment(${appointment.id})" class="btn btn-primary">Yeniden Planla</button>
+                            <button onclick="cancelAppointment(${appointment.id})" class="btn btn-cancel">
+                                <span class="material-icons">cancel</span>
+                                İptal Et
+                            </button>
                         </div>
                     </div>
                 `).join('');
 
-                container.innerHTML = html;
             } catch (error) {
-                console.error('Randevu yükleme hatası:', error);
-                showError('Randevular yüklenirken bir hata oluştu');
+                console.error('Aktif randevular yükleme hatası:', error);
+                document.getElementById('activeAppointments').innerHTML = `
+                    <div class="alert alert-danger">
+                        Aktif randevular yüklenirken bir hata oluştu.
+                    </div>
+                `;
             }
         }
 
-        // Randevu iptal etme
-        async function cancelAppointment(appointmentId) {
-            if (!confirm('Bu randevuyu iptal etmek istediğinizden emin misiniz?')) {
-                return;
-            }
-
+        async function fetchAppointmentHistory() {
             try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/appointments/history', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Randevu geçmişi yüklenemedi');
+                }
+
+                const appointments = await response.json();
+                const container = document.getElementById('appointmentHistory');
+
+                if (appointments.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-appointments">
+                            <span class="material-icons">history</span>
+                            <p>Geçmiş randevunuz bulunmuyor.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = appointments.map(appointment => `
+                    <div class="appointment-card">
+                        <div class="status ${appointment.status}">
+                            ${appointment.status === 'completed' ? 'Tamamlandı' : 'İptal Edildi'}
+                        </div>
+                        <div class="appointment-info">
+                            <h3>${appointment.businessName || appointment.customerName}</h3>
+                            <p><strong>Hizmet:</strong> ${appointment.serviceName}</p>
+                            <p><strong>Tarih:</strong> ${appointment.date}</p>
+                            <p><strong>Saat:</strong> ${appointment.time}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Randevu geçmişi yükleme hatası:', error);
+                document.getElementById('appointmentHistory').innerHTML = `
+                    <div class="alert alert-danger">
+                        Randevu geçmişi yüklenirken bir hata oluştu.
+                    </div>
+                `;
+            }
+        }
+
+        async function cancelAppointment(appointmentId) {
+            try {
+                const confirmed = confirm('Bu randevuyu iptal etmek istediğinizden emin misiniz?');
+                
+                if (!confirmed) return;
+
                 const token = localStorage.getItem('token');
                 const response = await fetch(`/api/appointments/${appointmentId}/cancel`, {
                     method: 'POST',
@@ -566,50 +592,17 @@
                     throw new Error('Randevu iptal edilemedi');
                 }
 
-                showSuccess('Randevu başarıyla iptal edildi');
-                loadActiveAppointments(); // Listeyi yenile
+                alert('Randevu başarıyla iptal edildi');
+                fetchActiveAppointments(); // Aktif randevuları yeniden yükle
+
             } catch (error) {
                 console.error('Randevu iptal hatası:', error);
-                showError('Randevu iptal edilirken bir hata oluştu');
+                alert('Randevu iptal edilirken bir hata oluştu');
             }
         }
 
-        // Randevuyu yeniden planlama
-        function rescheduleAppointment(appointmentId) {
-            // Yeniden planlama sayfasına yönlendir
-            window.location.href = `/reschedule.html?appointmentId=${appointmentId}`;
-        }
-
-        // Başarı mesajı gösterme
-        function showSuccess(message) {
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-success';
-            alert.textContent = message;
-            document.body.insertBefore(alert, document.body.firstChild);
-            setTimeout(() => alert.remove(), 3000);
-        }
-
-        // Hata mesajı gösterme
-        function showError(message) {
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-danger';
-            alert.textContent = message;
-            document.body.insertBefore(alert, document.body.firstChild);
-            setTimeout(() => alert.remove(), 3000);
-        }
-
-        // Sayfa yüklendiğinde
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = '/login.html';
-                return;
-            }
-            
-            loadUserInfo();
-            loadAppointments('active');
-            loadActiveAppointments();
-        });
+        // Sayfa yüklendiğinde profil bilgilerini getir
+        document.addEventListener('DOMContentLoaded', fetchUserProfile);
     </script>
 </body>
 </html> 

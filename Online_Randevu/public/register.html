@@ -18,29 +18,18 @@
                     <input type="email" id="email" name="email" placeholder="E-posta" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" id="phone" name="phone" placeholder="Telefon Numarası" 
-                           pattern="[0-9]{10,11}"
-                           maxlength="11"
-                           title="Telefon numarası 10 veya 11 haneli olmalıdır"
+                    <input type="tel" id="phone" name="phone" 
+                           placeholder="Telefon Numarası (5XX...)" 
+                           pattern="[0-9]{10}"
+                           maxlength="10"
+                           title="Telefon numarası 10 haneli olmalıdır"
                            required>
                 </div>
                 <div class="form-group">
                     <input type="password" id="password" name="password" placeholder="Şifre" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Şifre Tekrar" required>
-                </div>
-                <div class="form-group checkbox-group">
-                    <label class="checkbox-container">
-                        <input type="radio" name="role" value="customer" checked>
-                        <span class="checkbox-text">Müşteri Hesabı</span>
-                    </label>
-                </div>
-                <div class="form-group checkbox-group">
-                    <label class="checkbox-container">
-                        <input type="radio" name="role" value="business_owner">
-                        <span class="checkbox-text">İşletme Hesabı</span>
-                    </label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifre Tekrar" required>
                 </div>
                 <div id="errorMessage" class="error-message"></div>
                 <button type="submit" class="btn primary">Kayıt Ol</button>
@@ -52,53 +41,47 @@
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('passwordConfirm').value;
-            const role = document.querySelector('input[name="role"]:checked').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Form verilerini kontrol et
             if (password !== confirmPassword) {
                 showError('Şifreler eşleşmiyor!');
                 return;
             }
 
-            if (phone.length < 10 || phone.length > 11 || !/^\d+$/.test(phone)) {
-                showError('Geçerli bir telefon numarası giriniz (10 veya 11 haneli)');
+            if (phone.length !== 10 || !/^\d+$/.test(phone)) {
+                showError('Geçerli bir telefon numarası giriniz (5XX...)');
                 return;
             }
 
             try {
-                const registerData = { name, email, phone, password, role };
-                console.log('Gönderilen kayıt verileri:', registerData);
-
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(registerData)
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        phone,
+                        password,
+                        role: 'customer'
+                    })
                 });
 
                 const data = await response.json();
-                console.log('Sunucu yanıtı:', data);
 
                 if (response.ok) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('userRole', data.user.role);
-
-                    if (role === 'business_owner') {
-                        window.location.href = '/business-register.html';
-                    } else {
-                        window.location.href = '/login.html';
-                    }
+                    alert('Kayıt başarılı! Giriş yapabilirsiniz.');
+                    window.location.href = '/login.html';
                 } else {
-                    showError(data.error || 'Kayıt sırasında bir hata oluştu.');
+                    showError(data.message || 'Kayıt sırasında bir hata oluştu');
                 }
             } catch (error) {
                 console.error('Kayıt hatası:', error);
@@ -118,7 +101,7 @@
         // Telefon numarası formatlaması
         document.getElementById('phone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, ''); // Sadece rakamları al
-            if (value.length > 11) value = value.slice(0, 11); // Maksimum 11 karakter
+            if (value.length > 10) value = value.slice(0, 10); // Maksimum 10 karakter
             e.target.value = value;
         });
     </script>

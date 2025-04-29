@@ -7,6 +7,40 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+            justify-items: center;
+        }
+        .category-card {
+            background: #f5f7fa;
+            border-radius: 12px;
+            padding: 24px 0 14px 0;
+            width: 140px;
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid transparent;
+        }
+        .category-card .material-icons {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .category-card.active, .category-card:hover {
+            background: #1976d2;
+            color: #fff;
+            border-color: #1976d2;
+            box-shadow: 0 4px 16px rgba(25,118,210,0.13);
+        }
+
         .dashboard-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -103,43 +137,632 @@
             border-top: 1px solid #eee;
             color: #dc3545;
         }
+        
+        /* İşletme listesi */
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .business-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .business-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .business-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .business-info {
+            padding: 15px;
+        }
+        
+        .business-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .business-type, .business-location {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .business-type .material-icons, .business-location .material-icons {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        
+        .business-rating {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .business-rating .material-icons {
+            color: #ffc107;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        
+        .rating-value {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        
+        .review-count {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        /* Modal stilleri */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+        
+        .close-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+        
+        .modal-header {
+            position: relative;
+        }
+        
+        .business-cover-photo {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .business-header-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+        }
+        
+        .modal-business-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .modal-business-type, .modal-business-location {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+        
+        .modal-business-type .material-icons, .modal-business-location .material-icons {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-right: 10px;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid #4285f4;
+            color: #4285f4;
+        }
+        
+        .tab-content {
+            display: block;
+        }
+        
+        .tab-content.hidden {
+            display: none;
+        }
+        
+        /* Randevu formu stilleri */
+        .appointment-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input[type="date"], .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .resources-section {
+            margin-bottom: 20px;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .resource-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .resource-item.selected {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+        
+        .resource-item .material-icons {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-slot {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .time-slot.selected {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+        
+        .appointment-submit {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .appointment-submit:hover {
+            background-color: #3367d6;
+        }
+        
+        /* Galeri grid stil */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .gallery-item {
+            height: 100px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <nav class="nav-bar">
             <div class="nav-left">
-                <div class="nav-btn" onclick="toggleProfileMenu(event)">
-                    <span class="material-icons">account_circle</span>
-                    <span>Profil</span>
-                    <div class="profile-menu" id="profileMenu">
-                        <a href="/profile">Profilim</a>
-                        <a href="#" class="logout" onclick="logout(event)">Çıkış Yap</a>
-                    </div>
-                </div>
+                <a class="nav-btn" href="/profile.html">
+                    <span class="material-icons">person</span>
+                    Profil
+                </a>
             </div>
             <div class="nav-center">
                 <div class="search-box">
                     <span class="material-icons">search</span>
-                    <input type="text" placeholder="İşletme veya hizmet ara...">
+                    <input id="searchInput" type="text" placeholder="İşletme veya hizmet ara...">
                 </div>
             </div>
             <div class="nav-right">
-                <a href="#" class="nav-btn">
-                    <span class="material-icons">category</span>
-                    <span>Kategoriler</span>
-                </a>
+                <div class="nav-btn">
+                    <span class="material-icons">hub</span>
+                    Kategoriler
+                </div>
             </div>
         </nav>
+        
+        <!-- Kategori Kartları Başlangıç -->
+        <div class="category-section" style="margin-top:32px;">
+            <div class="category-title" style="font-size: 24px; font-weight: 700; text-align:center; margin-bottom:20px;">İşletme Türü Seçin</div>
+            <div class="category-grid" id="categoryGrid">
+                <div class="category-card active" data-type="all">
+                    <span class="material-icons">apps</span>
+                    Tümü
+                </div>
+                <div class="category-card" data-type="dis hekimi">
+                    <span class="material-icons">medication</span>
+                    Diş Hekimi
+                </div>
+                <div class="category-card" data-type="kuafor">
+                    <span class="material-icons">content_cut</span>
+                    Kuaför
+                </div>
+                <div class="category-card" data-type="guzellik salonu">
+                    <span class="material-icons">face</span>
+                    Güzellik Salonu
+                </div>
+                <div class="category-card" data-type="spa salonu">
+                    <span class="material-icons">spa</span>
+                    Spa Salonu
+                </div>
+                <div class="category-card" data-type="halısaha">
+                    <span class="material-icons">sports_soccer</span>
+                    Halısaha
+                </div>
+                <div class="category-card" data-type="restoran">
+                    <span class="material-icons">restaurant</span>
+                    Restoran
+                </div>
+                <div class="category-card" data-type="cafe">
+                    <span class="material-icons">local_cafe</span>
+                    Cafe
+                </div>
+            </div>
+        </div>
+        <!-- Kategori Kartları Bitiş -->
+
+        <!-- İşletmeler Grid Başlangıç -->
+        <div class="business-section" style="margin-top:32px;">
+            <h3 style="margin-bottom:18px;">İşletmeler</h3>
+            <div id="businessList" class="business-grid">
+                <!-- JS ile işletme kartları buraya gelecek -->
+            </div>
+            <div id="noResults" style="display:none; text-align:center; margin-top:30px; color:#888;">
+                Sonuç bulunamadı.
+            </div>
+        </div>
+        
+        <!-- Sonuç bulunamadı mesajı -->
+        <div id="noResults" style="display: none; text-align: center; margin-top: 30px;">
+            <p>Arama kriterlerinize uygun işletme bulunamadı.</p>
+        </div>
+    </div>
+    
+    <!-- İşletme Detay Modal -->
+    <div id="businessDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            
+            <div class="modal-header">
+                <div class="business-cover-photo" id="modalBusinessCover">
+                    <img id="modalBusinessImage" src="" alt="İşletme Fotoğrafı" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="business-header-info">
+                        <h2 id="modalBusinessName" class="modal-business-name"></h2>
+                        <div class="modal-business-type">
+                            <span class="material-icons">store</span>
+                            <span id="modalBusinessType"></span>
+                        </div>
+                        <div class="modal-business-location">
+                            <span class="material-icons">location_on</span>
+                            <span id="modalBusinessAddress"></span>
+                        </div>
+                        <div class="modal-business-rating">
+                            <span class="material-icons">star</span>
+                            <span id="modalBusinessRating"></span>
+                            <span id="modalBusinessReviewCount"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <div class="tab active" data-tab="info">Bilgiler</div>
+                    <div class="tab" data-tab="appointment">Randevu Al</div>
+                    <div class="tab" data-tab="reviews">Değerlendirmeler</div>
+                </div>
+                
+                <div class="tab-content" id="infoTab">
+                    <div class="info-section">
+                        <h3>İşletme Bilgileri</h3>
+                        <div class="info-item">
+                            <p><strong>Telefon:</strong> <span id="modalBusinessPhone"></span></p>
+                        </div>
+                        <div class="info-item">
+                            <p><strong>Rezervasyon Ücreti:</strong> <span id="modalBusinessReservationFee"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-section">
+                        <h3>Galeri</h3>
+                        <div id="businessGallery" class="gallery-grid">
+                            <!-- Galeri resimleri buraya eklenecek -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content hidden" id="appointmentTab">
+                    <h3>Randevu Al</h3>
+                    <form id="appointmentForm" class="appointment-form">
+                        <input type="hidden" name="businessId" id="appointmentBusinessId">
+                        
+                        <div class="form-group">
+                            <label for="appointmentDate">Tarih Seçin</label>
+                            <input type="date" id="appointmentDate" name="appointmentDate" required>
+                        </div>
+                        
+                        <div class="resources-section">
+                            <h4 id="resourcesLabel">Kaynak Seçin</h4>
+                            <p id="noResourcesMessage" style="display: none;">Bu işletme için kaynak bulunmamaktadır.</p>
+                            <div id="resourcesList" class="resources-grid">
+                                <!-- Kaynaklar buraya eklenecek -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Saat Seçin</label>
+                            <div id="timeSlots" class="time-slots">
+                                <!-- Müsait saatler buraya eklenecek -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointmentNote">Not (Opsiyonel)</label>
+                            <textarea id="appointmentNote" name="appointmentNote" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="appointment-submit">Randevu Oluştur</button>
+                    </form>
+                </div>
+                
+                <div class="tab-content hidden" id="reviewsTab">
+                    <div class="reviews-section">
+                        <h3>Değerlendirmeler</h3>
+                        <div id="reviewsList" class="reviews-list">
+                            <!-- Değerlendirmeler buraya eklenecek -->
+                        </div>
+                        
+                        <div class="write-review-section" style="margin-top: 30px;">
+                            <h4>Değerlendirme Yap</h4>
+                            <form id="reviewForm">
+                                <div class="rating-stars" style="margin-bottom: 15px;">
+                                    <span class="material-icons rating-star" data-rating="1">star_border</span>
+                                    <span class="material-icons rating-star" data-rating="2">star_border</span>
+                                    <span class="material-icons rating-star" data-rating="3">star_border</span>
+                                    <span class="material-icons rating-star" data-rating="4">star_border</span>
+                                    <span class="material-icons rating-star" data-rating="5">star_border</span>
+                                </div>
+                                <textarea id="reviewComment" placeholder="Yorumunuzu buraya yazın..." rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px;"></textarea>
+                                <button type="submit" style="background-color: #4285f4; color: white; border: none; border-radius: 4px; padding: 10px 15px; cursor: pointer;">Değerlendirme Gönder</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Profil menüsünü aç/kapat fonksiyonu
+        function toggleProfileMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('active');
+        }
+        // Sayfa dışına tıklayınca menüyü kapat
+        document.addEventListener('click', (event) => {
+            const menu = document.getElementById('profileMenu');
+            if (menu && !menu.contains(event.target) && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            }
+        });
+
         // Sayfa yüklendiğinde token kontrolü
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = '/login.html';
             }
+
+            // Tüm işletmeleri bellekte tutacağız
+            let allBusinesses = [];
+            let selectedCategory = 'all';
+
+            // Kategori kartlarına tıklama eventi
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedCategory = this.getAttribute('data-type');
+                    filterAndDisplayBusinesses();
+                });
+            });
+
+            // İşletmeleri yükle
+            async function loadBusinesses() {
+                try {
+                    const response = await fetch('/api/businesses');
+                    const data = await response.json();
+                    allBusinesses = data.businesses || [];
+                    console.log('API işletme verisi:', allBusinesses);
+                    
+                    // API yanıtında her işletme kaydı için business_type alanını console'a yazdır
+                    allBusinesses.forEach(b => {
+                        console.log(`İşletme: ${b.business_name}, Tür: ${b.business_type}`);
+                    });
+                    
+                    filterAndDisplayBusinesses();
+                } catch (error) {
+                    console.error('İşletmeler yüklenemedi:', error);
+                }
+            }
+
+            // Kategori eşleştirme tablosu
+            const categoryMap = {
+                'dis hekimi': ['dis hekimi', 'diş hekimi', 'dishekim', 'dişhekim', 'dişhekimi', 'dis_hekimi', 'diş_hekimi'],
+                'kuafor': ['kuafor', 'kuaför', 'coiffeur', 'berber'],
+                'guzellik salonu': ['guzellik salonu', 'güzellik salonu', 'guzelliksalonu', 'güzelliksalonu', 'guzellik_salonu', 'güzellik_salonu'],
+                'spa salonu': ['spa salonu', 'spasalonu', 'spa', 'spa_salonu'],
+                'halısaha': ['halısaha', 'halı saha', 'halisaha', 'futbol', 'saha', 'hali_saha', 'halı_saha'],
+                'restoran': ['restoran', 'restaurant'],
+                'cafe': ['cafe', 'kafe'],
+                'all': ['all']
+            };
+
+            // Filtreleme fonksiyonu
+            function filterAndDisplayBusinesses() {
+                let filtered = allBusinesses;
+                const searchText = document.getElementById('searchInput').value.toLowerCase();
+                if (selectedCategory !== 'all') {
+                    filtered = filtered.filter(b => {
+                        const type = (b.business_type || '').toLowerCase().trim();
+                        console.log(`Filtreleme - İşletme: ${b.business_name}, Tür: ${type}, Seçilen kategori: ${selectedCategory}`);
+                        const validTypes = categoryMap[selectedCategory] || [];
+                        return validTypes.includes(type);
+                    });
+                }
+                if (searchText) {
+                    filtered = filtered.filter(b =>
+                        b.business_name.toLowerCase().includes(searchText) ||
+                        (b.city && b.city.toLowerCase().includes(searchText)) ||
+                        (b.district && b.district.toLowerCase().includes(searchText))
+                    );
+                }
+                displayBusinesses(filtered);
+            }
+
+            // Arama kutusu ile filtreleme
+            document.getElementById('searchInput').addEventListener('input', filterAndDisplayBusinesses);
+
+            // İşletmeleri ekrana yaz
+            function displayBusinesses(businesses) {
+                const businessList = document.getElementById('businessList');
+                const noResults = document.getElementById('noResults');
+                businessList.innerHTML = '';
+                if (!businesses.length) {
+                    noResults.style.display = 'block';
+                    return;
+                }
+                noResults.style.display = 'none';
+                businesses.forEach(business => {
+                    const card = document.createElement('div');
+                    card.className = 'business-card';
+                    card.onclick = () => openBusinessModal(business);
+
+                    card.innerHTML = `
+                        <img class="business-image" src="${business.cover_photo || 'https://via.placeholder.com/300x150?text=İşletme'}" alt="${business.business_name}">
+                        <div class="business-info">
+                            <div class="business-name">${business.business_name}</div>
+                            <div class="business-type"><span class="material-icons">category</span> ${business.business_type || ''}</div>
+                            <div class="business-location"><span class="material-icons">location_on</span> ${business.city || ''} ${business.district || ''}</div>
+                        </div>
+                    `;
+                    businessList.appendChild(card);
+                });
+            }
+
+            // Sayfa ilk açıldığında işletmeleri yükle
+            loadBusinesses();
+
+            // Modal, randevu ve diğer fonksiyonlar
+            setupFilterListeners();
+            setupModalListeners();
+            setupAppointmentForm();
         });
 
         // Profil menüsünü aç/kapat
@@ -163,6 +786,447 @@
             localStorage.removeItem('token');
             localStorage.removeItem('userRole');
             window.location.href = '/login.html';
+        }
+        
+        // İşletmeleri görüntüleme fonksiyonu
+        function displayBusinesses(businesses) {
+            const businessList = document.getElementById('businessList');
+            businessList.innerHTML = '';
+            
+            businesses.forEach(business => {
+                const card = document.createElement('div');
+                card.className = 'business-card';
+                card.onclick = () => openBusinessModal(business);
+                
+                card.innerHTML = `
+                    <img src="${business.image_url || 'https://via.placeholder.com/300x150?text=İşletme+Fotoğrafı'}" alt="${business.business_name}" class="business-image">
+                    <div class="business-info">
+                        <div class="business-name">${business.business_name}</div>
+                        <div class="business-type">
+                            <span class="material-icons">store</span>
+                            <span>${formatBusinessType(business.business_type)}</span>
+                        </div>
+                        <div class="business-location">
+                            <span class="material-icons">location_on</span>
+                            <span>${business.city}, ${business.district}</span>
+                        </div>
+                        <div class="business-rating">
+                            <span class="material-icons">star</span>
+                            <span class="rating-value">${business.rating || '0.0'}</span>
+                            <span class="review-count">(${business.review_count || 0} değerlendirme)</span>
+                        </div>
+                    </div>
+                `;
+                
+                businessList.appendChild(card);
+            });
+        }
+        
+        // İşletme türünü formatla
+        function formatBusinessType(type) {
+            const types = {
+                'kuafor': 'Kuaför',
+                'berber': 'Berber',
+                'klinik': 'Klinik',
+                'restoran': 'Restoran',
+                'spor': 'Spor Salonu',
+                'diger': 'Diğer'
+            };
+            
+            return types[type] || type;
+        }
+        
+        // İşletme modalını açma fonksiyonu
+        function openBusinessModal(business) {
+            // Modal verilerini doldur
+            document.getElementById('modalBusinessName').textContent = business.business_name;
+            document.getElementById('modalBusinessImage').src = business.image_url || 'https://via.placeholder.com/400x200?text=İşletme+Fotoğrafı';
+            document.getElementById('modalBusinessType').textContent = formatBusinessType(business.business_type);
+            document.getElementById('modalBusinessAddress').textContent = `${business.city}, ${business.district} - ${business.address}`;
+            document.getElementById('modalBusinessPhone').textContent = business.business_phone;
+            document.getElementById('modalBusinessReservationFee').textContent = `${business.reservation_price} TL`;
+            document.getElementById('modalBusinessRating').textContent = business.rating || '0.0';
+            document.getElementById('modalBusinessReviewCount').textContent = `(${business.review_count || 0} değerlendirme)`;
+            
+            // Randevu için işletme ID'sini ayarla
+            document.getElementById('appointmentBusinessId').value = business.id;
+            
+            // Galeri resimlerini yükle
+            loadBusinessGallery(business);
+            
+            // Kaynakları yükle
+            loadBusinessResources(business.id);
+            
+            // Kapatma butonlarını ayarla
+            const closeButton = document.querySelector('.close-button');
+            if (closeButton) {
+                closeButton.onclick = function() {
+                    document.getElementById('businessDetailModal').style.display = 'none';
+                };
+            }
+            
+            // Sekme event listener'larını tekrar ekle
+            document.querySelectorAll('.modal-tabs .tab').forEach(tab => {
+                tab.onclick = function() {
+                    showTab(this.getAttribute('data-tab'));
+                };
+            });
+            
+            // Varsayılan olarak 'Randevu Al' sekmesini göster
+            showTab('appointment');
+            
+            // Modalı göster
+            document.getElementById('businessDetailModal').style.display = 'block';
+        }
+        
+        // İşletme galeri resimlerini yükleme
+        function loadBusinessGallery(business) {
+            const galleryContainer = document.getElementById('businessGallery');
+            galleryContainer.innerHTML = '';
+            
+            if (!business.gallery_images) {
+                galleryContainer.innerHTML = '<p>Galeride gösterilecek resim bulunamadı.</p>';
+                return;
+            }
+            
+            try {
+                const images = JSON.parse(business.gallery_images);
+                
+                if (images.length === 0) {
+                    galleryContainer.innerHTML = '<p>Galeride gösterilecek resim bulunamadı.</p>';
+                    return;
+                }
+                
+                images.forEach(image => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = image;
+                    img.alt = business.business_name;
+                    
+                    galleryItem.appendChild(img);
+                    galleryContainer.appendChild(galleryItem);
+                });
+            } catch (error) {
+                console.error('Galeri resimleri yüklenirken hata:', error);
+                galleryContainer.innerHTML = '<p>Galeri resimleri yüklenirken bir hata oluştu.</p>';
+            }
+        }
+        
+        // İşletme kaynaklarını yükleme
+        async function loadBusinessResources(businessId) {
+            const resourcesContainer = document.getElementById('resourcesList');
+            const noResourcesMessage = document.getElementById('noResourcesMessage');
+            const resourceLabel = document.getElementById('resourcesLabel');
+            
+            resourcesContainer.innerHTML = '<p>Kaynaklar yükleniyor...</p>';
+            
+            try {
+                const response = await fetch(`/api/business/resources/public?businessId=${businessId}`);
+                if (!response.ok) throw new Error('Kaynaklar getirilirken bir hata oluştu');
+                
+                const data = await response.json();
+                resourcesContainer.innerHTML = '';
+                
+                // Kaynak türü etiketleri
+                const resourceTypeLabels = {
+                    'kuafor': 'Koltuk',
+                    'berber': 'Koltuk',
+                    'klinik': 'Oda',
+                    'restoran': 'Masa',
+                    'spor': 'Saha',
+                    'diger': 'Kaynak'
+                };
+                
+                // İşletme türünü alıp etiket ve ikonları belirle
+                const businessType = data.businessType || 'default';
+                const typeLabel = resourceTypeLabels[businessType] || 'Kaynak';
+                resourceLabel.textContent = `${typeLabel} Seçin`;
+                
+                if (data.resources.length === 0) {
+                    noResourcesMessage.style.display = 'block';
+                    return;
+                }
+                
+                noResourcesMessage.style.display = 'none';
+                
+                // Kaynakları listele
+                data.resources.forEach(resource => {
+                    const resourceItem = document.createElement('div');
+                    resourceItem.className = 'resource-item';
+                    resourceItem.setAttribute('data-resource-id', resource.id);
+                    
+                    // Her kaynak türü için uygun ikon
+                    const iconMap = {
+                        'kuafor': 'chair',
+                        'berber': 'chair',
+                        'klinik': 'local_hospital',
+                        'restoran': 'table_restaurant',
+                        'spor': 'sports_soccer',
+                        'diger': 'category'
+                    };
+                    
+                    const icon = iconMap[businessType] || 'category';
+                    
+                    resourceItem.innerHTML = `
+                        <span class="material-icons">${icon}</span>
+                        <div>${resource.name}</div>
+                    `;
+                    
+                    resourceItem.addEventListener('click', function() {
+                        document.querySelectorAll('.resource-item').forEach(item => {
+                            item.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        
+                        // Seçilen kaynağa göre müsait saatleri güncelle
+                        const date = document.getElementById('appointmentDate').value;
+                        if (date) {
+                            loadTimeSlots(date, resource.id);
+                        }
+                    });
+                    
+                    resourcesContainer.appendChild(resourceItem);
+                });
+            } catch (error) {
+                console.error('Kaynaklar yüklenirken hata:', error);
+                resourcesContainer.innerHTML = '<p>Kaynaklar yüklenirken bir hata oluştu.</p>';
+            }
+        }
+        
+        // Modal sekmeleri arasında geçiş
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.modal-tabs .tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Tüm sekmelerin aktif durumunu kaldır
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Tüm sekme içeriklerini gizle
+            tabContents.forEach(content => content.classList.add('hidden'));
+            
+            // Seçilen sekmeyi aktif yap
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Seçilen sekmenin içeriğini göster
+            document.getElementById(`${tabName}Tab`).classList.remove('hidden');
+            
+            // Randevu sekmesi seçildiyse
+            if (tabName === 'appointment') {
+                // Varsayılan olarak bugünün tarihini ayarla
+                const today = new Date();
+                const dateInput = document.getElementById('appointmentDate');
+                dateInput.min = today.toISOString().split('T')[0]; // Bugünden önceki günleri seçilemesin
+                dateInput.value = today.toISOString().split('T')[0];
+                
+                // Tarihe göre zaman dilimlerini yükle (seçili kaynak varsa ona göre)
+                const selectedResource = document.querySelector('.resource-item.selected');
+                const resourceId = selectedResource ? selectedResource.getAttribute('data-resource-id') : null;
+                
+                loadTimeSlots(dateInput.value, resourceId);
+                
+                // Tarih değiştiğinde zaman dilimlerini güncelle
+                dateInput.addEventListener('change', function() {
+                    const selectedResource = document.querySelector('.resource-item.selected');
+                    const resourceId = selectedResource ? selectedResource.getAttribute('data-resource-id') : null;
+                    loadTimeSlots(this.value, resourceId);
+                });
+            }
+        }
+        
+        // Zaman dilimlerini yükleme fonksiyonu
+        async function loadTimeSlots(date, resourceId = null) {
+            const businessId = document.getElementById('appointmentBusinessId').value;
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            
+            if (!businessId || !date) return;
+            
+            // Eğer kaynak seçilmediyse saatleri gösterme
+            if (!resourceId) {
+                timeSlotsContainer.innerHTML = '<p>Lütfen önce bir kaynak (koltuk) seçin.</p>';
+                return;
+            }
+            
+            // Yükleniyor mesajı
+            timeSlotsContainer.innerHTML = '<p>Saatler yükleniyor...</p>';
+            
+            try {
+                // API çağrısı yapmak yerine, sabit saatleri kullan
+                const availableTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+                
+                // Saat seçeneklerini temizle
+                timeSlotsContainer.innerHTML = '';
+                
+                // Saatleri ekle
+                availableTimes.forEach(time => {
+                    const timeSlot = document.createElement('div');
+                    timeSlot.className = 'time-slot';
+                    timeSlot.textContent = time;
+                    timeSlot.setAttribute('data-time', time);
+                    
+                    timeSlot.addEventListener('click', function() {
+                        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                    });
+                    
+                    timeSlotsContainer.appendChild(timeSlot);
+                });
+                
+            } catch (error) {
+                console.error('Saat yükleme hatası:', error);
+                timeSlotsContainer.innerHTML = '<p>Saatler yüklenirken bir hata oluştu. Lütfen tekrar deneyin.</p>';
+            }
+        }
+        
+        // Filtreleme için listener'ları ayarla
+        function setupFilterListeners() {
+            const searchInput = document.getElementById('searchInput');
+            const businessTypeFilter = document.getElementById('businessTypeFilter');
+            
+            // Arama yapıldığında
+            searchInput.addEventListener('input', function() {
+                applyFilters();
+            });
+            
+            // İşletme türü değiştiğinde
+            businessTypeFilter.addEventListener('change', function() {
+                applyFilters();
+            });
+        }
+        
+        // Filtreler uygulanarak işletmeleri yükle
+        async function applyFilters() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const businessType = document.getElementById('businessTypeFilter').value;
+            
+            try {
+                const response = await fetch('/api/businesses');
+                let businesses = await response.json();
+                
+                // İşletme türü filtresi
+                if (businessType !== 'all') {
+                    businesses = businesses.filter(business => business.business_type === businessType);
+                }
+                
+                // Arama filtresi
+                if (searchText) {
+                    businesses = businesses.filter(business => 
+                        business.business_name.toLowerCase().includes(searchText) ||
+                        business.city.toLowerCase().includes(searchText) ||
+                        business.district.toLowerCase().includes(searchText)
+                    );
+                }
+                
+                if (businesses.length === 0) {
+                    document.getElementById('noResults').style.display = 'block';
+                    document.getElementById('businessList').innerHTML = '';
+                } else {
+                    document.getElementById('noResults').style.display = 'none';
+                    displayBusinesses(businesses);
+                }
+            } catch (error) {
+                console.error('Filtreleme hatası:', error);
+            }
+        }
+        
+        // Modal için olayları ayarla
+        function setupModalListeners() {
+            // Modal kapat
+            document.querySelector('.close-button').addEventListener('click', function() {
+                document.getElementById('businessDetailModal').style.display = 'none';
+            });
+            
+            // Modal dışına tıklandığında kapat
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('businessDetailModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // ESC tuşuna basıldığında modalı kapat
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    document.getElementById('businessDetailModal').style.display = 'none';
+                }
+            });
+            
+            // Sekme değiştirme
+            document.querySelectorAll('.modal-tabs .tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    showTab(this.getAttribute('data-tab'));
+                });
+            });
+        }
+        
+        // Randevu formu gönderimi
+        function setupAppointmentForm() {
+            document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const businessId = document.getElementById('appointmentBusinessId').value;
+                const date = document.getElementById('appointmentDate').value;
+                const selectedTimeSlot = document.querySelector('.time-slot.selected');
+                const selectedResource = document.querySelector('.resource-item.selected');
+                const note = document.getElementById('appointmentNote').value;
+                
+                if (!businessId || !date) {
+                    alert('Lütfen işletme ve tarih seçin');
+                    return;
+                }
+                
+                if (!selectedResource) {
+                    alert('Lütfen bir kaynak seçin (koltuk, masa vb.)');
+                    return;
+                }
+                
+                if (!selectedTimeSlot) {
+                    alert('Lütfen bir saat dilimi seçin');
+                    return;
+                }
+                
+                // Kaynak zorunlu değil ancak seçili ise ID'sini al
+                const resourceId = selectedResource ? selectedResource.getAttribute('data-resource-id') : null;
+                
+                const time = selectedTimeSlot.getAttribute('data-time');
+                
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('/api/appointments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            businessId,
+                            date,
+                            time,
+                            resourceId,
+                            note
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        alert('Randevunuz başarıyla oluşturuldu!');
+                        document.getElementById('businessDetailModal').style.display = 'none';
+                    } else {
+                        alert(`Randevu oluşturulurken bir hata oluştu: ${result.error}`);
+                    }
+                } catch (error) {
+                    console.error('Randevu oluşturma hatası:', error);
+                    alert('Bir hata oluştu, lütfen tekrar deneyin.');
+                }
+            });
         }
     </script>
 </body>

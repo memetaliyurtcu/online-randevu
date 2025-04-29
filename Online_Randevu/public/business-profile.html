@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Profili Oluştur</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .business-profile-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .photo-info {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .image-upload-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .image-upload {
+            border: 2px dashed #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .primary-upload {
+            background-color: #f9f9f9;
+        }
+
+        .image-upload:hover {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .image-upload .material-icons {
+            font-size: 48px;
+            color: #95a5a6;
+            margin-bottom: 10px;
+        }
+
+        .small-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .images-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .image-preview-item {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            height: 150px;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview-item.main-image::after {
+            content: 'Ana Fotoğraf';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(52, 152, 219, 0.8);
+            color: white;
+            padding: 4px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.8);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .submit-btn {
+            background: #3498db;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .week-schedule {
+            margin-top: 10px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .schedule-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+            padding: 15px 12px;
+        }
+
+        .schedule-table th:nth-child(1) {
+            width: 10%;
+        }
+
+        .schedule-table th:nth-child(2) {
+            width: 20%;
+        }
+
+        .schedule-table th:nth-child(3) {
+            width: 35%;
+        }
+
+        .schedule-table th:nth-child(4) {
+            width: 35%;
+        }
+
+        .time-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            min-width: 150px;
+        }
+
+        /* Switch stil */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin: 0 auto;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 24px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="business-profile-container">
+        <div class="form-header">
+            <h1>İşletme Profili Oluştur</h1>
+            <p>Lütfen işletmeniz hakkında bilgileri doldurun</p>
+        </div>
+        
+        <form id="businessProfileForm" class="form-grid">
+            <div class="form-group">
+                <label for="businessName">İşletme Adı</label>
+                <input type="text" id="businessName" name="businessName" required 
+                    placeholder="İşletmenizin adı">
+            </div>
+
+            <div class="form-group">
+                <label for="identityNumber">TC Kimlik Numarası</label>
+                <input type="text" id="identityNumber" name="identityNumber" required 
+                    maxlength="11" pattern="[0-9]{11}" 
+                    placeholder="11 haneli TC Kimlik numaranız">
+            </div>
+
+            <div class="form-group">
+                <label for="businessPhone">İşletme Telefon Numarası</label>
+                <input type="tel" id="businessPhone" name="businessPhone" required 
+                    maxlength="10" pattern="[0-9]{10}" 
+                    placeholder="Başında 0 olmadan 10 haneli numara">
+            </div>
+
+            <div class="form-group">
+                <label for="businessType">İşletme Türü</label>
+                <select id="businessType" name="businessType" required>
+                    <option value="">Seçiniz</option>
+                    <option value="dis_hekimi">Diş Hekimi</option>
+                    <option value="kuafor">Kuaför</option>
+                    <option value="guzellik_salonu">Güzellik Salonu</option>
+                    <option value="spa_salonu">Spa Salonu</option>
+                    <option value="halisaha">Halısaha</option>
+                    <option value="restoran">Restoran</option>
+                    <option value="cafe">Cafe</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city">Şehir</label>
+                <select id="city" name="city" required>
+                    <option value="">Şehir Seçiniz</option>
+                    <option value="İstanbul">İstanbul</option>
+                    <option value="Ankara">Ankara</option>
+                    <option value="İzmir">İzmir</option>
+                    <option value="Bursa">Bursa</option>
+                    <option value="Antalya">Antalya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="district">İlçe</label>
+                <select id="district" name="district" required>
+                    <option value="">İlçe Seçiniz</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="reservationPrice">Rezervasyon Ücreti (TL)</label>
+                <input type="number" id="reservationPrice" name="reservationPrice" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="address">Açık Adres</label>
+                <textarea id="address" name="address" required 
+                    placeholder="İşletmenizin tam adresi"></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <label>İşletme Fotoğrafları</label>
+                <p class="photo-info">Lütfen en az bir fotoğraf yükleyin. İlk eklenen fotoğraf profilinizde gösterilecektir.</p>
+                <div class="image-upload-container">
+                    <div class="image-upload primary-upload" onclick="document.getElementById('businessImages').click()">
+                        <span class="material-icons">cloud_upload</span>
+                        <p>Fotoğraf(lar) yüklemek için tıklayın veya sürükleyin</p>
+                        <p class="small-text">Birden fazla fotoğraf seçebilirsiniz</p>
+                        <input type="file" id="businessImages" name="businessImages" 
+                            accept="image/*" style="display: none" multiple
+                            onchange="previewImages(this)">
+                    </div>
+                </div>
+                <div id="imagesPreviewContainer" class="images-preview-container"></div>
+            </div>
+
+            <div class="form-group full-width">
+                <button type="submit" class="submit-btn">Devam Et</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Seçilen görselleri tutacak global dizi
+        let selectedImages = [];
+
+        // Şehir ve ilçe verileri
+        const cityDistricts = {
+            'İstanbul': [
+                'Adalar', 'Arnavutköy', 'Ataşehir', 'Avcılar', 'Bağcılar', 'Bahçelievler', 'Bakırköy', 'Başakşehir', 'Bayrampaşa', 'Beşiktaş', 'Beykoz', 'Beylikdüzü', 'Beyoğlu', 'Büyükçekmece', 'Çatalca', 'Çekmeköy', 'Esenler', 'Esenyurt', 'Eyüpsultan', 'Fatih', 'Gaziosmanpaşa', 'Güngören', 'Kadıköy', 'Kağıthane', 'Kartal', 'Küçükçekmece', 'Maltepe', 'Pendik', 'Sancaktepe', 'Sarıyer', 'Şile', 'Şişli', 'Sultanbeyli', 'Sultangazi', 'Tuzla', 'Ümraniye', 'Üsküdar', 'Zeytinburnu'
+            ],
+            'Ankara': [
+                'Akyurt', 'Altındağ', 'Ayaş', 'Bala', 'Beypazarı', 'Çamlıdere', 'Çankaya', 'Çubuk', 'Elmadağ', 'Etimesgut', 'Evren', 'Gölbaşı', 'Güdül', 'Haymana', 'Kahramankazan', 'Kalecik', 'Keçiören', 'Kızılcahamam', 'Mamak', 'Nallıhan', 'Polatlı', 'Pursaklar', 'Sincan', 'Şereflikoçhisar', 'Yenimahalle'
+            ],
+            'İzmir': [
+                'Aliağa', 'Balçova', 'Bayındır', 'Bergama', 'Beydağ', 'Bornova', 'Buca', 'Çeşme', 'Çiğli', 'Dikili', 'Foça', 'Gaziemir', 'Güzelbahçe', 'Karabağlar', 'Karaburun', 'Karşıyaka', 'Kemalpaşa', 'Kınık', 'Kiraz', 'Konak', 'Menderes', 'Menemen', 'Narlıdere', 'Ödemiş', 'Seferihisar', 'Selçuk', 'Tire', 'Torbalı', 'Urla'
+            ],
+            'Bursa': [
+                'Büyükorhan', 'Gemlik', 'Gürsu', 'Harmancık', 'İnegöl', 'İznik', 'Karacabey', 'Keles', 'Kestel', 'Mudanya', 'Mustafakemalpaşa', 'Nilüfer', 'Orhaneli', 'Orhangazi', 'Osmangazi', 'Yenişehir', 'Yıldırım'
+            ],
+            'Antalya': [
+                'Akseki', 'Aksu', 'Alanya', 'Demre', 'Döşemealtı', 'Elmalı', 'Finike', 'Gazipaşa', 'Gündoğmuş', 'İbradı', 'Kale (Demre)', 'Kaş', 'Kemer', 'Kepez', 'Konyaaltı', 'Korkuteli', 'Kumluca', 'Manavgat', 'Muratpaşa', 'Serik'
+            ]
+        };
+
+        const citySelect = document.getElementById('city');
+        const districtSelect = document.getElementById('district');
+
+        citySelect.addEventListener('change', function() {
+            const selectedCity = this.value;
+            districtSelect.innerHTML = '<option value="">İlçe Seçiniz</option>';
+            if (cityDistricts[selectedCity]) {
+                cityDistricts[selectedCity].forEach(function(district) {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Çoklu fotoğraf önizleme fonksiyonu
+        function previewImages(input) {
+            const previewContainer = document.getElementById('imagesPreviewContainer');
+            const files = input.files;
+            
+            if (files && files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Yeni görsel eklemeden önce diziyi güncelle
+                            selectedImages.push(file);
+                            
+                            // Önizleme elemanı oluştur
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'image-preview-item';
+                            if (selectedImages.length === 1) {
+                                previewItem.classList.add('main-image');
+                            }
+                            
+                            // Görsel
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            previewItem.appendChild(img);
+                            
+                            // Silme butonu
+                            const removeBtn = document.createElement('span');
+                            removeBtn.className = 'remove-image';
+                            removeBtn.innerHTML = '&times;';
+                            removeBtn.onclick = function(e) {
+                                e.stopPropagation(); // Üst div'e tıklama olayını engelle
+                                const index = Array.from(previewContainer.children).indexOf(previewItem);
+                                selectedImages.splice(index, 1);
+                                previewItem.remove();
+                                
+                                // Ana fotoğraf etiketini güncelle
+                                updateMainImageLabel();
+                            };
+                            previewItem.appendChild(removeBtn);
+                            
+                            previewContainer.appendChild(previewItem);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+            
+            // Input'u temizle (aynı dosyaları tekrar seçebilmek için)
+            input.value = '';
+        }
+        
+        // Ana fotoğraf etiketini güncelleme fonksiyonu
+        function updateMainImageLabel() {
+            const previewItems = document.querySelectorAll('.image-preview-item');
+            previewItems.forEach((item, index) => {
+                if (index === 0) {
+                    item.classList.add('main-image');
+                } else {
+                    item.classList.remove('main-image');
+                }
+            });
+        }
+
+        document.getElementById('businessProfileForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            if (selectedImages.length === 0) {
+                alert('Lütfen en az bir fotoğraf yükleyin.');
+                return;
+            }
+            
+            // Form verilerini al
+            const formData = new FormData();
+            
+            // Text verileri ekle
+            formData.append('businessName', document.getElementById('businessName').value);
+            formData.append('identityNumber', document.getElementById('identityNumber').value);
+            formData.append('businessPhone', document.getElementById('businessPhone').value);
+            formData.append('businessType', document.getElementById('businessType').value);
+            formData.append('city', document.getElementById('city').value);
+            formData.append('district', document.getElementById('district').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('reservationPrice', document.getElementById('reservationPrice').value);
+            
+            // Fotoğrafları ekle - ilk fotoğraf profil fotoğrafı olacak
+            if (selectedImages.length > 0) {
+                formData.append('profileImage', selectedImages[0]); // İlk fotoğraf
+                
+                // Diğer fotoğraflar galeride gösterilecek
+                for (let i = 1; i < selectedImages.length; i++) {
+                    formData.append('galleryImages', selectedImages[i]);
+                }
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/business-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                        // Content-Type header'ı koymuyoruz çünkü multipart/form-data ile dosya yüklüyoruz
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('İşletme profiliniz başarıyla oluşturuldu!');
+                    window.location.href = '/business-dashboard.html'; // Çalışma saatleri kaldırıldığı için doğrudan dashboard'a yönlendir
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'İşletme profili oluşturulamadı');
+                }
+            } catch (error) {
+                console.error('Form gönderme hatası:', error);
+                alert('Hata: ' + error.message);
+            }
+        });
+
+        // Drag and drop desteği
+        const imageUpload = document.querySelector('.primary-upload');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            imageUpload.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            imageUpload.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            imageUpload.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            imageUpload.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            imageUpload.classList.remove('highlight');
+        }
+
+        imageUpload.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                previewImages({ files: files }); // Sürükle-bırak yoluyla eklenen dosyaları önizleme
+            }
+        }
+        
+        // Yüklenen görsellerin sırasını değiştirmek için sürükle-bırak desteği
+        let draggedItem = null;
+        
+        function enableImageSorting() {
+            const previewContainer = document.getElementById('imagesPreviewContainer');
+            
+            // Yeni bir görsel eklenirse seçilebilir ve sıralanabilir yap
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        mutation.addedNodes.forEach(node => {
+                            if (node.classList && node.classList.contains('image-preview-item')) {
+                                makeItemDraggable(node);
+                            }
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(previewContainer, { childList: true });
+        }
+        
+        function makeItemDraggable(item) {
+            item.setAttribute('draggable', true);
+            
+            item.addEventListener('dragstart', function() {
+                draggedItem = this;
+                setTimeout(() => {
+                    this.classList.add('dragging');
+                }, 0);
+            });
+            
+            item.addEventListener('dragend', function() {
+                draggedItem = null;
+                this.classList.remove('dragging');
+                
+                // Dizi sırasını güncelle
+                updateImagesArray();
+                // Ana fotoğraf etiketini güncelle
+                updateMainImageLabel();
+            });
+            
+            item.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+            
+            item.addEventListener('drop', function(e) {
+                e.preventDefault();
+                if (!draggedItem) return;
+                
+                const previewContainer = document.getElementById('imagesPreviewContainer');
+                const allItems = Array.from(previewContainer.querySelectorAll('.image-preview-item'));
+                const draggedIndex = allItems.indexOf(draggedItem);
+                const dropIndex = allItems.indexOf(this);
+                
+                if (draggedIndex !== dropIndex) {
+                    if (dropIndex < draggedIndex) {
+                        previewContainer.insertBefore(draggedItem, this);
+                    } else {
+                        previewContainer.insertBefore(draggedItem, this.nextSibling);
+                    }
+                }
+            });
+        }
+        
+        function updateImagesArray() {
+            const previewContainer = document.getElementById('imagesPreviewContainer');
+            const allItems = Array.from(previewContainer.querySelectorAll('.image-preview-item'));
+            const newImagesArray = [];
+            
+            allItems.forEach((item, index) => {
+                const oldIndex = parseInt(item.getAttribute('data-index'));
+                newImagesArray.push(selectedImages[oldIndex]);
+            });
+            
+            selectedImages = newImagesArray;
+            
+            // Görüntüleme elemanlarını güncelle
+            allItems.forEach((item, index) => {
+                item.setAttribute('data-index', index);
+            });
+        }
+        
+        // Sayfa yüklenince görsel sıralama özelliğini etkinleştir
+        document.addEventListener('DOMContentLoaded', enableImageSorting);
+    </script>
+</body>
+</html> 
