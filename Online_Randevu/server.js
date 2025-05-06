@@ -1205,6 +1205,51 @@ app.get('/api/business/resources/public', async (req, res) => {
     }
 });
 
+// Kaynak durumunu değiştirme endpoint'i
+app.put('/api/business/resources/:id/status', authenticateToken, async (req, res) => {
+    try {
+        const resourceId = req.params.id;
+        const { status } = req.body;
+        
+        if (!status || (status !== 'active' && status !== 'inactive')) {
+            return res.status(400).json({ error: 'Geçersiz durum değeri. "active" veya "inactive" olmalıdır.' });
+        }
+        
+        // İşletme ID'sini bul
+        const businessResult = await pool.query(
+            'SELECT id FROM business_profiles WHERE user_id = $1',
+            [req.user.userId]
+        );
+
+        if (businessResult.rows.length === 0) {
+            return res.status(404).json({ error: 'İşletme profili bulunamadı' });
+        }
+
+        const businessId = businessResult.rows[0].id;
+        
+        // Kaynağı güncelle
+        const updateResult = await pool.query(
+            'UPDATE business_resources SET status = $1 WHERE id = $2 AND business_id = $3 RETURNING *',
+            [status, resourceId, businessId]
+        );
+        
+        if (updateResult.rows.length === 0) {
+            return res.status(404).json({ 
+                error: 'Kaynak bulunamadı veya bu kaynağı güncelleme yetkiniz yok' 
+            });
+        }
+        
+        res.json({ 
+            message: 'Kaynak durumu başarıyla güncellendi',
+            resource: updateResult.rows[0]
+        });
+        
+    } catch (error) {
+        console.error('Kaynak durumu güncelleme hatası:', error);
+        res.status(500).json({ error: 'Kaynak durumu güncellenirken bir hata oluştu' });
+    }
+});
+
 // Müsait randevu saatlerini getiren endpoint
 app.get('/api/available-slots', async (req, res) => {
     try {

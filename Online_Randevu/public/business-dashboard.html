@@ -226,6 +226,55 @@
             margin-bottom: 10px;
             opacity: 0.5;
         }
+        
+        /* Toggle status butonu için stil */
+        .toggle-status-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+            align-self: flex-start;
+            margin-top: auto;
+        }
+        
+        .toggle-status-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .status-active .toggle-status-btn {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .status-inactive .toggle-status-btn {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        /* Çıkış butonu için stil */
+        .logout-btn {
+            margin-left: 10px;
+            padding: 8px 15px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body class="dashboard-page">
@@ -237,7 +286,12 @@
                     <span>İşletmem</span>
                 </div>
             </div>
-            <div class="nav-right"></div>
+            <div class="nav-right">
+                <button class="logout-btn" onclick="logout()">
+                    <span class="material-icons">exit_to_app</span>
+                    <span>Çıkış Yap</span>
+                </button>
+            </div>
         </nav>
         
         <main class="dashboard-main">
@@ -260,61 +314,14 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="appointments-section">
-                <h3>Gelen Randevu Talepleri</h3>
-                <table id="appointmentsTable" class="appointments-table">
-                    <thead>
-                        <tr>
-                            <th>Müşteri Adı</th>
-                            <th>Tarih</th>
-                            <th>Saat</th>
-                            <th>Durum</th>
-                            <th>İşlem</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td colspan="5">Yükleniyor...</td></tr>
-                    </tbody>
-                </table>
-            </div>
         </main>
     </div>
     <script>
-    // Randevuları çek ve tabloya ekle
-    async function fetchAppointments() {
-        const tableBody = document.querySelector('#appointmentsTable tbody');
-        tableBody.innerHTML = '<tr><td colspan="5">Yükleniyor...</td></tr>';
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('/api/business/appointments', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error('Randevular alınamadı');
-            const appointments = await response.json();
-            if (appointments.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5">Henüz randevu talebi yok.</td></tr>';
-                return;
-            }
-            tableBody.innerHTML = '';
-            appointments.forEach(app => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${app.customerName}</td>
-                    <td>${app.date}</td>
-                    <td>${app.time}</td>
-                    <td>${app.status}</td>
-                    <td>
-                        ${app.status === 'Beklemede' ? `
-                        <button onclick="approveAppointment('${app._id}')">Onayla</button>
-                        <button onclick="rejectAppointment('${app._id}')">Reddet</button>
-                        ` : '-'}
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        } catch (err) {
-            tableBody.innerHTML = `<tr><td colspan="5">Hata: ${err.message}</td></tr>`;
+    // Çıkış yapma fonksiyonu
+    function logout() {
+        if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+            localStorage.removeItem('token'); // Token'ı sil
+            window.location.href = '/'; // Ana sayfaya yönlendir
         }
     }
 
@@ -334,12 +341,8 @@
             if (resourceId) {
                 // Eğer kaynak bazlı görünümden onaylandıysa, o kaynağın randevularını yenile
                 fetchResourceAppointments(resourceId);
-                // Tüm randevu listesini ve kaynak kartlarını da güncelle
-                fetchAppointments();
+                // Kaynak kartlarını da güncelle
                 fetchResources();
-            } else {
-                // Genel randevu listesinden onaylandıysa, sadece listeyi güncelle
-                fetchAppointments();
             }
         } else {
             alert('Onaylama işlemi başarısız!');
@@ -362,12 +365,8 @@
             if (resourceId) {
                 // Eğer kaynak bazlı görünümden reddedildiyse, o kaynağın randevularını yenile
                 fetchResourceAppointments(resourceId);
-                // Tüm randevu listesini ve kaynak kartlarını da güncelle
-                fetchAppointments();
+                // Kaynak kartlarını da güncelle
                 fetchResources();
-            } else {
-                // Genel randevu listesinden reddedildiyse, sadece listeyi güncelle
-                fetchAppointments();
             }
         } else {
             alert('Reddetme işlemi başarısız!');
@@ -468,6 +467,9 @@
                         <span class="material-icons">${resource.status === 'active' ? 'check_circle' : 'cancel'}</span>
                         <span>${resource.status === 'active' ? 'Aktif' : 'Pasif'}</span>
                     </div>
+                    <button class="toggle-status-btn" onclick="toggleResourceStatus(event, '${resource.id}', '${resource.status}')">
+                        ${resource.status === 'active' ? 'Pasif Yap' : 'Aktif Yap'}
+                    </button>
                 `;
                 
                 // Kaynağa tıklandığında randevu listesi göster
@@ -610,9 +612,39 @@
     
     // Sayfa yüklendiğinde randevuları ve kaynakları yükle
     document.addEventListener('DOMContentLoaded', function() {
-        fetchAppointments();
         fetchResources();
     });
+    
+    // Kaynak durumunu değiştirme fonksiyonu
+    async function toggleResourceStatus(event, resourceId, currentStatus) {
+        // Tıklama olayının üst karta (resource-card) yayılmasını engelle
+        event.stopPropagation();
+        
+        const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+        
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`/api/business/resources/${resourceId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Durum değiştirilemedi');
+            }
+            
+            // Durumu değiştirdikten sonra kaynakları yeniden yükle
+            fetchResources();
+            
+        } catch (error) {
+            console.error('Kaynak durumu değiştirilirken hata:', error);
+            alert(`Hata: ${error.message}`);
+        }
+    }
     </script>
 </body>
 </html> 
