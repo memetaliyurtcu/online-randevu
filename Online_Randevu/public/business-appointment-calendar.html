@@ -366,11 +366,8 @@
             
             // Eğer çalışma günü ise randevu slotlarını ekle
             if (daySchedule && daySchedule.is_working) {
-                const startTime = new Date(`1970-01-01T${daySchedule.start_time}`);
-                const endTime = new Date(`1970-01-01T${daySchedule.end_time}`);
-                
                 // Her saat için randevu slotu oluştur
-                for (let hour = startTime.getHours(); hour < endTime.getHours(); hour++) {
+                for (let hour = 0; hour < 24; hour++) {
                     const slotTime = new Date(date);
                     slotTime.setHours(hour, 0, 0, 0);
                     

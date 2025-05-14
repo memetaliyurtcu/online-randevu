@@ -275,6 +275,101 @@
         .logout-btn:hover {
             background-color: #c0392b;
         }
+        
+        /* Müşteri adı ve telefon numarası için stil */
+        .customer-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            position: relative;
+            cursor: pointer;
+            text-decoration: underline dotted;
+        }
+        
+        .customer-name:hover::after {
+            content: attr(data-phone);
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: #333;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 100;
+        }
+        
+        /* Randevu durumu tik işareti */
+        .attendance-indicator {
+            margin-left: 8px;
+            vertical-align: middle;
+            color: #27ae60;
+        }
+        
+        .attendance-indicator.not-attended {
+            color: #e74c3c;
+        }
+        
+        .resource-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px 0;
+        }
+        
+        /* Yeni müşteri bilgileri stilleri */
+        .customer-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .customer-name {
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 1px dotted #666;
+            margin-right: 10px;
+        }
+        
+        .customer-name:hover {
+            color: #1a73e8;
+        }
+        
+        .attendance-indicator {
+            font-size: 18px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        .attendance-indicator.not-attended {
+            color: #d32f2f;
+        }
+        
+        /* Durum stilleri */
+        .status-waiting {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        
+        .status-approved {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-noshow {
+            background-color: #ffebee;
+            color: #b71c1c;
+        }
+        
+        .status-rejected {
+            background-color: #eeeeee;
+            color: #757575;
+        }
     </style>
 </head>
 <body class="dashboard-page">
@@ -519,7 +614,10 @@
             
             const appointments = await response.json();
             
-            if (appointments.length === 0) {
+            // Reddedilmemiş randevuları filtrele
+            const filteredAppointments = appointments.filter(app => app.status !== 'Reddedildi');
+            
+            if (filteredAppointments.length === 0) {
                 appointmentsList.innerHTML = '<p class="no-appointments-message">Bu kaynağa ait randevu bulunmamaktadır.</p>';
                 return;
             }
@@ -527,7 +625,7 @@
             appointmentsList.innerHTML = '';
             
             // Randevuları listele
-            appointments.forEach(app => {
+            filteredAppointments.forEach(app => {
                 const appointmentItem = document.createElement('div');
                 appointmentItem.className = 'appointment-item';
                 
@@ -546,6 +644,7 @@
                 // Durum sınıfı
                 let statusClass = '';
                 let statusText = '';
+                let attendanceIcon = '';
                 
                 switch(app.status) {
                     case 'Beklemede':
@@ -556,8 +655,18 @@
                         statusClass = 'status-approved';
                         statusText = 'Onaylandı';
                         break;
+                    case 'Tamamlandı':
+                        statusClass = 'status-completed';
+                        statusText = 'Tamamlandı';
+                        attendanceIcon = '<span class="material-icons attendance-indicator" title="Randevuya geldi">check_circle</span>';
+                        break;
+                    case 'Gelmedi':
+                        statusClass = 'status-noshow';
+                        statusText = 'Gelmedi';
+                        attendanceIcon = '<span class="material-icons attendance-indicator not-attended" title="Randevuya gelmedi">cancel</span>';
+                        break;
                     case 'Reddedildi':
-                        statusClass = 'status-cancelled';
+                        statusClass = 'status-rejected';
                         statusText = 'Reddedildi';
                         break;
                     default:
@@ -565,9 +674,14 @@
                         statusText = app.status;
                 }
                 
+                const customerPhone = app.customer_phone || 'Telefon bilgisi yok';
+                
                 appointmentItem.innerHTML = `
                     <div class="appointment-details">
-                        <div class="appointment-customer">${app.customerName || 'Müşteri'}</div>
+                        <div class="customer-info">
+                            <div class="customer-name" data-phone="${customerPhone}" title="Telefon: ${customerPhone}">${app.customer_name || 'Randevu talep eden'}</div>
+                            ${attendanceIcon || ''}
+                        </div>
                         <div class="appointment-time">
                             <span class="material-icons">event</span>
                             ${formattedDate} - ${formattedTime}
@@ -600,13 +714,102 @@
                     actionsDiv.appendChild(approveBtn);
                     actionsDiv.appendChild(rejectBtn);
                     appointmentItem.appendChild(actionsDiv);
+                } else if (app.status === 'Onaylandı') {
+                    // Onaylanmış randevular için "geldi/gelmedi" işaretleme butonları
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'appointment-actions';
+                    
+                    const attendedBtn = document.createElement('button');
+                    attendedBtn.className = 'action-btn approve-btn';
+                    attendedBtn.innerHTML = '<span class="material-icons">check_circle</span> Geldi';
+                    attendedBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        markAttendance(app._id || app.id, 'attended', resourceId);
+                    };
+                    
+                    const notAttendedBtn = document.createElement('button');
+                    notAttendedBtn.className = 'action-btn reject-btn';
+                    notAttendedBtn.innerHTML = '<span class="material-icons">cancel</span> Gelmedi';
+                    notAttendedBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        markAttendance(app._id || app.id, 'not_attended', resourceId);
+                    };
+                    
+                    actionsDiv.appendChild(attendedBtn);
+                    actionsDiv.appendChild(notAttendedBtn);
+                    appointmentItem.appendChild(actionsDiv);
                 }
                 
                 appointmentsList.appendChild(appointmentItem);
             });
+            
+            // Telefon numarası gösterme için olay dinleyici ekle
+            document.querySelectorAll('.customer-name').forEach(el => {
+                el.addEventListener('click', function() {
+                    alert('Telefon: ' + this.getAttribute('data-phone'));
+                });
+            });
+            
         } catch (error) {
             console.error('Randevular yüklenirken hata:', error);
             appointmentsList.innerHTML = `<div class="loading-placeholder">Hata: ${error.message}</div>`;
+        }
+    }
+    
+    // Randevu geldi/gelmedi işaretleme fonksiyonu
+    async function markAttendance(id, status, resourceId) {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Oturum süreniz dolmuş. Lütfen yeniden giriş yapın.');
+                window.location.href = '/login.html';
+                return;
+            }
+            
+            // Kullanıcıya işlem durumunu bildir
+            alert('Randevu durumu güncelleniyor, lütfen bekleyin...');
+            
+            // Doğru API endpoint'lerini kullan
+            let endpoint = '';
+            if (status === 'attended') {
+                endpoint = '/api/appointments/mark-attended';  // Geldi olarak işaretleme
+            } else {
+                endpoint = '/api/appointments/mark-not-attended';   // Gelmedi olarak işaretleme
+            }
+            
+            console.log(`İşaretleme isteği gönderiliyor: ${endpoint}, ID: ${id}`);
+            
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                alert(status === 'attended' ? 'Müşteri geldi olarak işaretlendi' : 'Müşteri gelmedi olarak işaretlendi');
+                // Randevuları yenile
+                fetchResourceAppointments(resourceId);
+            } else {
+                console.error('API Hatası:', data);
+                
+                // Token hatası durumunda yeniden giriş yapma
+                if (response.status === 401 || response.status === 403) {
+                    alert(`Oturum hatası: ${data.error || 'Oturum süreniz dolmuş.'}. Lütfen yeniden giriş yapın.`);
+                    localStorage.removeItem('token');  // Geçersiz token'ı temizle
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                alert(`İşlem başarısız oldu: ${data.error || 'Bilinmeyen hata'}`);
+            }
+        } catch (error) {
+            console.error('İşaretleme hatası:', error);
+            alert(`Bağlantı hatası: ${error.message}`);
         }
     }
     

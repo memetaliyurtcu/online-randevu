@@ -229,7 +229,7 @@
             margin: 50px auto;
             width: 80%;
             max-width: 800px;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             position: relative;
@@ -263,10 +263,11 @@
         }
         
         .business-cover-photo {
-            height: 200px;
+            height: 250px;
             background-size: cover;
             background-position: center;
             position: relative;
+            overflow: hidden;
         }
         
         .business-header-info {
@@ -274,43 +275,50 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 30px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
             color: white;
         }
         
         .modal-business-name {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
         
         .modal-business-type, .modal-business-location {
             display: flex;
             align-items: center;
-            margin-bottom: 3px;
+            margin-bottom: 8px;
         }
         
         .modal-business-type .material-icons, .modal-business-location .material-icons {
-            font-size: 16px;
-            margin-right: 5px;
+            font-size: 18px;
+            margin-right: 8px;
         }
         
         .modal-body {
-            padding: 20px;
+            padding: 25px;
         }
         
         .modal-tabs {
             display: flex;
             border-bottom: 1px solid #eee;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .tab {
-            padding: 10px 20px;
+            padding: 12px 24px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
-            margin-right: 10px;
+            margin-right: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .tab:hover {
+            color: #4285f4;
         }
         
         .tab.active {
@@ -324,6 +332,42 @@
         
         .tab-content.hidden {
             display: none;
+        }
+
+        /* İşletme bilgileri için stil */
+        .info-section {
+            margin-bottom: 30px;
+        }
+        
+        .info-section h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .info-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .info-item .material-icons {
+            margin-right: 10px;
+            color: #666;
+            font-size: 20px;
+        }
+        
+        .info-item p {
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .info-item strong {
+            display: inline-block;
+            min-width: 120px;
+            color: #555;
         }
         
         /* Randevu formu stilleri */
@@ -418,17 +462,31 @@
         }
         
         /* Galeri grid stil */
+        .gallery-section {
+            margin-top: 30px;
+        }
+        
+        .gallery-section h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
         }
         
         .gallery-item {
-            height: 100px;
-            border-radius: 4px;
+            height: 120px;
+            border-radius: 8px;
             overflow: hidden;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
         
         .gallery-item img {
@@ -436,6 +494,10 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
         .gallery-item:hover img {
@@ -459,9 +521,20 @@
                 </div>
             </div>
             <div class="nav-right">
-                <div class="nav-btn">
-                    <span class="material-icons">hub</span>
-                    Kategoriler
+                <div class="location-filters">
+                    <select id="citySelect" class="location-select">
+                        <option value="">Tüm İller</option>
+                        <option value="İstanbul">İstanbul</option>
+                        <option value="Ankara">Ankara</option>
+                        <option value="İzmir">İzmir</option>
+                        <option value="Bursa">Bursa</option>
+                        <option value="Antalya">Antalya</option>
+                        <!-- Diğer iller buraya eklenebilir -->
+                    </select>
+                    <select id="districtSelect" class="location-select">
+                        <option value="">Tüm İlçeler</option>
+                        <!-- İlçeler JavaScript ile dinamik olarak eklenecek -->
+                    </select>
                 </div>
             </div>
         </nav>
@@ -505,7 +578,7 @@
             </div>
         </div>
         <!-- Kategori Kartları Bitiş -->
-
+        
         <!-- İşletmeler Grid Başlangıç -->
         <div class="business-section" style="margin-top:32px;">
             <h3 style="margin-bottom:18px;">İşletmeler</h3>
@@ -561,9 +634,15 @@
                     <div class="info-section">
                         <h3>İşletme Bilgileri</h3>
                         <div class="info-item">
+                            <span class="material-icons">phone</span>
                             <p><strong>Telefon:</strong> <span id="modalBusinessPhone"></span></p>
                         </div>
                         <div class="info-item">
+                            <span class="material-icons">location_on</span>
+                            <p><strong>Adres:</strong> <span id="modalBusinessFullAddress"></span></p>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">payments</span>
                             <p><strong>Rezervasyon Ücreti:</strong> <span id="modalBusinessReservationFee"></span></p>
                         </div>
                     </div>
@@ -652,176 +731,226 @@
             }
         });
 
-        // Sayfa yüklendiğinde token kontrolü
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = '/login.html';
-            }
-
-            // Tüm işletmeleri bellekte tutacağız
-            let allBusinesses = [];
-            let selectedCategory = 'all';
-
-            // Kategori kartlarına tıklama eventi
+        // Global değişkenler
+        let allBusinesses = [];
+        let selectedCategory = 'all'; // Varsayılan olarak 'all' kategorisi seçili
+        
+        // Kategori seçimi için event listener'ları ayarla
+        function setupCategoryListeners() {
             document.querySelectorAll('.category-card').forEach(card => {
                 card.addEventListener('click', function() {
+                    const categoryType = this.getAttribute('data-type');
+                    console.log('Kategori seçildi:', categoryType);
+                    
+                    // Aktif sınıfını diğer kategorilerden kaldır
                     document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+                    
+                    // Seçilen kategoriye aktif sınıfını ekle
                     this.classList.add('active');
-                    selectedCategory = this.getAttribute('data-type');
+                    
+                    // Global değişkeni güncelle
+                    selectedCategory = categoryType;
+                    
+                    // İşletmeleri filtrele
                     filterAndDisplayBusinesses();
                 });
             });
+        }
 
-            // İşletmeleri yükle
-            async function loadBusinesses() {
-                try {
-                    const response = await fetch('/api/businesses');
-                    const data = await response.json();
-                    allBusinesses = data.businesses || [];
-                    console.log('API işletme verisi:', allBusinesses);
+        // Sayfa yüklendiğinde çalışacak ana fonksiyon
+        async function init() {
+            try {
+                // URL'den parametreleri alıp kontrol et
+                const urlParams = new URLSearchParams(window.location.search);
+                const businessIdParam = urlParams.get('businessId');
+                
+                // Eğer URL'de businessId parametresi varsa, doğrudan o işletmenin modalını aç
+                if (businessIdParam) {
+                    console.log('URL\'de businessId bulundu:', businessIdParam);
+                    // Parametrelerle direkt randevu oluşturma sayfasındayız, 
+                    // burada normal dashboard akışını atla
+                    try {
+                        // İşletme bilgilerini getir
+                        const response = await fetch(`/api/businesses/${businessIdParam}`);
+                        if (!response.ok) {
+                            throw new Error('İşletme bilgileri getirilemedi');
+                        }
+                        
+                        const data = await response.json();
+                        if (data && data.business) {
+                            console.log('İşletme bilgileri alındı:', data.business);
+                            openBusinessModal(data.business);
+                            
+                            // Diğer parametreleri doldur
+                            const appointmentDate = urlParams.get('appointmentDate');
+                            if (appointmentDate) {
+                                const dateInput = document.getElementById('appointmentDate');
+                                if (dateInput) dateInput.value = appointmentDate;
+                            }
+                            
+                            const appointmentNote = urlParams.get('appointmentNote');
+                            if (appointmentNote) {
+                                const noteInput = document.getElementById('appointmentNote');
+                                if (noteInput) noteInput.value = appointmentNote;
+                            }
+                            
+                            // Randevu sekmesini göster
+                            showTab('appointment');
+                        }
+                    } catch (err) {
+                        console.error('URL parametre işleme hatası:', err);
+                    }
                     
-                    // API yanıtında her işletme kaydı için business_type alanını console'a yazdır
-                    allBusinesses.forEach(b => {
-                        console.log(`İşletme: ${b.business_name}, Tür: ${b.business_type}`);
-                    });
-                    
-                    filterAndDisplayBusinesses();
-                } catch (error) {
-                    console.error('İşletmeler yüklenemedi:', error);
+                    return; // Normal dashboard akışına devam etme
                 }
-            }
-
-            // Kategori eşleştirme tablosu
-            const categoryMap = {
-                'dis hekimi': ['dis hekimi', 'diş hekimi', 'dishekim', 'dişhekim', 'dişhekimi', 'dis_hekimi', 'diş_hekimi'],
-                'kuafor': ['kuafor', 'kuaför', 'coiffeur', 'berber'],
-                'guzellik salonu': ['guzellik salonu', 'güzellik salonu', 'guzelliksalonu', 'güzelliksalonu', 'guzellik_salonu', 'güzellik_salonu'],
-                'spa salonu': ['spa salonu', 'spasalonu', 'spa', 'spa_salonu'],
-                'halısaha': ['halısaha', 'halı saha', 'halisaha', 'futbol', 'saha', 'hali_saha', 'halı_saha'],
-                'restoran': ['restoran', 'restaurant'],
-                'cafe': ['cafe', 'kafe'],
-                'all': ['all']
-            };
-
-            // Filtreleme fonksiyonu
-            function filterAndDisplayBusinesses() {
-                let filtered = allBusinesses;
-                const searchText = document.getElementById('searchInput').value.toLowerCase();
-                if (selectedCategory !== 'all') {
-                    filtered = filtered.filter(b => {
-                        const type = (b.business_type || '').toLowerCase().trim();
-                        console.log(`Filtreleme - İşletme: ${b.business_name}, Tür: ${type}, Seçilen kategori: ${selectedCategory}`);
-                        const validTypes = categoryMap[selectedCategory] || [];
-                        return validTypes.includes(type);
-                    });
-                }
-                if (searchText) {
-                    filtered = filtered.filter(b =>
-                        b.business_name.toLowerCase().includes(searchText) ||
-                        (b.city && b.city.toLowerCase().includes(searchText)) ||
-                        (b.district && b.district.toLowerCase().includes(searchText))
-                    );
-                }
-                displayBusinesses(filtered);
-            }
-
-            // Arama kutusu ile filtreleme
-            document.getElementById('searchInput').addEventListener('input', filterAndDisplayBusinesses);
-
-            // İşletmeleri ekrana yaz
-            function displayBusinesses(businesses) {
-                const businessList = document.getElementById('businessList');
-                const noResults = document.getElementById('noResults');
-                businessList.innerHTML = '';
-                if (!businesses.length) {
-                    noResults.style.display = 'block';
+                
+                // Token kontrolü
+                const token = localStorage.getItem('token');
+                console.log('Token kontrolü: ', token ? 'Token var' : 'Token yok');
+                
+                if (!token) {
+                    alert('Oturum açık değil. Lütfen giriş yapın.');
+                    window.location.href = '/login.html';
                     return;
                 }
-                noResults.style.display = 'none';
-                businesses.forEach(business => {
-                    const card = document.createElement('div');
-                    card.className = 'business-card';
-                    card.onclick = () => openBusinessModal(business);
-
-                    card.innerHTML = `
-                        <img class="business-image" src="${business.cover_photo || 'https://via.placeholder.com/300x150?text=İşletme'}" alt="${business.business_name}">
-                        <div class="business-info">
-                            <div class="business-name">${business.business_name}</div>
-                            <div class="business-type"><span class="material-icons">category</span> ${business.business_type || ''}</div>
-                            <div class="business-location"><span class="material-icons">location_on</span> ${business.city || ''} ${business.district || ''}</div>
-                        </div>
-                    `;
-                    businessList.appendChild(card);
-                });
+                
+                // Token'ı decode et ve içeriğini göster (sadece debug için)
+                try {
+                    const tokenParts = token.split('.');
+                    if (tokenParts.length === 3) {
+                        const payload = JSON.parse(atob(tokenParts[1]));
+                        console.log('Token içeriği:', payload);
+                        console.log('Token süresi:', new Date(payload.exp * 1000));
+                        console.log('Şu anki zaman:', new Date());
+                        
+                        // Token süresi dolmuş mu kontrol et
+                        if (payload.exp * 1000 < Date.now()) {
+                            console.log('Token süresi dolmuş!');
+                            alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            window.location.href = '/login.html';
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Token decode hatası:', e);
+                }
+                
+                // Kategori seçimi için dinleyicileri ayarla
+                setupCategoryListeners();
+                
+                await loadBusinesses();
+                setupFilterListeners();
+                setupModalListeners();
+                setupAppointmentForm();
+            } catch (error) {
+                console.error('Başlatma hatası:', error);
             }
-
-            // Sayfa ilk açıldığında işletmeleri yükle
-            loadBusinesses();
-
-            // Modal, randevu ve diğer fonksiyonlar
-            setupFilterListeners();
-            setupModalListeners();
-            setupAppointmentForm();
-        });
-
-        // Profil menüsünü aç/kapat
-        function toggleProfileMenu(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('profileMenu');
-            menu.classList.toggle('active');
-        }
-
-        // Sayfa tıklamasında menüyü kapat
-        document.addEventListener('click', (event) => {
-            const menu = document.getElementById('profileMenu');
-            if (menu.classList.contains('active')) {
-                menu.classList.remove('active');
-            }
-        });
-
-        // Çıkış yapma fonksiyonu
-        function logout(event) {
-            event.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('userRole');
-            window.location.href = '/login.html';
         }
         
-        // İşletmeleri görüntüleme fonksiyonu
+        // Sayfa yüklendiğinde init fonksiyonunu çağır
+        document.addEventListener('DOMContentLoaded', init);
+
+        // İşletmeleri yükle
+        async function loadBusinesses() {
+            try {
+                const response = await fetch('/api/businesses');
+                const data = await response.json();
+                allBusinesses = data.businesses || [];
+                console.log('API işletme verisi:', allBusinesses);
+                
+                // API yanıtında her işletme kaydı için business_type alanını console'a yazdır
+                allBusinesses.forEach(b => {
+                    console.log(`İşletme: ${b.business_name}, Tür: ${b.business_type}`);
+                });
+                
+                filterAndDisplayBusinesses();
+            } catch (error) {
+                console.error('İşletmeler yüklenemedi:', error);
+            }
+        }
+
+        // Kategori eşleştirme tablosu
+        const categoryMap = {
+            'dis hekimi': ['dis hekimi', 'diş hekimi', 'dishekim', 'dişhekim', 'dişhekimi', 'dis_hekimi', 'diş_hekimi'],
+            'kuafor': ['kuafor', 'kuaför', 'coiffeur', 'berber'],
+            'guzellik salonu': ['guzellik salonu', 'güzellik salonu', 'guzelliksalonu', 'güzelliksalonu', 'guzellik_salonu', 'güzellik_salonu'],
+            'spa salonu': ['spa salonu', 'spasalonu', 'spa', 'spa_salonu'],
+            'halısaha': ['halısaha', 'halı saha', 'halisaha', 'futbol', 'saha', 'hali_saha', 'halı_saha'],
+            'restoran': ['restoran', 'restaurant'],
+            'cafe': ['cafe', 'kafe'],
+            'all': ['all']
+        };
+
+        // Filtreleme fonksiyonu
+        function filterAndDisplayBusinesses() {
+            let filtered = allBusinesses;
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const selectedCity = document.getElementById('citySelect').value;
+            const selectedDistrict = document.getElementById('districtSelect').value;
+            
+            if (selectedCategory !== 'all') {
+                filtered = filtered.filter(b => {
+                    const type = (b.business_type || '').toLowerCase().trim();
+                    console.log(`Filtreleme - İşletme: ${b.business_name}, Tür: ${type}, Seçilen kategori: ${selectedCategory}`);
+                    const validTypes = categoryMap[selectedCategory] || [];
+                    return validTypes.includes(type);
+                });
+            }
+            
+            if (selectedCity) {
+                filtered = filtered.filter(b => b.city === selectedCity);
+            }
+            
+            if (selectedDistrict) {
+                filtered = filtered.filter(b => b.district === selectedDistrict);
+            }
+            
+            if (searchText) {
+                filtered = filtered.filter(b =>
+                    b.business_name.toLowerCase().includes(searchText) ||
+                    (b.city && b.city.toLowerCase().includes(searchText)) ||
+                    (b.district && b.district.toLowerCase().includes(searchText))
+                );
+            }
+            
+            displayBusinesses(filtered);
+        }
+
+        // Arama kutusu ile filtreleme
+        document.getElementById('searchInput').addEventListener('input', filterAndDisplayBusinesses);
+
+        // İşletmeleri ekrana yaz
         function displayBusinesses(businesses) {
             const businessList = document.getElementById('businessList');
+            const noResults = document.getElementById('noResults');
             businessList.innerHTML = '';
-            
+            if (!businesses.length) {
+                noResults.style.display = 'block';
+                return;
+            }
+            noResults.style.display = 'none';
             businesses.forEach(business => {
                 const card = document.createElement('div');
                 card.className = 'business-card';
                 card.onclick = () => openBusinessModal(business);
+
+                // İşletme resmi için hata kontrolü ekleyelim
+                const imageUrl = business.image_url || 'https://via.placeholder.com/300x150?text=İşletme+Resmi';
                 
                 card.innerHTML = `
-                    <img src="${business.image_url || 'https://via.placeholder.com/300x150?text=İşletme+Fotoğrafı'}" alt="${business.business_name}" class="business-image">
+                    <img class="business-image" src="${imageUrl}" alt="${business.business_name}" onerror="this.src='https://via.placeholder.com/300x150?text=Resim+Bulunamadı'">
                     <div class="business-info">
                         <div class="business-name">${business.business_name}</div>
-                        <div class="business-type">
-                            <span class="material-icons">store</span>
-                            <span>${formatBusinessType(business.business_type)}</span>
-                        </div>
-                        <div class="business-location">
-                            <span class="material-icons">location_on</span>
-                            <span>${business.city}, ${business.district}</span>
-                        </div>
-                        <div class="business-rating">
-                            <span class="material-icons">star</span>
-                            <span class="rating-value">${business.rating || '0.0'}</span>
-                            <span class="review-count">(${business.review_count || 0} değerlendirme)</span>
-                        </div>
+                        <div class="business-type"><span class="material-icons">category</span> ${business.business_type || ''}</div>
+                        <div class="business-location"><span class="material-icons">location_on</span> ${business.city || ''} ${business.district || ''}</div>
                     </div>
                 `;
-                
                 businessList.appendChild(card);
             });
         }
-        
+
         // İşletme türünü formatla
         function formatBusinessType(type) {
             const types = {
@@ -840,11 +969,24 @@
         function openBusinessModal(business) {
             // Modal verilerini doldur
             document.getElementById('modalBusinessName').textContent = business.business_name;
-            document.getElementById('modalBusinessImage').src = business.image_url || 'https://via.placeholder.com/400x200?text=İşletme+Fotoğrafı';
+            
+            // İşletme resmi için hata kontrolü ekleyelim
+            const imageUrl = business.image_url || 'https://via.placeholder.com/800x400?text=İşletme+Fotoğrafı';
+            const modalImage = document.getElementById('modalBusinessImage');
+            modalImage.src = imageUrl;
+            modalImage.onerror = function() {
+                this.src = 'https://via.placeholder.com/800x400?text=Resim+Bulunamadı';
+            };
+            
             document.getElementById('modalBusinessType').textContent = formatBusinessType(business.business_type);
-            document.getElementById('modalBusinessAddress').textContent = `${business.city}, ${business.district} - ${business.address}`;
-            document.getElementById('modalBusinessPhone').textContent = business.business_phone;
-            document.getElementById('modalBusinessReservationFee').textContent = `${business.reservation_price} TL`;
+            document.getElementById('modalBusinessAddress').textContent = `${business.city || ''}, ${business.district || ''}`;
+            
+            // Tam adresi bilgiler sekmesine ekle
+            const fullAddress = `${business.address || ''}, ${business.district || ''}, ${business.city || ''}`;
+            document.getElementById('modalBusinessFullAddress').textContent = fullAddress;
+            
+            document.getElementById('modalBusinessPhone').textContent = business.business_phone || '';
+            document.getElementById('modalBusinessReservationFee').textContent = `${business.reservation_price || 0} TL`;
             document.getElementById('modalBusinessRating').textContent = business.rating || '0.0';
             document.getElementById('modalBusinessReviewCount').textContent = `(${business.review_count || 0} değerlendirme)`;
             
@@ -872,8 +1014,8 @@
                 };
             });
             
-            // Varsayılan olarak 'Randevu Al' sekmesini göster
-            showTab('appointment');
+            // Varsayılan olarak 'Bilgiler' sekmesini göster
+            showTab('info');
             
             // Modalı göster
             document.getElementById('businessDetailModal').style.display = 'block';
@@ -890,7 +1032,19 @@
             }
             
             try {
-                const images = JSON.parse(business.gallery_images);
+                let images = [];
+                
+                // gallery_images bir string ise JSON olarak parse et, değilse doğrudan kullan
+                if (typeof business.gallery_images === 'string') {
+                    try {
+                        images = JSON.parse(business.gallery_images);
+                    } catch (e) {
+                        console.error('Galeri JSON parse hatası:', e);
+                        images = [];
+                    }
+                } else if (Array.isArray(business.gallery_images)) {
+                    images = business.gallery_images;
+                }
                 
                 if (images.length === 0) {
                     galleryContainer.innerHTML = '<p>Galeride gösterilecek resim bulunamadı.</p>';
@@ -904,6 +1058,9 @@
                     const img = document.createElement('img');
                     img.src = image;
                     img.alt = business.business_name;
+                    img.onerror = function() {
+                        this.src = 'https://via.placeholder.com/300x200?text=Resim+Bulunamadı';
+                    };
                     
                     galleryItem.appendChild(img);
                     galleryContainer.appendChild(galleryItem);
@@ -923,10 +1080,19 @@
             resourcesContainer.innerHTML = '<p>Kaynaklar yükleniyor...</p>';
             
             try {
+                console.log(`Kaynaklar yükleniyor, işletme ID: ${businessId}`);
+                
                 const response = await fetch(`/api/business/resources/public?businessId=${businessId}`);
-                if (!response.ok) throw new Error('Kaynaklar getirilirken bir hata oluştu');
+                console.log('Kaynak API yanıtı:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    console.error('Kaynaklar getirilirken hata:', response.status, response.statusText);
+                    throw new Error('Kaynaklar getirilirken bir hata oluştu');
+                }
                 
                 const data = await response.json();
+                console.log('Kaynak API verisi:', data);
+                
                 resourcesContainer.innerHTML = '';
                 
                 // Kaynak türü etiketleri
@@ -941,18 +1107,25 @@
                 
                 // İşletme türünü alıp etiket ve ikonları belirle
                 const businessType = data.businessType || 'default';
+                console.log('İşletme türü:', businessType);
+                
                 const typeLabel = resourceTypeLabels[businessType] || 'Kaynak';
                 resourceLabel.textContent = `${typeLabel} Seçin`;
                 
-                if (data.resources.length === 0) {
+                if (!data.resources || data.resources.length === 0) {
+                    console.log('Hiç kaynak bulunamadı');
                     noResourcesMessage.style.display = 'block';
                     return;
                 }
                 
                 noResourcesMessage.style.display = 'none';
                 
+                console.log(`${data.resources.length} adet kaynak yüklendi`);
+                
                 // Kaynakları listele
                 data.resources.forEach(resource => {
+                    console.log('Kaynak yükleniyor:', resource);
+                    
                     const resourceItem = document.createElement('div');
                     resourceItem.className = 'resource-item';
                     resourceItem.setAttribute('data-resource-id', resource.id);
@@ -975,6 +1148,8 @@
                     `;
                     
                     resourceItem.addEventListener('click', function() {
+                        console.log(`Kaynak seçildi: ${resource.name}, ID: ${resource.id}`);
+                        
                         document.querySelectorAll('.resource-item').forEach(item => {
                             item.classList.remove('selected');
                         });
@@ -991,7 +1166,7 @@
                 });
             } catch (error) {
                 console.error('Kaynaklar yüklenirken hata:', error);
-                resourcesContainer.innerHTML = '<p>Kaynaklar yüklenirken bir hata oluştu.</p>';
+                resourcesContainer.innerHTML = '<p>Kaynaklar yüklenirken bir hata oluştu: ' + error.message + '</p>';
             }
         }
         
@@ -1052,8 +1227,112 @@
             timeSlotsContainer.innerHTML = '<p>Saatler yükleniyor...</p>';
             
             try {
-                // API çağrısı yapmak yerine, sabit saatleri kullan
-                const availableTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+                console.log(`İşletme ID ${businessId} için çalışma saatleri alınıyor...`);
+                
+                // API URL'sini oluştur ve konsola yazdır
+                const apiUrl = `/api/business/schedule/public?businessId=${businessId}`;
+                console.log('API URL:', apiUrl);
+                
+                // İşletmenin çalışma saatlerini al
+                const scheduleResponse = await fetch(apiUrl);
+                
+                console.log('API yanıt durumu:', scheduleResponse.status, scheduleResponse.statusText);
+                
+                if (!scheduleResponse.ok) {
+                    console.error('API yanıtı hatalı:', scheduleResponse.status, scheduleResponse.statusText);
+                    throw new Error(`Çalışma saatleri alınamadı: ${scheduleResponse.status} ${scheduleResponse.statusText}`);
+                }
+                
+                // Yanıt verisini JSON olarak çözümle ve durumunu konsola yazdır
+                let scheduleData;
+                try {
+                    scheduleData = await scheduleResponse.json();
+                    console.log('Çalışma saatleri verisi:', scheduleData);
+                } catch (jsonError) {
+                    console.error('JSON çözümleme hatası:', jsonError);
+                    const responseText = await scheduleResponse.text();
+                    console.error('Ham yanıt:', responseText);
+                    throw new Error('Çalışma saatleri verisi geçerli JSON formatında değil');
+                }
+                
+                // Veri bir dizi değilse
+                if (!Array.isArray(scheduleData)) {
+                    console.error('Beklenmeyen veri formatı:', scheduleData);
+                    throw new Error('Çalışma saatleri verisi beklenen formatta değil');
+                }
+                
+                // Seçilen tarihin haftanın günü
+                const selectedDate = new Date(date);
+                const jsDay = selectedDate.getDay(); // JavaScript'te 0: Pazar, 1: Pazartesi...
+                console.log('Seçilen tarih:', date, 'JavaScript gün değeri:', jsDay);
+                
+                // JavaScript'in gün değerini veritabanı formatına dönüştürme
+                // 0:Pazar, 1:Pazartesi, 2:Salı... -> 6:Pazar, 0:Pazartesi, 1:Salı...
+                let adjustedDayOfWeek = jsDay === 0 ? 6 : jsDay - 1;
+                console.log('Veritabanında aranacak gün değeri:', adjustedDayOfWeek);
+                
+                // Tüm schedule verilerini konsola yazdır
+                scheduleData.forEach((dayData, index) => {
+                    console.log(`Gün ${index}: day_of_week=${dayData.day_of_week}, is_working=${dayData.is_working}`);
+                });
+                
+                // Seçilen günün çalışma saatlerini bul
+                const daySchedule = scheduleData.find(schedule => {
+                    const scheduleDay = parseInt(schedule.day_of_week);
+                    console.log(`Karşılaştırma: ${scheduleDay} === ${adjustedDayOfWeek} -> ${scheduleDay === adjustedDayOfWeek}`);
+                    return scheduleDay === adjustedDayOfWeek;
+                });
+                
+                console.log('Bulunan çalışma saati verisi:', daySchedule);
+                
+                // Gün bulunamadı veya işletme o gün çalışmıyor
+                if (!daySchedule) {
+                    console.log('Bu gün için çalışma saati verisi bulunamadı');
+                    timeSlotsContainer.innerHTML = '<p>İşletme seçilen tarihte hizmet vermemektedir.</p>';
+                    return;
+                }
+                
+                // is_working değeri string veya boolean olabilir
+                console.log('is_working değerinin türü:', typeof daySchedule.is_working, 'değeri:', daySchedule.is_working);
+                const isWorking = daySchedule.is_working === true || 
+                                  daySchedule.is_working === 'true' || 
+                                  daySchedule.is_working === 't' ||
+                                  daySchedule.is_working === 1 ||
+                                  daySchedule.is_working === '1';
+                
+                console.log('isWorking değeri:', isWorking);
+                
+                if (!isWorking) {
+                    console.log('İşletme seçilen günde çalışmıyor (is_working değeri:', daySchedule.is_working, ')');
+                    timeSlotsContainer.innerHTML = '<p>İşletme seçilen tarihte hizmet vermemektedir.</p>';
+                    return;
+                }
+                
+                // Başlangıç ve bitiş saatlerini al
+                const startTime = daySchedule.start_time ? daySchedule.start_time.substring(0, 5) : '09:00';
+                const endTime = daySchedule.end_time ? daySchedule.end_time.substring(0, 5) : '17:00';
+                console.log('Çalışma saatleri:', startTime, '-', endTime);
+                
+                // Başlangıç ve bitiş saatlerini saat ve dakika olarak ayır
+                const [startHour, startMinute] = startTime.split(':').map(Number);
+                const [endHour, endMinute] = endTime.split(':').map(Number);
+                
+                // Tüm saat dilimlerini oluştur (1 saat aralıklarla)
+                let availableTimes = [];
+                for (let hour = startHour; hour <= endHour; hour++) {
+                    // Eğer bu saat, bitiş saatinden küçükse ekle
+                    if (hour < endHour || (hour === endHour && 0 <= endMinute)) {
+                        availableTimes.push(`${hour.toString().padStart(2, '0')}:00`);
+                    }
+                }
+                
+                console.log('Oluşturulan saat dilimleri:', availableTimes);
+                
+                if (availableTimes.length === 0) {
+                    console.log('Uygun saat bulunamadı');
+                    timeSlotsContainer.innerHTML = '<p>Uygun saat bulunamadı.</p>';
+                    return;
+                }
                 
                 // Saat seçeneklerini temizle
                 timeSlotsContainer.innerHTML = '';
@@ -1075,61 +1354,243 @@
                 
             } catch (error) {
                 console.error('Saat yükleme hatası:', error);
-                timeSlotsContainer.innerHTML = '<p>Saatler yüklenirken bir hata oluştu. Lütfen tekrar deneyin.</p>';
+                timeSlotsContainer.innerHTML = `<p>Saatler yüklenirken bir hata oluştu: ${error.message}</p>`;
             }
         }
         
         // Filtreleme için listener'ları ayarla
         function setupFilterListeners() {
             const searchInput = document.getElementById('searchInput');
-            const businessTypeFilter = document.getElementById('businessTypeFilter');
             
-            // Arama yapıldığında
-            searchInput.addEventListener('input', function() {
-                applyFilters();
-            });
-            
-            // İşletme türü değiştiğinde
-            businessTypeFilter.addEventListener('change', function() {
-                applyFilters();
-            });
+            // Null kontrolü ekleyelim
+            if (searchInput) {
+                // Arama yapıldığında
+                searchInput.addEventListener('input', function() {
+                    applyFilters();
+                });
+            } else {
+                console.warn('searchInput elementi bulunamadı');
+            }
         }
         
         // Filtreler uygulanarak işletmeleri yükle
         async function applyFilters() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase();
-            const businessType = document.getElementById('businessTypeFilter').value;
+            // Elementleri kontrol edelim ve null kontrolü yapalım
+            const searchInput = document.getElementById('searchInput');
+            const searchText = searchInput ? searchInput.value.toLowerCase() : '';
             
             try {
                 const response = await fetch('/api/businesses');
                 let businesses = await response.json();
                 
-                // İşletme türü filtresi
-                if (businessType !== 'all') {
-                    businesses = businesses.filter(business => business.business_type === businessType);
+                // İşletme türü filtresi için kategori kartından durum al
+                const activeCategory = document.querySelector('.category-card.active');
+                const selectedCategory = activeCategory ? activeCategory.getAttribute('data-type') : 'all';
+                
+                // Kategori filtrelemesi
+                if (selectedCategory !== 'all') {
+                    businesses = businesses.filter(business => {
+                        const type = (business.business_type || '').toLowerCase().trim();
+                        const validTypes = categoryMap[selectedCategory] || [];
+                        return validTypes.includes(type);
+                    });
                 }
                 
                 // Arama filtresi
                 if (searchText) {
                     businesses = businesses.filter(business => 
-                        business.business_name.toLowerCase().includes(searchText) ||
-                        business.city.toLowerCase().includes(searchText) ||
-                        business.district.toLowerCase().includes(searchText)
+                        (business.business_name || '').toLowerCase().includes(searchText) ||
+                        (business.city || '').toLowerCase().includes(searchText) ||
+                        (business.district || '').toLowerCase().includes(searchText)
                     );
                 }
                 
-                if (businesses.length === 0) {
-                    document.getElementById('noResults').style.display = 'block';
-                    document.getElementById('businessList').innerHTML = '';
+                const noResultsElem = document.getElementById('noResults');
+                const businessListElem = document.getElementById('businessList');
+                
+                if (!businesses || businesses.length === 0) {
+                    if (noResultsElem) noResultsElem.style.display = 'block';
+                    if (businessListElem) businessListElem.innerHTML = '';
                 } else {
-                    document.getElementById('noResults').style.display = 'none';
-                    displayBusinesses(businesses);
+                    if (noResultsElem) noResultsElem.style.display = 'none';
+                    if (businessListElem) displayBusinesses(businesses);
                 }
             } catch (error) {
                 console.error('Filtreleme hatası:', error);
             }
         }
         
+        // Randevu formu gönderimi
+        function setupAppointmentForm() {
+            document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
+                try {
+                    e.preventDefault();
+                    console.log('Randevu formu gönderiliyor...');
+                    
+                    const businessId = document.getElementById('appointmentBusinessId').value;
+                    const date = document.getElementById('appointmentDate').value;
+                    const selectedTimeSlot = document.querySelector('.time-slot.selected');
+                    const selectedResource = document.querySelector('.resource-item.selected');
+                    const note = document.getElementById('appointmentNote').value;
+                    
+                    console.log('Form değerleri:', { 
+                        businessId, 
+                        date, 
+                        selectedTimeSlot: selectedTimeSlot ? selectedTimeSlot.getAttribute('data-time') : null,
+                        selectedResource: selectedResource ? selectedResource.getAttribute('data-resource-id') : null,
+                        note 
+                    });
+                    
+                    if (!businessId || !date) {
+                        alert('Lütfen işletme ve tarih seçin');
+                        console.error('İşletme veya tarih eksik');
+                        return;
+                    }
+                    
+                    if (!selectedResource) {
+                        alert('Lütfen bir kaynak seçin (koltuk, masa vb.)');
+                        console.error('Kaynak seçilmemiş');
+                        return;
+                    }
+                    
+                    if (!selectedTimeSlot) {
+                        alert('Lütfen bir saat dilimi seçin');
+                        console.error('Saat dilimi seçilmemiş');
+                        return;
+                    }
+                    
+                    // Kaynak zorunlu değil ancak seçili ise ID'sini al
+                    const resourceId = selectedResource ? selectedResource.getAttribute('data-resource-id') : null;
+                    
+                    const time = selectedTimeSlot.getAttribute('data-time');
+                    
+                    const token = localStorage.getItem('token');
+                    console.log('Token mevcut:', !!token);
+                    
+                    if (!token) {
+                        alert('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    
+                    try {
+                        console.log('API isteği gönderiliyor...');
+                        console.log('Gönderilen veriler:', {
+                            businessId,
+                            date,
+                            time,
+                            resourceId,
+                            note
+                        });
+                        
+                        // BusinessId'yi sayıya çevirelim
+                        const numericBusinessId = parseInt(businessId, 10);
+                        const numericResourceId = resourceId ? parseInt(resourceId, 10) : null;
+                        
+                        console.log('Dönüştürülmüş değerler:', {
+                            businessId: numericBusinessId,
+                            resourceId: numericResourceId
+                        });
+                        
+                        // API URL'sini kontrol et
+                        console.log('API URL:', '/api/appointments');
+                        console.log('Headers:', {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.substring(0, 15)}...`
+                        });
+                        
+                        const response = await fetch('/api/appointments', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                businessId: numericBusinessId,
+                                date,
+                                time,
+                                resourceId: numericResourceId,
+                                note
+                            })
+                        });
+                        
+                        console.log('API yanıtı alındı:', response.status, response.statusText);
+                        
+                        const result = await response.json();
+                        console.log('API yanıt verisi:', result);
+                        
+                        if (response.ok) {
+                            alert('Randevunuz başarıyla oluşturuldu!');
+                            document.getElementById('businessDetailModal').style.display = 'none';
+                            // Sayfayı yenile
+                            window.location.reload();
+                        } else {
+                            alert(`Randevu oluşturulurken bir hata oluştu: ${result.error}`);
+                        }
+                    } catch (error) {
+                        console.error('Randevu oluşturma API hatası:', error);
+                        alert('Bir hata oluştu, lütfen tekrar deneyin.');
+                    }
+                } catch (globalError) {
+                    console.error('Randevu formu global hatası:', globalError);
+                    alert('Beklenmedik bir hata oluştu: ' + globalError.message);
+                }
+            });
+        }
+
+        // İl seçildiğinde ilçeleri güncelle
+        function updateDistricts() {
+            const citySelect = document.getElementById('citySelect');
+            const districtSelect = document.getElementById('districtSelect');
+            const selectedCity = citySelect.value;
+            
+            // İlçe seçimini sıfırla
+            districtSelect.innerHTML = '<option value="">Tüm İlçeler</option>';
+            
+            if (!selectedCity) return;
+            
+            // Seçilen şehre göre ilçeleri filtrele
+            const districts = getDistrictsForCity(selectedCity);
+            
+            // İlçeleri ekle
+            districts.forEach(district => {
+                const option = document.createElement('option');
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+        }
+        
+        // Şehirlere göre ilçeleri döndüren fonksiyon
+        function getDistrictsForCity(city) {
+            const districtMap = {
+                'İstanbul': ['Kadıköy', 'Beşiktaş', 'Şişli', 'Üsküdar', 'Beyoğlu', 'Ataşehir', 'Maltepe'],
+                'Ankara': ['Çankaya', 'Keçiören', 'Mamak', 'Altındağ', 'Yenimahalle', 'Etimesgut'],
+                'İzmir': ['Konak', 'Karşıyaka', 'Bornova', 'Bayraklı', 'Çiğli', 'Balçova'],
+                'Bursa': ['Nilüfer', 'Osmangazi', 'Yıldırım', 'Gemlik', 'Mudanya'],
+                'Antalya': ['Muratpaşa', 'Konyaaltı', 'Kepez', 'Alanya', 'Manavgat']
+            };
+            
+            return districtMap[city] || [];
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kategorileri yükle
+            loadCategories();
+            
+            // İşletmeleri yükle
+            loadBusinesses();
+            
+            // İl ve ilçe seçimi için event listener'lar
+            document.getElementById('citySelect').addEventListener('change', function() {
+                updateDistricts();
+                filterAndDisplayBusinesses();
+            });
+            
+            document.getElementById('districtSelect').addEventListener('change', filterAndDisplayBusinesses);
+        });
+
         // Modal için olayları ayarla
         function setupModalListeners() {
             // Modal kapat
@@ -1157,75 +1618,6 @@
                 tab.addEventListener('click', function() {
                     showTab(this.getAttribute('data-tab'));
                 });
-            });
-        }
-        
-        // Randevu formu gönderimi
-        function setupAppointmentForm() {
-            document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const businessId = document.getElementById('appointmentBusinessId').value;
-                const date = document.getElementById('appointmentDate').value;
-                const selectedTimeSlot = document.querySelector('.time-slot.selected');
-                const selectedResource = document.querySelector('.resource-item.selected');
-                const note = document.getElementById('appointmentNote').value;
-                
-                if (!businessId || !date) {
-                    alert('Lütfen işletme ve tarih seçin');
-                    return;
-                }
-                
-                if (!selectedResource) {
-                    alert('Lütfen bir kaynak seçin (koltuk, masa vb.)');
-                    return;
-                }
-                
-                if (!selectedTimeSlot) {
-                    alert('Lütfen bir saat dilimi seçin');
-                    return;
-                }
-                
-                // Kaynak zorunlu değil ancak seçili ise ID'sini al
-                const resourceId = selectedResource ? selectedResource.getAttribute('data-resource-id') : null;
-                
-                const time = selectedTimeSlot.getAttribute('data-time');
-                
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    alert('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
-                    window.location.href = '/login.html';
-                    return;
-                }
-                
-                try {
-                    const response = await fetch('/api/appointments', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({
-                            businessId,
-                            date,
-                            time,
-                            resourceId,
-                            note
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (response.ok) {
-                        alert('Randevunuz başarıyla oluşturuldu!');
-                        document.getElementById('businessDetailModal').style.display = 'none';
-                    } else {
-                        alert(`Randevu oluşturulurken bir hata oluştu: ${result.error}`);
-                    }
-                } catch (error) {
-                    console.error('Randevu oluşturma hatası:', error);
-                    alert('Bir hata oluştu, lütfen tekrar deneyin.');
-                }
             });
         }
     </script>
