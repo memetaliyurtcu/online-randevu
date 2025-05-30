@@ -20,6 +20,13 @@ async function updateSchema() {
         `);
         console.log('business_name sütunu eklendi veya zaten vardı');
 
+        // İşletme açıklaması sütununu ekle (eğer yoksa)
+        await pool.query(`
+            ALTER TABLE business_profiles 
+            ADD COLUMN IF NOT EXISTS description TEXT
+        `);
+        console.log('description sütunu eklendi veya zaten vardı');
+
         // Galeri görselleri sütununu ekle (eğer yoksa)
         await pool.query(`
             ALTER TABLE business_profiles 

@@ -218,6 +218,7 @@
             background: white;
             border: 1px solid #eee;
             padding: 20px;
+            padding-right: 140px; /* Status için alan bırak */
             margin-bottom: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -265,15 +266,17 @@
 
         .status {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+            top: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1;
         }
 
         .status.active {
@@ -398,6 +401,8 @@
         .appointment-actions {
             display: flex;
             gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-start;
         }
 
         .alert {
@@ -533,6 +538,197 @@
             }
         }
 
+        /* History Item Styles */
+        .history-item {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border-color: #007AFF;
+        }
+
+        .history-item-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-business {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-business .material-icons {
+            color: #007AFF;
+            font-size: 20px;
+        }
+
+        .history-date {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .history-date .material-icons {
+            color: #999;
+            font-size: 18px;
+        }
+
+        .history-status {
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .history-arrow {
+            color: #bbb;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover .history-arrow {
+            color: #007AFF;
+            transform: translateX(5px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #007AFF, #0051D5);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #555;
+            min-width: 120px;
+        }
+
+        .detail-label .material-icons {
+            color: #007AFF;
+            font-size: 20px;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .modal-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .edit-button {
             margin-left: auto;
             background: #f1f5f9;
@@ -609,6 +805,478 @@
         .cancel-button:hover {
             background: #dee2e6;
         }
+
+        /* Filtreleme Stilleri */
+        .history-filters {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #007AFF;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+            outline: none;
+        }
+
+        .clear-filters-btn {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .clear-filters-btn:hover {
+            background: #e9ecef;
+            color: #495057;
+            transform: translateY(-1px);
+        }
+
+        .clear-filters-btn .material-icons {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .history-filters {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        /* Değerlendirme Stilleri */
+        .review-btn {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .review-btn:hover {
+            background: linear-gradient(135deg, #f57c00, #ef6c00);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        }
+
+        .review-section {
+            padding: 0;
+        }
+
+        .review-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .rating-section {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .rating-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .star {
+            font-size: 32px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        .star.active {
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+        }
+
+        #ratingText {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .comment-section {
+            margin-bottom: 25px;
+        }
+
+        .comment-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .comment-section textarea:focus {
+            border-color: #007AFF;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+            outline: none;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .save-review-btn,
+        .cancel-review-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .save-review-btn {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+        }
+
+        .save-review-btn:hover {
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .cancel-review-btn {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #e9ecef;
+        }
+
+        .cancel-review-btn:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        /* Değerlendirmelerim Sekmesi Stilleri */
+        .reviews-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .reviews-header {
+            padding: 30px;
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            text-align: center;
+        }
+
+        .reviews-header h3 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .reviews-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .reviews-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .my-reviews-list {
+            padding: 30px;
+        }
+
+        .review-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        .review-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .review-business {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .review-rating .material-icons {
+            font-size: 20px;
+            color: #ffc107;
+        }
+
+        .review-rating .rating-text {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .review-comment {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .edit-review-btn,
+        .delete-review-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .edit-review-btn {
+            background: #007AFF;
+            color: white;
+        }
+
+        .edit-review-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .delete-review-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-review-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-reviews .material-icons {
+            font-size: 4rem;
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        .edit-review-form {
+            margin-top: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #007AFF;
+        }
+
+        .edit-rating-section {
+            margin-bottom: 15px;
+        }
+
+        .edit-rating-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .edit-star-rating {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 10px;
+        }
+
+        .edit-star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-star:hover,
+        .edit-star.active {
+            color: #ffc107;
+        }
+
+        .edit-comment-section {
+            margin-bottom: 15px;
+        }
+
+        .edit-comment-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .edit-comment-section textarea {
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .edit-review-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .save-edit-btn,
+        .cancel-edit-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .save-edit-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .save-edit-btn:hover {
+            background: #218838;
+        }
+
+        .cancel-edit-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .cancel-edit-btn:hover {
+            background: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -625,6 +1293,10 @@
             <div class="tab" onclick="switchTab('history')">
                 <span class="material-icons">history</span>
                 Randevu Geçmişi
+            </div>
+            <div class="tab" onclick="switchTab('reviews')">
+                <span class="material-icons">star_rate</span>
+                Değerlendirmelerim
             </div>
         </div>
 
@@ -750,7 +1422,75 @@
         </div>
 
         <div id="historyTab" class="tab-content">
+            <div class="history-filters">
+                <div class="filter-group">
+                    <label for="dateFromFilter">Başlangıç Tarihi:</label>
+                    <input type="date" id="dateFromFilter" onchange="applyHistoryFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="dateToFilter">Bitiş Tarihi:</label>
+                    <input type="date" id="dateToFilter" onchange="applyHistoryFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="statusFilter">Durum:</label>
+                    <select id="statusFilter" onchange="applyHistoryFilters()">
+                        <option value="">Tümü</option>
+                        <option value="Tamamlandı">Tamamlandı</option>
+                        <option value="İptal Edildi">İptal Edildi</option>
+                        <option value="Gelmedi">Gelmedi</option>
+                        <option value="Reddedildi">Reddedildi</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="businessFilter">İşletme Ara:</label>
+                    <input type="text" id="businessFilter" placeholder="İşletme adı..." oninput="applyHistoryFilters()">
+                </div>
+                <div class="filter-group">
+                    <button class="clear-filters-btn" onclick="clearHistoryFilters()">
+                        <span class="material-icons">clear</span>
+                        Filtreleri Temizle
+                    </button>
+                </div>
+            </div>
             <div id="appointmentHistory"></div>
+        </div>
+
+        <div id="reviewsTab" class="tab-content">
+            <div class="reviews-section">
+                <div class="reviews-header">
+                    <h3>
+                        <span class="material-icons">star_rate</span>
+                        Değerlendirmelerim
+                    </h3>
+                    <p>Yaptığınız tüm değerlendirmeleri buradan görüntüleyebilir ve düzenleyebilirsiniz.</p>
+                </div>
+                
+                <div class="reviews-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-icons">rate_review</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalReviewsCount">0</div>
+                            <div class="stat-label">Toplam Değerlendirme</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-icons">star</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="averageRatingValue">0.0</div>
+                            <div class="stat-label">Ortalama Puanım</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="myReviewsList" class="my-reviews-list">
+                    <!-- Kullanıcının değerlendirmeleri buraya gelecek -->
+                </div>
+            </div>
         </div>
 
         <button class="logout-btn" onclick="handleLogout()">
@@ -763,6 +1503,9 @@
         let userRole = '';
         let originalEmail = '';
         let originalPhone = '';
+        let allAppointmentHistory = []; // Tüm randevu geçmişi verilerini saklar
+        let currentAppointment = null; // Değerlendirme yapılacak randevu
+        let selectedRating = 0; // Seçilen puan
 
         async function fetchUserProfile() {
             try {
@@ -807,6 +1550,7 @@
                 document.getElementById('rejectedCount').textContent = data.rejectedAppointments || 0;
                 
                 userRole = data.role;
+                console.log('User role:', userRole); // Debug için
                 
                 // İşletme hesabına geçiş butonu kontrolü
                 const upgradeContainer = document.getElementById('upgradeButtonContainer');
@@ -873,7 +1617,13 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
             // Seçilen tabı ve içeriğini aktif yap
-            document.querySelector(`.tab:nth-child(${tabName === 'profile' ? 1 : tabName === 'active' ? 2 : 3})`).classList.add('active');
+            const tabMapping = {
+                'profile': 1,
+                'active': 2,
+                'history': 3,
+                'reviews': 4
+            };
+            document.querySelector(`.tab:nth-child(${tabMapping[tabName]})`).classList.add('active');
             document.getElementById(`${tabName}Tab`).classList.add('active');
 
             // Seçilen taba göre içeriği yükle
@@ -881,6 +1631,8 @@
                 fetchActiveAppointments();
             } else if (tabName === 'history') {
                 fetchAppointmentHistory();
+            } else if (tabName === 'reviews') {
+                loadMyReviews();
             }
         }
 
@@ -915,22 +1667,33 @@
                     return;
                 }
 
-                container.innerHTML = appointments.map(appointment => `
-                    <div class="appointment-card">
-                        <div class="appointment-info">
-                            <h3><span class="material-icons">business</span>${appointment.businessName || appointment.customerName}</h3>
-                            <p><span class="material-icons">spa</span> <strong>Hizmet:</strong> ${appointment.serviceName}</p>
-                            <p><span class="material-icons">event</span> <strong>Tarih:</strong> ${appointment.date}</p>
-                            <p><span class="material-icons">schedule</span> <strong>Saat:</strong> ${appointment.time}</p>
+                container.innerHTML = appointments.map(appointment => {
+                    // İptal butonu sadece "Beklemede" durumundaki randevular için gösterilsin
+                    const canCancel = appointment.status === 'Beklemede';
+                    
+                    return `
+                        <div class="appointment-card">
+                            <div class="status ${getStatusClass(appointment.status)}">
+                                <span class="material-icons">${getStatusIcon(appointment.status)}</span>
+                                ${getStatusText(appointment.status)}
+                            </div>
+                            <div class="appointment-info">
+                                <h3><span class="material-icons">business</span>${appointment.businessName || appointment.customerName}</h3>
+                                <p><span class="material-icons">spa</span> <strong>Hizmet:</strong> ${appointment.serviceName}</p>
+                                <p><span class="material-icons">event</span> <strong>Tarih:</strong> ${appointment.date}</p>
+                                <p><span class="material-icons">schedule</span> <strong>Saat:</strong> ${appointment.time}</p>
+                            </div>
+                            ${canCancel ? `
+                                <div class="appointment-actions">
+                                    <button onclick="cancelAppointment(${appointment.id})" class="btn btn-cancel">
+                                        <span class="material-icons">cancel</span>
+                                        İptal Et
+                                    </button>
+                                </div>
+                            ` : ''}
                         </div>
-                        <div class="appointment-actions">
-                            <button onclick="cancelAppointment(${appointment.id})" class="btn btn-cancel">
-                                <span class="material-icons">cancel</span>
-                                İptal Et
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
 
             } catch (error) {
                 console.error('Aktif randevular yükleme hatası:', error);
@@ -962,32 +1725,10 @@
                 }
 
                 const appointments = await response.json();
-                const container = document.getElementById('appointmentHistory');
-
-                if (!appointments || appointments.length === 0) {
-                    container.innerHTML = `
-                        <div class="no-appointments">
-                            <span class="material-icons">history</span>
-                            <p>Geçmiş randevunuz bulunmuyor.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = appointments.map(appointment => `
-                    <div class="appointment-card">
-                        <div class="status ${getStatusClass(appointment.status)}">
-                            <span class="material-icons">${getStatusIcon(appointment.status)}</span>
-                            ${getStatusText(appointment.status)}
-                        </div>
-                        <div class="appointment-info">
-                            <h3><span class="material-icons">business</span>${appointment.businessName || appointment.customerName}</h3>
-                            <p><span class="material-icons">spa</span> <strong>Hizmet:</strong> ${appointment.serviceName}</p>
-                            <p><span class="material-icons">event</span> <strong>Tarih:</strong> ${appointment.date}</p>
-                            <p><span class="material-icons">schedule</span> <strong>Saat:</strong> ${appointment.time}</p>
-                        </div>
-                    </div>
-                `).join('');
+                allAppointmentHistory = appointments; // Tüm veriyi sakla
+                
+                // Filtreleme uygula
+                applyHistoryFilters();
 
             } catch (error) {
                 console.error('Randevu geçmişi yükleme hatası:', error);
@@ -1014,16 +1755,18 @@
                     }
                 });
 
+                const result = await response.json();
+
                 if (!response.ok) {
-                    throw new Error('Randevu iptal edilemedi');
+                    throw new Error(result.error || 'Randevu iptal edilemedi');
                 }
 
-                alert('Randevu başarıyla iptal edildi');
+                showAlert('Randevu başarıyla iptal edildi', 'success');
                 fetchActiveAppointments(); // Aktif randevuları yeniden yükle
 
             } catch (error) {
                 console.error('Randevu iptal hatası:', error);
-                alert('Randevu iptal edilirken bir hata oluştu');
+                showAlert(error.message || 'Randevu iptal edilirken bir hata oluştu', 'error');
             }
         }
 
@@ -1255,8 +1998,624 @@
             }
         }
 
+        // Modal fonksiyonları
+        function showAppointmentDetails(appointment) {
+            currentAppointment = appointment; // Global değişkene kaydet
+            
+            document.getElementById('modalBusiness').textContent = appointment.businessName || appointment.customerName;
+            document.getElementById('modalService').textContent = appointment.serviceName;
+            document.getElementById('modalDate').textContent = appointment.date;
+            document.getElementById('modalTime').textContent = appointment.time;
+            
+            const statusElement = document.getElementById('modalStatus');
+            statusElement.textContent = getStatusText(appointment.status);
+            statusElement.className = `modal-status ${getStatusClass(appointment.status)}`;
+            statusElement.innerHTML = `
+                <span class="material-icons" style="font-size: 14px;">${getStatusIcon(appointment.status)}</span>
+                ${getStatusText(appointment.status)}
+            `;
+            
+            // Notları göster (varsa)
+            const notesRow = document.getElementById('modalNotesRow');
+            const notesElement = document.getElementById('modalNotes');
+            if (appointment.notes && appointment.notes.trim()) {
+                notesElement.textContent = appointment.notes;
+                notesRow.style.display = 'flex';
+            } else {
+                notesRow.style.display = 'none';
+            }
+            
+            // Değerlendirme butonunu göster (sadece tamamlanan randevular için)
+            const reviewButtonRow = document.getElementById('reviewButtonRow');
+            if (appointment.status === 'Tamamlandı' && userRole === 'customer') {
+                reviewButtonRow.style.display = 'flex';
+            } else {
+                reviewButtonRow.style.display = 'none';
+            }
+            
+            document.getElementById('appointmentModal').style.display = 'block';
+        }
+
+        function closeAppointmentModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        }
+
+        function showReviewModal() {
+            if (!currentAppointment) return;
+            
+            // İşletme adını modal'a yaz
+            document.getElementById('reviewBusinessName').textContent = currentAppointment.businessName;
+            
+            // Modal'ı göster
+            document.getElementById('reviewModal').style.display = 'block';
+            
+            // Randevu detay modal'ını kapat
+            closeAppointmentModal();
+            
+            // Star rating sistem
+            setupStarRating();
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+            // Formu temizle
+            selectedRating = 0;
+            document.getElementById('reviewComment').value = '';
+            document.getElementById('ratingText').textContent = '';
+            document.querySelectorAll('.star').forEach(star => star.classList.remove('active'));
+        }
+
+        function setupStarRating() {
+            const stars = document.querySelectorAll('.star');
+            const ratingText = document.getElementById('ratingText');
+            
+            const ratingTexts = {
+                1: 'Çok Kötü',
+                2: 'Kötü', 
+                3: 'Orta',
+                4: 'İyi',
+                5: 'Mükemmel'
+            };
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    selectedRating = parseInt(this.dataset.rating);
+                    
+                    // Tüm yıldızları temizle
+                    stars.forEach(s => s.classList.remove('active'));
+                    
+                    // Seçilen yıldıza kadar olanları aktif yap
+                    for(let i = 0; i < selectedRating; i++) {
+                        stars[i].classList.add('active');
+                    }
+                    
+                    // Puan metnini güncelle
+                    ratingText.textContent = ratingTexts[selectedRating];
+                });
+                
+                star.addEventListener('mouseenter', function() {
+                    const hoverRating = parseInt(this.dataset.rating);
+                    
+                    // Hover efekti
+                    stars.forEach((s, index) => {
+                        if (index < hoverRating) {
+                            s.style.color = '#ffc107';
+                        } else {
+                            s.style.color = selectedRating > index ? '#ffc107' : '#ddd';
+                        }
+                    });
+                });
+                
+                star.addEventListener('mouseleave', function() {
+                    // Seçili duruma geri dön
+                    stars.forEach((s, index) => {
+                        s.style.color = selectedRating > index ? '#ffc107' : '#ddd';
+                    });
+                });
+            });
+        }
+
+        async function submitReview() {
+            if (!currentAppointment) {
+                showAlert('Randevu bilgisi bulunamadı', 'error');
+                return;
+            }
+            
+            if (selectedRating === 0) {
+                showAlert('Lütfen bir puan verin', 'error');
+                return;
+            }
+            
+            const comment = document.getElementById('reviewComment').value.trim();
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        appointmentId: currentAppointment.id,
+                        businessId: currentAppointment.businessId || currentAppointment.business_id,
+                        rating: selectedRating,
+                        comment: comment || null
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Değerlendirme gönderilemedi');
+                }
+
+                showAlert('Değerlendirmeniz başarıyla gönderildi!', 'success');
+                closeReviewModal();
+
+            } catch (error) {
+                console.error('Değerlendirme gönderme hatası:', error);
+                showAlert(error.message || 'Değerlendirme gönderilirken bir hata oluştu', 'error');
+            }
+        }
+
+        // Modal dışına tıklandığında kapat
+        window.onclick = function(event) {
+            const appointmentModal = document.getElementById('appointmentModal');
+            const reviewModal = document.getElementById('reviewModal');
+            
+            if (event.target === appointmentModal) {
+                closeAppointmentModal();
+            } else if (event.target === reviewModal) {
+                closeReviewModal();
+            }
+        }
+
+        // ESC tuşu ile modal'ı kapat
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAppointmentModal();
+                closeReviewModal();
+            }
+        });
+
+        // Filtreleme fonksiyonları
+        function applyHistoryFilters() {
+            const dateFrom = document.getElementById('dateFromFilter').value;
+            const dateTo = document.getElementById('dateToFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const businessFilter = document.getElementById('businessFilter').value.toLowerCase();
+
+            let filteredAppointments = [...allAppointmentHistory];
+
+            // Tarih filtreleme
+            if (dateFrom) {
+                filteredAppointments = filteredAppointments.filter(appointment => 
+                    appointment.date >= dateFrom
+                );
+            }
+
+            if (dateTo) {
+                filteredAppointments = filteredAppointments.filter(appointment => 
+                    appointment.date <= dateTo
+                );
+            }
+
+            // Durum filtreleme
+            if (statusFilter) {
+                filteredAppointments = filteredAppointments.filter(appointment => 
+                    getStatusText(appointment.status) === statusFilter
+                );
+            }
+
+            // İşletme adı filtreleme
+            if (businessFilter) {
+                filteredAppointments = filteredAppointments.filter(appointment => {
+                    const businessName = appointment.businessName || appointment.customerName || '';
+                    return businessName.toLowerCase().includes(businessFilter);
+                });
+            }
+
+            renderAppointmentHistory(filteredAppointments);
+        }
+
+        function clearHistoryFilters() {
+            document.getElementById('dateFromFilter').value = '';
+            document.getElementById('dateToFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('businessFilter').value = '';
+            
+            renderAppointmentHistory(allAppointmentHistory);
+        }
+
+        function renderAppointmentHistory(appointments) {
+            const container = document.getElementById('appointmentHistory');
+
+            if (!appointments || appointments.length === 0) {
+                container.innerHTML = `
+                    <div class="no-appointments">
+                        <span class="material-icons">history</span>
+                        <p>Filtreleme kriterlerinize uygun randevu bulunamadı.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = appointments.map(appointment => `
+                <div class="history-item" onclick="showAppointmentDetails(${JSON.stringify(appointment).replace(/"/g, '&quot;')})">
+                    <div class="history-item-main">
+                        <div class="history-business">
+                            <span class="material-icons">business</span>
+                            ${appointment.businessName || appointment.customerName}
+                        </div>
+                        <div class="history-date">
+                            <span class="material-icons">event</span>
+                            ${appointment.date} - ${appointment.time}
+                        </div>
+                    </div>
+                    <div class="history-status ${getStatusClass(appointment.status)}">
+                        <span class="material-icons">${getStatusIcon(appointment.status)}</span>
+                        ${getStatusText(appointment.status)}
+                    </div>
+                    <div class="history-arrow">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Değerlendirmelerim fonksiyonları
+        async function loadMyReviews() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const response = await fetch('/api/user/reviews', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Değerlendirmeler yüklenemedi');
+                }
+
+                const reviews = await response.json();
+                
+                // İstatistikleri güncelle
+                updateReviewStats(reviews);
+                
+                // Değerlendirmeleri listele
+                renderMyReviews(reviews);
+
+            } catch (error) {
+                console.error('Değerlendirmeler yükleme hatası:', error);
+                document.getElementById('myReviewsList').innerHTML = `
+                    <div class="no-reviews">
+                        <span class="material-icons">error</span>
+                        <h3>Değerlendirmeler yüklenemedi</h3>
+                        <p>Lütfen daha sonra tekrar deneyin.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateReviewStats(reviews) {
+            const totalCount = reviews.length;
+            const averageRating = totalCount > 0 
+                ? (reviews.reduce((sum, review) => sum + review.rating, 0) / totalCount).toFixed(1)
+                : 0.0;
+
+            document.getElementById('totalReviewsCount').textContent = totalCount;
+            document.getElementById('averageRatingValue').textContent = averageRating;
+        }
+
+        function renderMyReviews(reviews) {
+            const container = document.getElementById('myReviewsList');
+
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = `
+                    <div class="no-reviews">
+                        <span class="material-icons">rate_review</span>
+                        <h3>Henüz değerlendirme yapmadınız</h3>
+                        <p>Tamamlanan randevularınız için değerlendirme yapabilirsiniz.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = reviews.map(review => `
+                <div class="review-item" data-review-id="${review.id}">
+                    <div class="review-header">
+                        <div class="review-business">${review.business_name}</div>
+                        <div class="review-date">${new Date(review.created_at).toLocaleDateString('tr-TR')}</div>
+                    </div>
+                    
+                    <div class="review-rating">
+                        ${generateStars(review.rating)}
+                        <span class="rating-text">(${review.rating}/5)</span>
+                    </div>
+                    
+                    <div class="review-comment">"${review.comment}"</div>
+                    
+                    <div class="review-actions">
+                        <button class="edit-review-btn" onclick="editReview(${review.id}, ${review.rating}, '${review.comment.replace(/'/g, "\\'")}')">
+                            <span class="material-icons">edit</span>
+                            Düzenle
+                        </button>
+                        <button class="delete-review-btn" onclick="deleteReview(${review.id})">
+                            <span class="material-icons">delete</span>
+                            Sil
+                        </button>
+                    </div>
+                    
+                    <div class="edit-review-form" id="editForm_${review.id}" style="display: none;">
+                        <div class="edit-rating-section">
+                            <label>Puanınız:</label>
+                            <div class="edit-star-rating" data-review-id="${review.id}">
+                                ${[1,2,3,4,5].map(i => `<span class="edit-star" data-rating="${i}">★</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="edit-comment-section">
+                            <label>Yorumunuz:</label>
+                            <textarea id="editComment_${review.id}" rows="3">${review.comment}</textarea>
+                        </div>
+                        
+                        <div class="edit-review-actions">
+                            <button class="save-edit-btn" onclick="saveReviewEdit(${review.id})">
+                                <span class="material-icons">save</span>
+                                Kaydet
+                            </button>
+                            <button class="cancel-edit-btn" onclick="cancelReviewEdit(${review.id})">
+                                <span class="material-icons">close</span>
+                                İptal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Düzenleme yıldızlarına click event ekle
+            document.querySelectorAll('.edit-star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.dataset.rating);
+                    const reviewId = this.closest('.edit-star-rating').dataset.reviewId;
+                    
+                    // Aynı grup içindeki tüm yıldızları güncelle
+                    const container = this.closest('.edit-star-rating');
+                    container.querySelectorAll('.edit-star').forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                    
+                    // Rating değerini sakla
+                    container.dataset.selectedRating = rating;
+                });
+            });
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<span class="material-icons">star</span>';
+                } else {
+                    stars += '<span class="material-icons" style="color: #ddd;">star</span>';
+                }
+            }
+            return stars;
+        }
+
+        function editReview(reviewId, currentRating, currentComment) {
+            // Tüm edit formlarını kapat
+            document.querySelectorAll('.edit-review-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // Bu review'ın edit formunu aç
+            const editForm = document.getElementById(`editForm_${reviewId}`);
+            editForm.style.display = 'block';
+            
+            // Mevcut rating'i göster
+            const starContainer = editForm.querySelector('.edit-star-rating');
+            starContainer.dataset.selectedRating = currentRating;
+            starContainer.querySelectorAll('.edit-star').forEach((star, index) => {
+                if (index < currentRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function cancelReviewEdit(reviewId) {
+            document.getElementById(`editForm_${reviewId}`).style.display = 'none';
+        }
+
+        async function saveReviewEdit(reviewId) {
+            try {
+                const editForm = document.getElementById(`editForm_${reviewId}`);
+                const starContainer = editForm.querySelector('.edit-star-rating');
+                const newRating = parseInt(starContainer.dataset.selectedRating);
+                const newComment = document.getElementById(`editComment_${reviewId}`).value.trim();
+
+                if (!newRating) {
+                    showAlert('Lütfen bir puan seçin', 'error');
+                    return;
+                }
+
+                if (!newComment) {
+                    showAlert('Lütfen bir yorum yazın', 'error');
+                    return;
+                }
+
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/reviews/${reviewId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        rating: newRating,
+                        comment: newComment
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Değerlendirme güncellenemedi');
+                }
+
+                showAlert('Değerlendirme başarıyla güncellendi', 'success');
+                loadMyReviews(); // Listeyi yenile
+
+            } catch (error) {
+                console.error('Değerlendirme güncelleme hatası:', error);
+                showAlert('Değerlendirme güncellenirken bir hata oluştu', 'error');
+            }
+        }
+
+        async function deleteReview(reviewId) {
+            if (!confirm('Bu değerlendirmeyi silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/reviews/${reviewId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Değerlendirme silinemedi');
+                }
+
+                showAlert('Değerlendirme başarıyla silindi', 'success');
+                loadMyReviews(); // Listeyi yenile
+
+            } catch (error) {
+                console.error('Değerlendirme silme hatası:', error);
+                showAlert('Değerlendirme silinirken bir hata oluştu', 'error');
+            }
+        }
+
         // Sayfa yüklendiğinde profil bilgilerini getir
         document.addEventListener('DOMContentLoaded', fetchUserProfile);
     </script>
+
+    <!-- Randevu Detay Modal -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Randevu Detayları</h2>
+                <span class="close" onclick="closeAppointmentModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="detail-row">
+                    <span class="detail-label">
+                        <span class="material-icons">business</span>
+                        İşletme:
+                    </span>
+                    <span class="detail-value" id="modalBusiness"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">
+                        <span class="material-icons">spa</span>
+                        Hizmet:
+                    </span>
+                    <span class="detail-value" id="modalService"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">
+                        <span class="material-icons">event</span>
+                        Tarih:
+                    </span>
+                    <span class="detail-value" id="modalDate"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">
+                        <span class="material-icons">schedule</span>
+                        Saat:
+                    </span>
+                    <span class="detail-value" id="modalTime"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">
+                        <span class="material-icons">info</span>
+                        Durum:
+                    </span>
+                    <span class="detail-value">
+                        <span id="modalStatus" class="modal-status"></span>
+                    </span>
+                </div>
+                <div class="detail-row" id="modalNotesRow" style="display: none;">
+                    <span class="detail-label">
+                        <span class="material-icons">note</span>
+                        Notlar:
+                    </span>
+                    <span class="detail-value" id="modalNotes"></span>
+                </div>
+                <div class="detail-row" id="reviewButtonRow" style="display: none;">
+                    <button class="review-btn" onclick="showReviewModal()">
+                        <span class="material-icons">star_rate</span>
+                        Değerlendirme Yap
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Değerlendirme Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>İşletmeyi Değerlendirin</h2>
+                <span class="close" onclick="closeReviewModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="review-section">
+                    <h3 id="reviewBusinessName"></h3>
+                    
+                    <div class="rating-section">
+                        <label>Puanınız:</label>
+                        <div class="star-rating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <span id="ratingText"></span>
+                    </div>
+                    
+                    <div class="comment-section">
+                        <label for="reviewComment">Yorumunuz:</label>
+                        <textarea id="reviewComment" placeholder="Deneyiminizi paylaşın..." rows="4"></textarea>
+                    </div>
+                    
+                    <div class="review-actions">
+                        <button class="save-review-btn" onclick="submitReview()">
+                            <span class="material-icons">send</span>
+                            Değerlendirme Gönder
+                        </button>
+                        <button class="cancel-review-btn" onclick="closeReviewModal()">
+                            <span class="material-icons">close</span>
+                            İptal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html> 

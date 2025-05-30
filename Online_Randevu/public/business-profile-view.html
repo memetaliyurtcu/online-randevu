@@ -7,156 +7,290 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .profile-container {
             max-width: 900px;
             margin: 40px auto;
             padding: 30px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%);
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #ff6b6b, #ffa500);
+            background-size: 400% 100%;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
-        /* Resource Styles */
+        /* Resource Styles - Modern Design */
         .resources-container {
-            margin-top: 20px;
+            margin-top: 30px;
         }
         
         .resource-form {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resource-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 0;
+        }
+        
+        .resource-form > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .resource-form h3 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: white;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.95);
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .form-group input:focus, .form-group select:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            background: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
             outline: none;
         }
         
         .add-resource-btn {
-            background: #3498db;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
             color: white;
             border: none;
-            padding: 12px 18px;
-            border-radius: 8px;
+            padding: 15px 25px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .add-resource-btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(41, 128, 185, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+        }
+        
+        .add-resource-btn:active {
+            transform: translateY(-1px);
         }
         
         .resources-list {
-            margin-top: 20px;
+            margin-top: 30px;
+            display: grid;
+            gap: 20px;
         }
         
         .resource-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px;
+            padding: 25px;
             background: white;
-            border: 1px solid #eaeaea;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: none;
+            border-radius: 20px;
+            margin-bottom: 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resource-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
         }
         
         .resource-item:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+        
+        .resource-item:hover::before {
+            width: 100%;
+            opacity: 0.05;
         }
         
         .resource-details {
             flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .resource-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .resource-info {
+            flex-grow: 1;
         }
         
         .resource-name {
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
             color: #2c3e50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .resource-type {
             color: #7f8c8d;
             font-size: 14px;
+            font-weight: 500;
+            text-transform: capitalize;
         }
         
         .resource-status {
-            padding: 4px 10px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 25px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 15px;
         }
         
         .status-active {
-            background: #e1f5fe;
-            color: #0288d1;
+            background: linear-gradient(135deg, #00d4aa, #00a085);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
         }
         
         .status-inactive {
-            background: #ffebee;
-            color: #e53935;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
         
         .resource-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
         .resource-actions button {
-            background: none;
+            background: #f8f9fa;
             border: none;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #7f8c8d;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .resource-actions button:hover {
-            background: #f5f5f5;
-            color: #3498db;
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
         #businessTypeMessage {
-            padding: 15px;
-            background: #e1f5fe;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            font-weight: 500;
-            color: #0277bd;
+            padding: 20px 25px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            color: #667eea;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            font-size: 15px;
+            line-height: 1.5;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #businessTypeMessage::before {
+            content: '💡';
+            font-size: 20px;
+            margin-right: 10px;
         }
         
         /* Takvim Stilleri */
@@ -359,33 +493,69 @@
             box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
         }
 
+        /* Profil Sekmesi - Modern Tasarım */
         .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 40px;
             text-align: center;
             margin-bottom: 35px;
             position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 0;
+        }
+
+        .profile-header > * {
+            position: relative;
+            z-index: 1;
         }
 
         .profile-header h1 {
-            color: #2c3e50;
+            color: white;
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .profile-header h1::before {
+            content: '🏢';
             font-size: 32px;
-            margin-bottom: 10px;
         }
 
         .profile-image {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             object-fit: cover;
             margin: 0 auto 25px;
             display: block;
-            border: 5px solid #3498db;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
         
         .profile-image:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         .profile-info {
@@ -400,34 +570,73 @@
         }
 
         .info-group {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.95) 100%);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             transition: all 0.3s ease;
         }
         
         .info-group:hover {
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
+        .info-group:hover::before {
+            width: 8px;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
         }
 
         .info-group h3 {
             color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 18px;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-group h3::before {
+            content: '📋';
+            font-size: 22px;
+        }
+
+        .info-group.address-info h3::before {
+            content: '📍';
         }
         
         .info-group p {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #34495e;
+            font-size: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .info-group strong {
             color: #2c3e50;
             font-weight: 600;
+            min-width: 80px;
         }
 
         .stats-container {
@@ -438,65 +647,126 @@
         }
 
         .stat-card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.95) 100%);
+            padding: 30px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
             transition: all 0.3s ease;
         }
         
         .stat-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transform: translateY(-8px) scale(1.02);
         }
         
-        .stat-card:nth-child(1) {
-            background: linear-gradient(135deg, #f5f7fa, #e9f0f8);
+        .stat-card:nth-child(1)::before {
+            background: linear-gradient(135deg, #667eea, #764ba2);
         }
         
-        .stat-card:nth-child(2) {
-            background: linear-gradient(135deg, #f5f7fa, #edf6ff);
+        .stat-card:nth-child(2)::before {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
         }
         
-        .stat-card:nth-child(3) {
-            background: linear-gradient(135deg, #f5f7fa, #e8f7f3);
+        .stat-card:nth-child(3)::before {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
         }
 
         .stat-card h3 {
             color: #2c3e50;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .stat-card:nth-child(1) h3::before {
+            content: '📅';
+            font-size: 20px;
+        }
+
+        .stat-card:nth-child(2) h3::before {
+            content: '📊';
+            font-size: 20px;
+        }
+
+        .stat-card:nth-child(3) h3::before {
+            content: '⭐';
+            font-size: 20px;
         }
 
         .stat-card p {
-            color: #3498db;
-            font-size: 28px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .edit-btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 15px 30px;
+            border-radius: 25px;
             font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             transition: all 0.3s ease;
             margin: 0 auto;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover::before {
+            opacity: 1;
+        }
+
+        .edit-btn > * {
+            position: relative;
+            z-index: 1;
         }
         
         .edit-btn:hover {
-            background: linear-gradient(135deg, #2980b9, #2471a3);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
         }
 
         /* Sekme Stilleri - YENİLENDİ */
@@ -536,11 +806,15 @@
             top: 5px;
             left: 5px;
             height: calc(100% - 10px);
-            width: calc(25% - 5px);
+            width: calc(16.666% - 5px);
             background: linear-gradient(135deg, #3498db, #2980b9);
             border-radius: 8px;
             transition: all 0.3s ease;
             z-index: 0;
+        }
+        
+        .tabs[data-active="profile"]::before {
+            transform: translateX(0%);
         }
         
         .tabs[data-active="appointments"]::before {
@@ -551,8 +825,16 @@
             transform: translateX(200%);
         }
         
-        .tabs[data-active="resources"]::before {
+        .tabs[data-active="services"]::before {
             transform: translateX(300%);
+        }
+        
+        .tabs[data-active="resources"]::before {
+            transform: translateX(400%);
+        }
+        
+        .tabs[data-active="reviews"]::before {
+            transform: translateX(500%);
         }
 
         .tab-content {
@@ -817,6 +1099,7 @@
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s ease;
+            min-width: 150px;
         }
         
         .filter-select:focus {
@@ -906,6 +1189,9 @@
             font-size: 12px;
             font-weight: 600;
             text-align: center;
+            display: inline-block;
+            white-space: nowrap;
+            min-width: 100px;
         }
         
         .status-completed {
@@ -950,13 +1236,18 @@
         
         .business-type {
             display: inline-block;
-            padding: 5px 12px;
-            background: #e1f5fe;
-            color: #0288d1;
-            border-radius: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 25px;
             font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .customer-name-container {
@@ -984,6 +1275,977 @@
         .attendance-icon[title="Randevuya gelmedi"] {
             color: #e74c3c;
         }
+
+        /* Hizmetler Sekmesi Stilleri */
+        .services-container {
+            margin-top: 20px;
+        }
+        
+        .management-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .services-list-section {
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .services-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .management-sections {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        .service-form {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            background: white;
+            border: none;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            transition: width 0.3s ease;
+        }
+        
+        .service-item:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+        
+        .service-item:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+        
+        .service-details {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .service-info {
+            flex-grow: 1;
+        }
+        
+        .service-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .service-price {
+            font-weight: 600;
+            color: #27ae60;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+        
+        .service-duration {
+            color: #7f8c8d;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .service-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .service-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .service-actions button:hover {
+            background: #f5f5f5;
+            color: #3498db;
+        }
+        
+        .add-service-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-service-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(41, 128, 185, 0.2);
+        }
+
+        /* Kategori grupları için stiller - Modern Design */
+        .service-category-group {
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: none;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 25px 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-header:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+        }
+        
+        .category-header.collapsed .expand-icon {
+            transform: rotate(-90deg);
+        }
+        
+        .expand-icon {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 24px;
+        }
+        
+        .category-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #3498db;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+            flex-grow: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .service-count {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .category-services {
+            padding: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .category-services.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        
+        .category-services:not(.collapsed) {
+            max-height: none;
+            opacity: 1;
+        }
+        
+        .category-services .service-item {
+            margin: 0;
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .category-services .service-item:last-child {
+            border-bottom: none;
+        }
+        
+        .category-services .service-item:hover {
+            background: #f8f9fa;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Geçmiş Randevular için Stil Düzeltmeleri */
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-btn:hover {
+            background: #2980b9;
+        }
+
+        .no-data-message, .loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+        .no-data-message .material-icons, .loading-spinner .material-icons {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #95a5a6;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3498db;
+            animation: spin 1s ease infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .appointment-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            gap: 15px;
+        }
+
+        .appointment-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .appointment-date {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .appointment-day {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .appointment-month {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .appointment-details {
+            flex-grow: 1;
+        }
+
+        .appointment-details h4 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .appointment-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .appointment-customer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .customer-avatar {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .status-noshow, .status-cancelled, .status-rejected {
+            background: #ffebee;
+            color: #e53935;
+        }
+
+        .status-waiting {
+            background: #fff8e1;
+            color: #ffa000;
+        }
+
+        .status-approved {
+            background: #e8f5e9;
+            color: #43a047;
+        }
+
+        .appointments-list {
+            margin-bottom: 20px;
+        }
+
+        /* Kategori ve Hizmet Yönetimi Stilleri - Modern Design */
+        .services-container {
+            padding: 0;
+        }
+        
+        .category-section, .service-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-section::before, .service-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 0;
+        }
+        
+        .category-section > *, .service-section > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .category-section h4, .service-section h4 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .category-section h4::before {
+            content: '🏷️';
+            font-size: 28px;
+        }
+        
+        .service-section h4::before {
+            content: '⚙️';
+            font-size: 28px;
+        }
+        
+        .category-form, .service-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            background: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            outline: none;
+        }
+        
+        .add-category-btn, .add-service-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .add-category-btn:hover, .add-service-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+        }
+        
+        .add-category-btn:active, .add-service-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .categories-list, .services-list {
+            margin-top: 30px;
+            display: grid;
+            gap: 20px;
+        }
+        
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            background: white;
+            border: none;
+            border-radius: 20px;
+            margin-bottom: 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--category-color, linear-gradient(135deg, #667eea, #764ba2));
+            transition: width 0.3s ease;
+        }
+        
+        .category-item:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+        
+        .category-item:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+        
+        .category-details {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .category-color {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .category-info {
+            flex-grow: 1;
+        }
+        
+        .category-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .category-description {
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .category-actions, .service-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .category-actions button, .service-actions button {
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #7f8c8d;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .category-actions button:hover, .service-actions button:hover {
+            background: #ff6b6b;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Değerlendirmeler Stilleri */
+        .reviews-section {
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .reviews-header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .reviews-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .reviews-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .reviews-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .reviews-filter {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-controls select, .filter-controls input {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .filter-controls button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-controls button:hover {
+            background: #e55a2b;
+        }
+
+        .reviews-list {
+            space-y: 20px;
+        }
+
+        .review-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .review-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .review-customer {
+            flex: 1;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .review-date {
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 10px;
+        }
+
+        .star {
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .star.empty {
+            color: #e9ecef;
+        }
+
+        .review-comment {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .review-response {
+            background: #f8f9fa;
+            border-left: 4px solid #ff6b35;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .response-header {
+            font-weight: 600;
+            color: #ff6b35;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .response-text {
+            color: #495057;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .respond-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .respond-btn:hover {
+            background: #218838;
+        }
+
+        .report-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .report-btn:hover {
+            background: #c82333;
+        }
+
+        .edit-response-btn {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .edit-response-btn:hover {
+            background: #e0a800;
+        }
+
+        .delete-response-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .delete-response-btn:hover {
+            background: #5a6268;
+        }
+
+        .response-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        .response-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .response-form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .save-response-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .cancel-response-btn {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .loading-message, .no-reviews-message {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .loading-message .material-icons, .no-reviews-message .material-icons {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid #dee2e6;
+            background: white;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f8f9fa;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .current-page {
+            padding: 8px 16px;
+            font-weight: 600;
+            color: #ff6b35;
+        }
     </style>
 </head>
 <body>
@@ -992,7 +2254,12 @@
             <button class="tab active" onclick="switchTab('profile')">Profil Bilgileri</button>
             <button class="tab" onclick="switchTab('appointments')">Randevu Ayarları</button>
             <button class="tab" onclick="switchTab('pastAppointments')">Geçmiş Randevular</button>
+            <button class="tab" onclick="switchTab('services')">Hizmetler</button>
             <button class="tab" onclick="switchTab('resources')">Kaynaklar</button>
+            <button class="tab" onclick="switchTab('reviews')">
+                <span class="material-icons">star_rate</span>
+                Değerlendirmeler
+            </button>
         </div>
 
         <div id="profileTab" class="tab-content active">
@@ -1032,6 +2299,13 @@
                 <div class="stat-card">
                     <h3>Rezervasyon Ücreti</h3>
                     <p id="reservationPrice">0 TL</p>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-group" style="grid-column: 1 / -1;">
+                    <h3>İşletme Hakkında</h3>
+                    <p id="businessDescription">Açıklama yükleniyor...</p>
                 </div>
             </div>
 
@@ -1171,12 +2445,12 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <select name="startTime-5" class="time-select" disabled>
+                                            <select name="startTime-5" class="time-select">
                                                 <script>document.write(generateTimeOptions())</script>
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="endTime-5" class="time-select" disabled>
+                                            <select name="endTime-5" class="time-select">
                                                 <script>document.write(generateTimeOptions())</script>
                                             </select>
                                         </td>
@@ -1190,12 +2464,12 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <select name="startTime-6" class="time-select" disabled>
+                                            <select name="startTime-6" class="time-select">
                                                 <script>document.write(generateTimeOptions())</script>
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="endTime-6" class="time-select" disabled>
+                                            <select name="endTime-6" class="time-select">
                                                 <script>document.write(generateTimeOptions())</script>
                                             </select>
                                         </td>
@@ -1220,7 +2494,7 @@
                 <div class="filter-controls">
                     <div class="form-group">
                         <label for="dateFilter">Tarih Filtresi</label>
-                        <select id="dateFilter" class="form-control">
+                        <select id="dateFilter" class="filter-select">
                             <option value="all">Tümü</option>
                             <option value="today">Bugün</option>
                             <option value="yesterday">Dün</option>
@@ -1230,7 +2504,7 @@
                     </div>
                     <div class="form-group">
                         <label for="statusFilter">Durum Filtresi</label>
-                        <select id="statusFilter" class="form-control">
+                        <select id="statusFilter" class="filter-select">
                             <option value="all">Tümü</option>
                             <option value="Tamamlandı">Tamamlandı</option>
                             <option value="Gelmedi">Gelmedi</option>
@@ -1267,30 +2541,205 @@
                 </div>
             </div>
         </div>
+        <div id="servicesTab" class="tab-content">
+            <div class="services-container">
+                <h3 style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 32px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 12px;">
+                    <span style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: unset; -webkit-text-fill-color: unset; color: #667eea;">🛠️</span>
+                    Hizmet ve Kategori Yönetimi
+                </h3>
+                <p style="color: #7f8c8d; font-size: 16px; margin-bottom: 30px; line-height: 1.6;">İşletmenizin sunduğu hizmetleri ve kategorileri buradan ekleyebilir ve düzenleyebilirsiniz.</p>
+                
+                <div class="management-sections">
+                    <!-- Kategori Ekleme Bölümü -->
+                    <div class="category-section">
+                        <h4>Kategori Yönetimi</h4>
+                        <div class="category-form">
+                            <div class="form-group">
+                                <label for="categoryName">Kategori Adı</label>
+                                <input type="text" id="categoryName" placeholder="Kategori adını girin (örn: Saç Bakımı)">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryDescription">Açıklama <small style="font-weight:normal; color:#666;">- Opsiyonel</small></label>
+                                <textarea id="categoryDescription" placeholder="Kategori açıklaması girin" rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryColor">Kategori Rengi</label>
+                                <input type="color" id="categoryColor" value="#3498db">
+                            </div>
+                            <button id="addCategoryBtn" class="add-category-btn">
+                                <span class="material-icons">add</span>
+                                Kategori Ekle
+                            </button>
+                        </div>
+                        
+                        <div id="categoriesList" class="categories-list">
+                            <div class="loading-spinner" id="categoriesLoading" style="display: none;">
+                                <div class="spinner"></div>
+                                <p>Kategoriler yükleniyor...</p>
+                            </div>
+                            <div id="noCategoriesMsg" style="display: none;" class="no-data-message">
+                                <span class="material-icons">info</span>
+                                <p>Henüz tanımlanmış bir kategori bulunmamaktadır.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hizmet Ekleme Bölümü -->
+                    <div class="service-section">
+                        <h4>Hizmet Yönetimi</h4>
+                        <div class="service-form">
+                            <div class="form-group">
+                                <label for="serviceName">Hizmet Adı</label>
+                                <input type="text" id="serviceName" placeholder="Hizmet adını girin">
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceCategory">Kategori <small style="font-weight:normal; color:#666;">- Opsiyonel</small></label>
+                                <select id="serviceCategory">
+                                    <option value="">Kategori seçiniz</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="servicePrice">Hizmet Ücreti (TL)</label>
+                                <input type="number" id="servicePrice" placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceDuration">Süre (dakika) <small style="font-weight:normal; color:#666;">- Opsiyonel</small></label>
+                                <input type="number" id="serviceDuration" placeholder="Örn: 30">
+                            </div>
+                            <button id="addServiceBtn" class="add-service-btn">
+                                <span class="material-icons">add</span>
+                                Hizmet Ekle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hizmet Listesi Ayrı Bölüm -->
+                <div class="services-list-section">
+                    <div id="servicesList" class="services-list">
+                        <div class="loading-spinner" id="servicesLoading">
+                            <div class="spinner"></div>
+                            <p>Hizmetler yükleniyor...</p>
+                        </div>
+                        <div id="noServicesMsg" style="display: none;" class="no-data-message">
+                            <span class="material-icons">info</span>
+                            <p>Henüz tanımlanmış bir hizmet bulunmamaktadır.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div id="resourcesTab" class="tab-content">
             <div class="resources-container">
-                <h3>Kaynaklar</h3>
-                <p>Bu kısımda işletmenize ait kaynakları ekleyebilir ve yönetebilirsiniz.</p>
+                <h3 style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 32px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 12px;">
+                    <span style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: unset; -webkit-text-fill-color: unset; color: #667eea;">🏢</span>
+                    Kaynaklar
+                </h3>
+                <p style="color: #7f8c8d; font-size: 16px; margin-bottom: 30px; line-height: 1.6;">Bu kısımda işletmenize ait kaynakları ekleyebilir ve yönetebilirsiniz.</p>
                 
                 <div id="businessTypeMessage"></div>
                 
                 <div class="resource-form">
-                    <h4>Yeni Kaynak Ekle</h4>
+                    <h3>✨ Yeni Kaynak Ekle</h3>
                     <div class="form-group">
                         <label for="resourceName">Kaynak İsmi</label>
                         <input type="text" id="resourceName" placeholder="Kaynağın adını girin" required>
                     </div>
                     <div class="form-actions">
-                        <button id="addResourceBtn" class="btn add-resource-btn">Kaynak Ekle</button>
+                        <button id="addResourceBtn" class="btn add-resource-btn">
+                            <span class="material-icons">add_circle</span>
+                            Kaynak Ekle
+                        </button>
                     </div>
                 </div>
 
                 <div class="resources-list-container">
-                    <h4>Mevcut Kaynaklar</h4>
+                    <h3 style="color: #667eea; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+                        <span class="material-icons">inventory_2</span>
+                        Mevcut Kaynaklar
+                    </h3>
                     <div id="resourcesList" class="resources-list">
-                        <p id="noResourcesMsg">Henüz kaynak eklenmemiş.</p>
+                        <p id="noResourcesMsg" style="text-align: center; color: #7f8c8d; font-style: italic; padding: 40px; background: #f8f9fa; border-radius: 15px; border: 2px dashed #e0e0e0;">
+                            <span class="material-icons" style="font-size: 48px; display: block; margin-bottom: 15px; color: #bbb;">inventory_2</span>
+                            Henüz kaynak eklenmemiş.
+                        </p>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Değerlendirmeler Sekmesi -->
+        <div id="reviewsTab" class="tab-content">
+            <div class="reviews-section">
+                <div class="reviews-header">
+                    <h2>İşletme Değerlendirmeleri</h2>
+                    <p>Müşterilerinizin işletmeniz hakkındaki değerlendirmelerini buradan görüntüleyebilir, yanıtlayabilir ve yönetebilirsiniz.</p>
+                </div>
+
+                <div class="reviews-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalReviewsCount">0</div>
+                        <div class="stat-label">Toplam Değerlendirme</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="averageRating">0.0</div>
+                        <div class="stat-label">Ortalama Puan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="respondedCount">0</div>
+                        <div class="stat-label">Yanıtlanan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="reportedCount">0</div>
+                        <div class="stat-label">Bildirilen</div>
+                    </div>
+                </div>
+
+                <div class="reviews-filter">
+                    <div class="filter-controls">
+                        <select id="ratingFilter">
+                            <option value="">Tüm Puanlar</option>
+                            <option value="5">5 Yıldız</option>
+                            <option value="4">4 Yıldız</option>
+                            <option value="3">3 Yıldız</option>
+                            <option value="2">2 Yıldız</option>
+                            <option value="1">1 Yıldız</option>
+                        </select>
+                        <select id="responseFilter">
+                            <option value="">Tüm Değerlendirmeler</option>
+                            <option value="responded">Yanıtlananlar</option>
+                            <option value="not_responded">Yanıtlanmayanlar</option>
+                        </select>
+                        <input type="date" id="dateFilter">
+                        <button onclick="loadBusinessReviews()">
+                            <span class="material-icons">search</span>
+                            Filtrele
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reviews-list" id="reviewsList">
+                    <div class="loading-message" id="reviewsLoading">
+                        <span class="material-icons">hourglass_empty</span>
+                        <p>Değerlendirmeler yükleniyor...</p>
+                    </div>
+                    <div class="no-reviews-message" id="noReviewsMsg" style="display: none;">
+                        <span class="material-icons">star_border</span>
+                        <p>Henüz değerlendirme bulunmuyor.</p>
+                    </div>
+                </div>
+
+                <div class="pagination" id="reviewsPagination" style="display: none;">
+                    <button id="prevReviewsBtn" onclick="changeReviewPage(-1)">
+                        <span class="material-icons">chevron_left</span>
+                        Önceki
+                    </button>
+                    <span class="current-page" id="currentReviewPage">1</span>
+                    <button id="nextReviewsBtn" onclick="changeReviewPage(1)">
+                        Sonraki
+                        <span class="material-icons">chevron_right</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1321,6 +2770,21 @@
             };
             
             return typeLabels[businessType] || 'Kaynak';
+        }
+        
+        // İşletme türüne göre uygun ikon döndürür
+        function getResourceIcon() {
+            const iconMap = {
+                'dishekimi': 'medical_services',
+                'kuafor': 'chair',
+                'guzelliksalonu': 'chair',
+                'spa': 'spa',
+                'halısaha': 'sports_soccer',
+                'restoran': 'table_restaurant',
+                'cafe': 'local_cafe'
+            };
+            
+            return iconMap[businessType] || 'widgets';
         }
         
         // İşletme türüne göre uygun açıklama metnini döndürür
@@ -1376,8 +2840,13 @@
                     resourceItem.className = 'resource-item';
                     resourceItem.innerHTML = `
                         <div class="resource-details">
-                            <div class="resource-name">${resource.name}</div>
-                            <div class="resource-type">${getResourceTypeLabel()}</div>
+                            <div class="resource-icon">
+                                <span class="material-icons">${getResourceIcon()}</span>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-name">${resource.name}</div>
+                                <div class="resource-type">${getResourceTypeLabel()}</div>
+                            </div>
                         </div>
                         <div class="resource-status ${resource.status === 'active' ? 'status-active' : 'status-inactive'}">
                             ${resource.status === 'active' ? 'Aktif' : 'Pasif'}
@@ -1459,6 +2928,10 @@
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('addResourceBtn').addEventListener('click', addResource);
+            
+            // Kategori ve hizmet butonları için event listener'lar
+            document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
+            document.getElementById('addServiceBtn').addEventListener('click', addService);
         });
         
         async function loadBusinessProfile() {
@@ -1489,6 +2962,7 @@
                 document.getElementById('district').textContent = profileData.district;
                 document.getElementById('address').textContent = profileData.address;
                 document.getElementById('reservationPrice').textContent = `${profileData.reservation_price} TL`;
+                document.getElementById('businessDescription').textContent = profileData.description || 'İşletme açıklaması bulunmuyor.';
 
                 if (profileData.image_url) {
                     document.getElementById('profileImage').src = profileData.image_url;
@@ -1558,6 +3032,11 @@
                 loadSchedule();
             } else if (tabName === 'pastAppointments') {
                 loadPastAppointments();
+            } else if (tabName === 'services') {
+                loadCategories();
+                loadServices();
+            } else if (tabName === 'reviews') {
+                loadBusinessReviews();
             }
         }
 
@@ -1598,6 +3077,41 @@
             if (prevPageBtn && nextPageBtn) {
                 prevPageBtn.addEventListener('click', () => changePage(-1));
                 nextPageBtn.addEventListener('click', () => changePage(1));
+            }
+            
+            // Hizmet ekleme butonuna event listener ekle
+            const addServiceBtn = document.getElementById('addServiceBtn');
+            if (addServiceBtn) {
+                addServiceBtn.addEventListener('click', addService);
+            }
+            
+            // Çalışma günü checkbox'larına event listener'lar ekle
+            for (let i = 0; i < 7; i++) {
+                const checkbox = document.querySelector(`input[name="isWorking-${i}"]`);
+                const startTimeSelect = document.querySelector(`select[name="startTime-${i}"]`);
+                const endTimeSelect = document.querySelector(`select[name="endTime-${i}"]`);
+                
+                if (checkbox && startTimeSelect && endTimeSelect) {
+                    // Sayfa yüklenirken mevcut duruma göre saat seçimlerini ayarla
+                    startTimeSelect.disabled = !checkbox.checked;
+                    endTimeSelect.disabled = !checkbox.checked;
+                    
+                    // Checkbox değişikliklerini dinle
+                    checkbox.addEventListener('change', function() {
+                        startTimeSelect.disabled = !this.checked;
+                        endTimeSelect.disabled = !this.checked;
+                        
+                        // Eğer çalışma günü kapatılırsa saatleri sıfırla
+                        if (!this.checked) {
+                            startTimeSelect.value = '00:00';
+                            endTimeSelect.value = '00:00';
+                        } else {
+                            // Eğer çalışma günü açılırsa varsayılan saatleri ayarla
+                            startTimeSelect.value = '09:00';
+                            endTimeSelect.value = '18:00';
+                        }
+                    });
+                }
             }
         });
         
@@ -1644,6 +3158,10 @@
                         
                         startTimeSelect.value = startTime;
                         endTimeSelect.value = endTime;
+                        
+                        // Checkbox'ın durumuna göre saat seçimlerini etkinleştir/devre dışı bırak
+                        startTimeSelect.disabled = !day.is_working;
+                        endTimeSelect.disabled = !day.is_working;
                     }
                 });
             })
@@ -1660,8 +3178,21 @@
         async function loadPastAppointments() {
             try {
                 // Yükleniyor göstergesini göster
-                document.getElementById('appointmentsLoading').style.display = 'flex';
-                document.getElementById('noAppointmentsMsg').style.display = 'none';
+                const loadingEl = document.getElementById('appointmentsLoading');
+                const noDataEl = document.getElementById('noAppointmentsMsg');
+                const listEl = document.getElementById('pastAppointmentsList');
+                
+                if (loadingEl) loadingEl.style.display = 'flex';
+                if (noDataEl) noDataEl.style.display = 'none';
+                
+                // Eski sonuçları temizle
+                if (listEl && listEl.children.length > 0) {
+                    while (listEl.children.length > 2) {  // Yükleniyor ve mesaj div'leri dışındakileri temizle
+                        if (listEl.lastChild !== loadingEl && listEl.lastChild !== noDataEl) {
+                            listEl.removeChild(listEl.lastChild);
+                        }
+                    }
+                }
                 
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -1671,6 +3202,8 @@
                 // Filtreleri al
                 const dateFilter = document.getElementById('dateFilter').value;
                 const statusFilter = document.getElementById('statusFilter').value;
+                
+                console.log('Filtreler:', { dateFilter, statusFilter, currentPage, pageSize });
                 
                 // API isteği için parametreleri oluştur
                 const params = new URLSearchParams({
@@ -1688,19 +3221,25 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error('Randevular alınamadı');
+                    throw new Error('Randevular alınamadı: ' + (response.statusText || `Hata kodu: ${response.status}`));
                 }
                 
                 const data = await response.json();
+                console.log('Alınan randevu verileri:', data);
                 
                 // Yükleniyor göstergesini gizle
-                document.getElementById('appointmentsLoading').style.display = 'none';
-                
-                const appointmentsList = document.getElementById('pastAppointmentsList');
+                if (loadingEl) loadingEl.style.display = 'none';
                 
                 // Eğer randevu yoksa mesaj göster
                 if (!data.appointments || data.appointments.length === 0) {
-                    document.getElementById('noAppointmentsMsg').style.display = 'flex';
+                    if (noDataEl) {
+                        noDataEl.style.display = 'flex';
+                        noDataEl.innerHTML = `
+                            <span class="material-icons">event_busy</span>
+                            <p>Bu kriterlere uygun randevu bulunamadı.</p>
+                        `;
+                    }
+                    
                     // Sayfalama butonlarını güncelle
                     document.getElementById('prevPageBtn').disabled = true;
                     document.getElementById('nextPageBtn').disabled = true;
@@ -1711,97 +3250,111 @@
                 // Randevuları listele
                 let html = '';
                 data.appointments.forEach(appointment => {
-                    // Tarih formatını düzenle
-                    const date = new Date(appointment.date);
-                    const day = date.getDate();
-                    const month = date.toLocaleString('tr-TR', { month: 'short' });
-                    
-                    // Durum sınıfını belirle
-                    let statusClass = '';
-                    let statusText = '';
-                    let attendanceIcon = '';
-                    
-                    switch(appointment.status) {
-                        case 'completed':
-                        case 'Tamamlandı':
-                            statusClass = 'status-completed';
-                            statusText = 'Tamamlandı';
-                            attendanceIcon = '<span class="material-icons attendance-icon" title="Randevuya geldi">check_circle</span>';
-                            break;
-                        case 'noShow':
-                        case 'Gelmedi':
-                            statusClass = 'status-noshow';
-                            statusText = 'Gelmedi';
-                            attendanceIcon = '<span class="material-icons attendance-icon" title="Randevuya gelmedi">cancel</span>';
-                            break;
-                        case 'cancelled':
-                        case 'İptal Edildi':
-                            statusClass = 'status-cancelled';
-                            statusText = 'İptal Edildi';
-                            break;
-                        case 'rejected':
-                        case 'Reddedildi':
-                            statusClass = 'status-rejected';
-                            statusText = 'Reddedildi';
-                            break;
-                        case 'pending':
-                        case 'Beklemede':
-                            statusClass = 'status-waiting';
-                            statusText = 'Beklemede';
-                            break;
-                        case 'confirmed':
-                        case 'Onaylandı':
-                            statusClass = 'status-approved';
-                            statusText = 'Onaylandı';
-                            break;
-                        default:
-                            statusClass = 'status-approved';
-                            statusText = appointment.status;
+                    try {
+                        // Tarih formatını düzenle
+                        const date = new Date(appointment.date);
+                        const day = date.getDate();
+                        const month = date.toLocaleString('tr-TR', { month: 'short' });
+                        
+                        // Durum sınıfını belirle
+                        let statusClass = '';
+                        let statusText = '';
+                        let attendanceIcon = '';
+                        
+                        switch(appointment.status) {
+                            case 'completed':
+                            case 'Tamamlandı':
+                                statusClass = 'status-completed';
+                                statusText = 'Tamamlandı';
+                                attendanceIcon = '<span class="material-icons attendance-icon" title="Randevuya geldi">check_circle</span>';
+                                break;
+                            case 'noShow':
+                            case 'Gelmedi':
+                                statusClass = 'status-noshow';
+                                statusText = 'Gelmedi';
+                                attendanceIcon = '<span class="material-icons attendance-icon" title="Randevuya gelmedi">cancel</span>';
+                                break;
+                            case 'cancelled':
+                            case 'İptal Edildi':
+                                statusClass = 'status-cancelled';
+                                statusText = 'İptal Edildi';
+                                break;
+                            case 'rejected':
+                            case 'Reddedildi':
+                                statusClass = 'status-rejected';
+                                statusText = 'Reddedildi';
+                                break;
+                            case 'pending':
+                            case 'Beklemede':
+                                statusClass = 'status-waiting';
+                                statusText = 'Beklemede';
+                                break;
+                            case 'confirmed':
+                            case 'Onaylandı':
+                                statusClass = 'status-approved';
+                                statusText = 'Onaylandı';
+                                break;
+                            default:
+                                statusClass = 'status-approved';
+                                statusText = appointment.status || 'Belirsiz';
+                        }
+                        
+                        // Müşteri adı için ilk harfleri al
+                        const customerName = appointment.customerName || 'Misafir';
+                        const initials = customerName.split(' ').map(n => n && n[0] || '').join('');
+                        
+                        html += `
+                            <div class="appointment-item">
+                                <div class="appointment-date">
+                                    <div class="appointment-day">${day}</div>
+                                    <div class="appointment-month">${month}</div>
+                                </div>
+                                <div class="appointment-details">
+                                    <h4>${appointment.serviceName || 'Belirtilmemiş Hizmet'}</h4>
+                                    <div class="appointment-time">
+                                        <span class="material-icons">access_time</span>
+                                        ${appointment.time || '00:00'}
+                                    </div>
+                                    <div class="appointment-customer">
+                                        <div class="customer-avatar">${initials}</div>
+                                        <span class="customer-name-container" title="Telefon: ${appointment.customerPhone || 'Telefon bilgisi yok'}">${customerName}</span>
+                                        ${attendanceIcon}
+                                    </div>
+                                </div>
+                                <div class="appointment-status ${statusClass}">
+                                    ${statusText}
+                                </div>
+                            </div>
+                        `;
+                    } catch (itemError) {
+                        console.error('Randevu öğesi işlenirken hata:', itemError, appointment);
+                        // Hatalı öğeyi atlayarak devam et
                     }
-                    
-                    // Müşteri adı için ilk harfleri al
-                    const initials = appointment.customerName.split(' ').map(n => n[0]).join('');
-                    
-                    html += `
-                        <div class="appointment-item">
-                            <div class="appointment-date">
-                                <div class="appointment-day">${day}</div>
-                                <div class="appointment-month">${month}</div>
-                            </div>
-                            <div class="appointment-details">
-                                <h4>${appointment.serviceName}</h4>
-                                <div class="appointment-time">
-                                    <span class="material-icons">access_time</span>
-                                    ${appointment.time}
-                                </div>
-                                <div class="appointment-customer">
-                                    <div class="customer-avatar">${initials}</div>
-                                    <span class="customer-name-container" title="Telefon: ${appointment.customerPhone || 'Telefon bilgisi yok'}">${appointment.customerName}</span>
-                                    ${attendanceIcon}
-                                </div>
-                            </div>
-                            <div class="appointment-status ${statusClass}">
-                                ${statusText}
-                            </div>
-                        </div>
-                    `;
                 });
                 
-                appointmentsList.innerHTML = html;
+                if (listEl) listEl.innerHTML = html || '<p>Randevular görüntülenirken bir sorun oluştu.</p>';
                 
                 // Sayfalama butonlarını güncelle
                 document.getElementById('prevPageBtn').disabled = currentPage <= 1;
                 document.getElementById('nextPageBtn').disabled = !data.hasNextPage;
                 document.getElementById('currentPage').textContent = `Sayfa ${currentPage}`;
-        
-    } catch (error) {
-                console.error('Hata:', error);
-                document.getElementById('appointmentsLoading').style.display = 'none';
-                document.getElementById('noAppointmentsMsg').style.display = 'flex';
-                document.getElementById('noAppointmentsMsg').innerHTML = `
-                    <span class="material-icons">error</span>
-                    <p>Randevular yüklenirken bir hata oluştu: ${error.message}</p>
-                `;
+                
+            } catch (error) {
+                console.error('Randevular yüklenirken hata:', error);
+                const loadingEl = document.getElementById('appointmentsLoading');
+                const noDataEl = document.getElementById('noAppointmentsMsg');
+                
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (noDataEl) {
+                    noDataEl.style.display = 'flex';
+                    noDataEl.innerHTML = `
+                        <span class="material-icons">error</span>
+                        <p>Randevular yüklenirken bir hata oluştu: ${error.message}</p>
+                        <button onclick="loadPastAppointments()" class="filter-btn" style="margin-top:15px">
+                            <span class="material-icons">refresh</span> Tekrar Dene
+                        </button>
+                    `;
+                }
             }
         }
         
@@ -1862,6 +3415,926 @@
                 console.error('Hata:', error);
                 alert(`Hata: ${error.message}`);
             }
+        }
+
+        // Hizmetleri yükle
+        async function loadServices() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('Oturum bulunamadı');
+                }
+                
+                document.getElementById('servicesLoading').style.display = 'flex';
+                document.getElementById('noServicesMsg').style.display = 'none';
+                
+                // Hem hizmetleri hem kategorileri paralel olarak al
+                const [servicesResponse, categoriesResponse] = await Promise.all([
+                    fetch('/api/business/services', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }),
+                    fetch('/api/business/categories', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                ]);
+                
+                if (!servicesResponse.ok) {
+                    throw new Error('Hizmetler alınamadı');
+                }
+                
+                const services = await servicesResponse.json();
+                let categories = [];
+                
+                if (categoriesResponse.ok) {
+                    categories = await categoriesResponse.json();
+                }
+                
+                document.getElementById('servicesLoading').style.display = 'none';
+                
+                if (!services || services.length === 0) {
+                    document.getElementById('noServicesMsg').style.display = 'flex';
+                    document.getElementById('servicesList').innerHTML = '';
+                    return;
+                }
+                
+                // Hizmetleri kategorilerine göre gruplandır
+                const groupedServices = {};
+                const uncategorizedServices = [];
+                
+                services.forEach(service => {
+                    if (service.category_id) {
+                        if (!groupedServices[service.category_id]) {
+                            groupedServices[service.category_id] = [];
+                        }
+                        groupedServices[service.category_id].push(service);
+                    } else {
+                        uncategorizedServices.push(service);
+                    }
+                });
+                
+                let html = '';
+                
+                // Kategorileri alfabetik sıraya göre sırala
+                categories.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+                
+                // Kategorili hizmetleri göster
+                categories.forEach(category => {
+                    const categoryServices = groupedServices[category.id];
+                    if (categoryServices && categoryServices.length > 0) {
+                        html += `
+                            <div class="service-category-group">
+                                <div class="category-header" onclick="toggleCategoryServices(this)">
+                                    <div class="category-color" style="background-color: ${category.color || '#3498db'}">
+                                        <span class="material-icons">folder</span>
+                                    </div>
+                                    <h5 class="category-title">${category.name}</h5>
+                                    <span class="service-count">${categoryServices.length} hizmet</span>
+                                    <span class="material-icons expand-icon">expand_more</span>
+                                </div>
+                                <div class="category-services">
+                        `;
+                        
+                        categoryServices.forEach(service => {
+                    let durationDisplay = '';
+                    if (service.duration && service.duration > 0) {
+                        durationDisplay = `
+                        <div class="service-duration">
+                            <span class="material-icons">schedule</span>
+                            ${service.duration} dakika
+                        </div>`;
+                    }
+                    
+                    html += `
+                        <div class="service-item">
+                            <div class="service-details">
+                                <div class="service-icon">
+                                    <span class="material-icons">design_services</span>
+                                </div>
+                                <div class="service-info">
+                                    <div class="service-name">${service.name}</div>
+                                    <div style="display: flex; align-items: center; gap: 15px; margin-top: 8px;">
+                                        <div class="service-price">${service.price} TL</div>
+                                        ${durationDisplay}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="service-actions">
+                                <button onclick="editService('${service.id}')" title="Düzenle">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button onclick="deleteService('${service.id}')" title="Sil">
+                                    <span class="material-icons">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                        
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                // Kategorisi olmayan hizmetleri göster
+                if (uncategorizedServices.length > 0) {
+                    html += `
+                        <div class="service-category-group">
+                            <div class="category-header" onclick="toggleCategoryServices(this)">
+                                <div class="category-color" style="background-color: #95a5a6">
+                                    <span class="material-icons">folder_open</span>
+                                </div>
+                                <h5 class="category-title">Genel Hizmetler</h5>
+                                <span class="service-count">${uncategorizedServices.length} hizmet</span>
+                                <span class="material-icons expand-icon">expand_more</span>
+                            </div>
+                            <div class="category-services">
+                    `;
+                    
+                    uncategorizedServices.forEach(service => {
+                        let durationDisplay = '';
+                        if (service.duration && service.duration > 0) {
+                            durationDisplay = `
+                            <div class="service-duration">
+                                <span class="material-icons">schedule</span>
+                                ${service.duration} dakika
+                            </div>`;
+                        }
+                        
+                        html += `
+                            <div class="service-item">
+                                <div class="service-details">
+                                    <div class="service-icon">
+                                        <span class="material-icons">design_services</span>
+                                    </div>
+                                    <div class="service-info">
+                                        <div class="service-name">${service.name}</div>
+                                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 8px;">
+                                            <div class="service-price">${service.price} TL</div>
+                                            ${durationDisplay}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="service-actions">
+                                    <button onclick="editService('${service.id}')" title="Düzenle">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                    <button onclick="deleteService('${service.id}')" title="Sil">
+                                        <span class="material-icons">delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('servicesList').innerHTML = html;
+            } catch (error) {
+                console.error('Hizmetler yüklenirken hata:', error);
+                document.getElementById('servicesLoading').style.display = 'none';
+                document.getElementById('noServicesMsg').style.display = 'flex';
+                document.getElementById('noServicesMsg').innerHTML = `
+                    <span class="material-icons">error</span>
+                    <p>Hizmetler yüklenirken bir hata oluştu: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // ===== HİZMET YÖNETİMİ FONKSİYONLARI =====
+        
+        // Yeni hizmet ekle
+        async function addService() {
+            const serviceName = document.getElementById('serviceName').value.trim();
+            const serviceCategory = document.getElementById('serviceCategory').value;
+            const servicePrice = document.getElementById('servicePrice').value;
+            const serviceDuration = document.getElementById('serviceDuration').value;
+            
+            if (!serviceName || !servicePrice) {
+                alert('Lütfen hizmet adını ve fiyatını girin');
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/business/services', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: serviceName,
+                        categoryId: serviceCategory || null,
+                        price: parseFloat(servicePrice),
+                        duration: serviceDuration ? parseInt(serviceDuration) : 0
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Hizmet eklenemedi');
+                }
+                
+                // Formu temizle
+                document.getElementById('serviceName').value = '';
+                document.getElementById('serviceCategory').value = '';
+                document.getElementById('servicePrice').value = '';
+                document.getElementById('serviceDuration').value = '';
+                
+                // Hizmetleri yeniden yükle
+                loadServices();
+                
+                alert('Hizmet başarıyla eklendi');
+            } catch (error) {
+                console.error('Hizmet eklenirken hata:', error);
+                alert('Hizmet eklenirken bir hata oluştu: ' + error.message);
+            }
+        }
+        
+        // Hizmet düzenle
+        async function editService(id) {
+            try {
+                // Mevcut hizmet bilgilerini al
+                const token = localStorage.getItem('token');
+                const currentServiceResponse = await fetch(`/api/business/services/${id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!currentServiceResponse.ok) {
+                    throw new Error('Hizmet bilgileri alınamadı');
+                }
+                
+                const currentService = await currentServiceResponse.json();
+                
+                // Kategorileri al
+                const categoriesResponse = await fetch('/api/business/categories', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                let categories = [];
+                if (categoriesResponse.ok) {
+                    categories = await categoriesResponse.json();
+                }
+                
+                // Modal oluştur
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                `;
+                
+                modal.innerHTML = `
+                    <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%;">
+                        <h3 style="margin: 0 0 20px; color: #2c3e50;">Hizmet Düzenle</h3>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Hizmet Adı</label>
+                            <input type="text" id="editServiceName" value="${currentService.name}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Kategori</label>
+                            <select id="editServiceCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                                <option value="">Kategori seçiniz</option>
+                                ${categories.map(cat => 
+                                    `<option value="${cat.id}" ${currentService.category_id == cat.id ? 'selected' : ''}>${cat.name}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Fiyat (TL)</label>
+                            <input type="number" id="editServicePrice" value="${currentService.price}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Süre (dakika)</label>
+                            <input type="number" id="editServiceDuration" value="${currentService.duration || ''}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="updateService('${id}')" style="flex: 1; background: #3498db; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer;">Güncelle</button>
+                            <button onclick="closeEditModal()" style="flex: 1; background: #95a5a6; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer;">İptal</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                window.currentEditModal = modal;
+                
+            } catch (error) {
+                console.error('Hizmet düzenleme hatası:', error);
+                alert('Hizmet düzenlenirken bir hata oluştu: ' + error.message);
+            }
+        }
+        
+        // Modal'ı kapat
+        function closeEditModal() {
+            if (window.currentEditModal) {
+                document.body.removeChild(window.currentEditModal);
+                window.currentEditModal = null;
+            }
+        }
+        
+        // Hizmet güncelle
+        async function updateService(id) {
+            const name = document.getElementById('editServiceName').value.trim();
+            const categoryId = document.getElementById('editServiceCategory').value;
+            const price = document.getElementById('editServicePrice').value;
+            const duration = document.getElementById('editServiceDuration').value;
+            
+            if (!name || !price) {
+                alert('Lütfen hizmet adı ve fiyat alanlarını doldurun');
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const payload = {
+                    name: name,
+                    price: parseFloat(price),
+                    categoryId: categoryId || null,
+                    duration: duration ? parseInt(duration) : 0
+                };
+                
+                const response = await fetch(`/api/business/services/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Hizmet güncellenemedi');
+                }
+                
+                closeEditModal();
+                loadServices(); // Hizmetleri yeniden yükle
+                alert('Hizmet başarıyla güncellendi');
+                
+            } catch (error) {
+                console.error('Hizmet güncellenirken hata:', error);
+                alert('Hizmet güncellenirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        // ===== KATEGORİ YÖNETİMİ FONKSİYONLARI =====
+        
+        // Kategorileri yükle
+        async function loadCategories() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('Oturum bulunamadı');
+                }
+                
+                document.getElementById('categoriesLoading').style.display = 'flex';
+                document.getElementById('noCategoriesMsg').style.display = 'none';
+                
+                const response = await fetch('/api/business/categories', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Kategoriler alınamadı');
+                }
+                
+                const categories = await response.json();
+                
+                document.getElementById('categoriesLoading').style.display = 'none';
+                
+                // Kategori dropdown'unu güncelle
+                updateCategoryDropdown(categories);
+                
+                if (!categories || categories.length === 0) {
+                    document.getElementById('noCategoriesMsg').style.display = 'flex';
+                    document.getElementById('categoriesList').innerHTML = '';
+                    return;
+                }
+                
+                // Kategorileri listele
+                let html = '';
+                categories.forEach(category => {
+                    html += `
+                        <div class="category-item">
+                            <div class="category-details">
+                                <div class="category-color" style="background-color: ${category.color || '#3498db'}"></div>
+                                <div class="category-name">${category.name}</div>
+                                ${category.description ? `<div class="category-description">${category.description}</div>` : ''}
+                            </div>
+                            <div class="category-actions">
+                                <button onclick="editCategory(${category.id})" title="Düzenle">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button onclick="deleteCategory(${category.id})" title="Sil">
+                                    <span class="material-icons">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                document.getElementById('categoriesList').innerHTML = html;
+                document.getElementById('noCategoriesMsg').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Kategoriler yüklenirken hata:', error);
+                document.getElementById('categoriesLoading').style.display = 'none';
+                document.getElementById('noCategoriesMsg').style.display = 'flex';
+                document.getElementById('noCategoriesMsg').innerHTML = `
+                    <span class="material-icons">error</span>
+                    <p>Kategoriler yüklenirken bir hata oluştu: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Kategori dropdown'unu güncelle
+        function updateCategoryDropdown(categories) {
+            const dropdown = document.getElementById('serviceCategory');
+            dropdown.innerHTML = '<option value="">Kategori seçiniz</option>';
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                dropdown.appendChild(option);
+            });
+        }
+        
+        // Yeni kategori ekle
+        async function addCategory() {
+            const categoryName = document.getElementById('categoryName').value.trim();
+            const categoryDescription = document.getElementById('categoryDescription').value.trim();
+            const categoryColor = document.getElementById('categoryColor').value;
+            
+            if (!categoryName) {
+                alert('Lütfen kategori adını girin');
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/business/categories', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: categoryName,
+                        description: categoryDescription || null,
+                        color: categoryColor
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Kategori eklenemedi');
+                }
+                
+                // Formu temizle
+                document.getElementById('categoryName').value = '';
+                document.getElementById('categoryDescription').value = '';
+                document.getElementById('categoryColor').value = '#3498db';
+                
+                // Kategorileri yeniden yükle
+                loadCategories();
+                
+                alert('Kategori başarıyla eklendi');
+            } catch (error) {
+                console.error('Kategori eklenirken hata:', error);
+                alert('Kategori eklenirken bir hata oluştu: ' + error.message);
+            }
+        }
+        
+        // Kategori sil
+        async function deleteCategory(id) {
+            if (!confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/business/categories/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Kategori silinemedi');
+                }
+                
+                loadCategories(); // Kategorileri yeniden yükle
+                alert('Kategori başarıyla silindi');
+            } catch (error) {
+                console.error('Kategori silinirken hata:', error);
+                alert('Kategori silinirken bir hata oluştu: ' + error.message);
+            }
+        }
+        
+        // Kategori düzenle (basit implementasyon)
+        async function editCategory(id) {
+            const newName = prompt('Yeni kategori adını girin:');
+            if (!newName || newName.trim() === '') {
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/business/categories/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: newName.trim(),
+                        description: null,
+                        color: '#3498db'
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Kategori güncellenemedi');
+                }
+                
+                loadCategories(); // Kategorileri yeniden yükle
+                alert('Kategori başarıyla güncellendi');
+            } catch (error) {
+                console.error('Kategori güncellenirken hata:', error);
+                alert('Kategori güncellenirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        // Hizmet sil
+        async function deleteService(id) {
+            if (!confirm('Bu hizmeti silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/business/services/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Hizmet silinemedi');
+                }
+                
+                loadServices(); // Hizmetleri yeniden yükle
+                alert('Hizmet başarıyla silindi');
+            } catch (error) {
+                console.error('Hizmet silinirken hata:', error);
+                alert('Hizmet silinirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        // Kategori hizmetlerini aç/kapat
+        function toggleCategoryServices(headerElement) {
+            const categoryGroup = headerElement.parentElement;
+            const servicesContainer = categoryGroup.querySelector('.category-services');
+            const expandIcon = headerElement.querySelector('.expand-icon');
+            
+            if (servicesContainer.classList.contains('collapsed')) {
+                // Aç
+                servicesContainer.classList.remove('collapsed');
+                headerElement.classList.remove('collapsed');
+                expandIcon.textContent = 'expand_more';
+            } else {
+                // Kapat
+                servicesContainer.classList.add('collapsed');
+                headerElement.classList.add('collapsed');
+                expandIcon.textContent = 'chevron_right';
+            }
+        }
+
+        // Değerlendirmeler için değişkenler
+        let currentReviewPage = 1;
+        const reviewsPerPage = 10;
+
+        // İşletme değerlendirmelerini yükle
+        async function loadBusinessReviews() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const loadingEl = document.getElementById('reviewsLoading');
+                const noDataEl = document.getElementById('noReviewsMsg');
+                const listEl = document.getElementById('reviewsList');
+
+                if (loadingEl) loadingEl.style.display = 'block';
+                if (noDataEl) noDataEl.style.display = 'none';
+
+                // Filtre parametrelerini al
+                const ratingFilter = document.getElementById('ratingFilter').value;
+                const responseFilter = document.getElementById('responseFilter').value;
+                const dateFilter = document.getElementById('dateFilter').value;
+
+                let url = `/api/business/reviews?page=${currentReviewPage}&limit=${reviewsPerPage}`;
+                if (ratingFilter) url += `&rating=${ratingFilter}`;
+                if (responseFilter) url += `&response_status=${responseFilter}`;
+                if (dateFilter && dateFilter !== '' && dateFilter !== 'all') url += `&date=${dateFilter}`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Değerlendirmeler yüklenemedi');
+                }
+
+                const data = await response.json();
+                
+                if (loadingEl) loadingEl.style.display = 'none';
+
+                if (data.reviews.length === 0) {
+                    if (noDataEl) noDataEl.style.display = 'block';
+                    document.getElementById('reviewsPagination').style.display = 'none';
+                } else {
+                    if (noDataEl) noDataEl.style.display = 'none';
+                    renderBusinessReviews(data.reviews);
+                    updateReviewsPagination(data.totalPages);
+                }
+
+                // İstatistikleri güncelle
+                updateReviewsStats(data.stats);
+
+            } catch (error) {
+                console.error('Değerlendirmeler yüklenirken hata:', error);
+                document.getElementById('reviewsLoading').style.display = 'none';
+                document.getElementById('noReviewsMsg').style.display = 'block';
+                document.getElementById('noReviewsMsg').innerHTML = `
+                    <span class="material-icons">error</span>
+                    <p>Değerlendirmeler yüklenirken bir hata oluştu: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Değerlendirmeleri render et
+        function renderBusinessReviews(reviews) {
+            const container = document.getElementById('reviewsList');
+            
+            // Yükleniyor ve mesaj div'leri dışındaki tüm çocukları temizle
+            const loadingEl = document.getElementById('reviewsLoading');
+            const noDataEl = document.getElementById('noReviewsMsg');
+            
+            container.innerHTML = '';
+            container.appendChild(loadingEl);
+            container.appendChild(noDataEl);
+
+            reviews.forEach(review => {
+                const reviewEl = document.createElement('div');
+                reviewEl.className = 'review-item';
+                reviewEl.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-customer">
+                            <div class="customer-name">${review.customer_name || 'Anonim Müşteri'}</div>
+                            <div class="review-date">${formatDate(review.created_at)}</div>
+                        </div>
+                        <div class="review-rating">
+                            ${generateStarsDisplay(review.rating)}
+                        </div>
+                    </div>
+                    
+                    <div class="review-comment">
+                        ${review.comment || 'Yorum yapılmamış.'}
+                    </div>
+
+                    ${review.business_response ? `
+                        <div class="review-response">
+                            <div class="response-header">İşletme Yanıtı:</div>
+                            <div class="response-text">${review.business_response}</div>
+                        </div>
+                    ` : ''}
+
+                    <div class="review-actions">
+                        ${!review.business_response ? `
+                            <button class="action-btn respond-btn" onclick="showResponseForm(${review.id})">
+                                <span class="material-icons">reply</span>
+                                Yanıtla
+                            </button>
+                        ` : `
+                            <button class="action-btn edit-response-btn" onclick="editResponse(${review.id}, '${review.business_response}')">
+                                <span class="material-icons">edit</span>
+                                Yanıtı Düzenle
+                            </button>
+                            <button class="action-btn delete-response-btn" onclick="deleteResponse(${review.id})">
+                                <span class="material-icons">delete</span>
+                                Yanıtı Sil
+                            </button>
+                        `}
+                        <button class="action-btn report-btn" onclick="reportReview(${review.id})">
+                            <span class="material-icons">flag</span>
+                            Bildir
+                        </button>
+                    </div>
+
+                    <div id="responseForm-${review.id}" class="response-form" style="display: none;">
+                        <textarea id="responseText-${review.id}" placeholder="Değerlendirmeye yanıtınızı yazın..."></textarea>
+                        <div class="response-form-actions">
+                            <button class="save-response-btn" onclick="saveResponse(${review.id})">
+                                <span class="material-icons">save</span>
+                                Yanıtı Kaydet
+                            </button>
+                            <button class="cancel-response-btn" onclick="hideResponseForm(${review.id})">
+                                <span class="material-icons">cancel</span>
+                                İptal
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(reviewEl);
+            });
+        }
+
+        // Yıldız puanını görsel olarak oluştur
+        function generateStarsDisplay(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<span class="star">★</span>';
+                } else {
+                    stars += '<span class="star empty">★</span>';
+                }
+            }
+            return stars;
+        }
+
+        // Tarihi formatla
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('tr-TR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Değerlendirme istatistiklerini güncelle
+        function updateReviewsStats(stats) {
+            document.getElementById('totalReviewsCount').textContent = stats.total || 0;
+            document.getElementById('averageRating').textContent = (stats.average || 0).toFixed(1);
+            document.getElementById('respondedCount').textContent = stats.responded || 0;
+            document.getElementById('reportedCount').textContent = stats.reported || 0;
+        }
+
+        // Yanıt formunu göster
+        function showResponseForm(reviewId) {
+            document.getElementById(`responseForm-${reviewId}`).style.display = 'block';
+        }
+
+        // Yanıt formunu gizle
+        function hideResponseForm(reviewId) {
+            document.getElementById(`responseForm-${reviewId}`).style.display = 'none';
+            document.getElementById(`responseText-${reviewId}`).value = '';
+        }
+
+        // Yanıt kaydet
+        async function saveResponse(reviewId) {
+            const responseText = document.getElementById(`responseText-${reviewId}`).value.trim();
+            
+            if (!responseText) {
+                alert('Lütfen yanıt metnini girin');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/business/reviews/${reviewId}/response`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ response: responseText })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Yanıt kaydedilemedi');
+                }
+
+                alert('Yanıt başarıyla kaydedildi');
+                hideResponseForm(reviewId);
+                loadBusinessReviews(); // Listeyi yenile
+            } catch (error) {
+                console.error('Yanıt kaydedilirken hata:', error);
+                alert('Yanıt kaydedilirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        // Yanıtı düzenle
+        function editResponse(reviewId, currentResponse) {
+            document.getElementById(`responseText-${reviewId}`).value = currentResponse;
+            showResponseForm(reviewId);
+        }
+
+        // Yanıtı sil
+        async function deleteResponse(reviewId) {
+            if (!confirm('Bu yanıtı silmek istediğinizden emin misiniz?')) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/business/reviews/${reviewId}/response`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Yanıt silinemedi');
+                }
+
+                alert('Yanıt başarıyla silindi');
+                loadBusinessReviews(); // Listeyi yenile
+            } catch (error) {
+                console.error('Yanıt silinirken hata:', error);
+                alert('Yanıt silinirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        // Değerlendirmeyi bildir
+        async function reportReview(reviewId) {
+            const reason = prompt('Bildirme nedenini girin (isteğe bağlı):');
+            
+            if (reason === null) return; // İptal edildi
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/business/reviews/${reviewId}/report`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ reason: reason || '' })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Bildirim gönderilemedi');
+                }
+
+                alert('Değerlendirme başarıyla bildirildi. Ekibimiz inceleyecektir.');
+                loadBusinessReviews(); // Listeyi yenile
+            } catch (error) {
+                console.error('Bildirim gönderilirken hata:', error);
+                alert('Bildirim gönderilirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        // Sayfa değiştir
+        function changeReviewPage(direction) {
+            currentReviewPage += direction;
+            if (currentReviewPage < 1) currentReviewPage = 1;
+            loadBusinessReviews();
+        }
+
+        // Sayfalamayı güncelle
+        function updateReviewsPagination(totalPages) {
+            const paginationEl = document.getElementById('reviewsPagination');
+            const currentPageEl = document.getElementById('currentReviewPage');
+            const prevBtn = document.getElementById('prevReviewsBtn');
+            const nextBtn = document.getElementById('nextReviewsBtn');
+            
+            if (totalPages <= 1) {
+                paginationEl.style.display = 'none';
+                return;
+            }
+            
+            paginationEl.style.display = 'flex';
+            currentPageEl.textContent = `${currentReviewPage} / ${totalPages}`;
+            
+            prevBtn.disabled = currentReviewPage <= 1;
+            nextBtn.disabled = currentReviewPage >= totalPages;
         }
     </script>
 </body>

@@ -3,69 +3,603 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Randevu Yönetim Sistemi</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Online Randevu Sistemi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        .welcome-container {
+        :root {
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            display: block;
+        }
+        
+        .hero-section {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 80px 20px;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
             text-align: center;
-            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
         }
-        .welcome-title {
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            font-weight: 300;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hero-btn.primary {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .hero-btn.secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-btn.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+        
+        .hero-image {
+            margin-top: 60px;
+            position: relative;
+            max-width: 100%;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .features-section {
+            padding: 100px 20px;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
         }
-        .welcome-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: #666;
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
         }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            margin-bottom: 25px;
+            color: white;
+            font-size: 36px;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .feature-text {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .cta-section {
+            background: var(--primary-gradient);
+            padding: 100px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .cta-text {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 10;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: white;
+        }
+        
         .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .login-btn, .register-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn {
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .register-btn {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .register-btn:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            background-color: #212529;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 60px 20px 30px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .social-icons {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
-        .btn {
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            cursor: pointer;
+        
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             text-decoration: none;
             transition: all 0.3s ease;
         }
-        .login-btn {
-            background-color: #f5f5f5;
-            color: #333;
-            border: 1px solid #ddd;
+        
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
         }
-        .register-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
         }
-        .login-btn:hover {
-            background-color: #e9e9e9;
-        }
-        .register-btn:hover {
-            background-color: #0069d9;
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .hero-section {
+                padding: 100px 20px 60px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .features-section, .cta-section {
+                padding: 60px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="welcome-container">
-        <h1 class="welcome-title">Randevularınızı Kolayca Yönetin</h1>
-        <p class="welcome-subtitle">İşletme veya müşteri olarak sisteme kayıt olun, randevularınızı kolayca yönetin.</p>
+    <header class="header">
+        <a href="/" class="logo">
+            <span class="material-icons">event_available</span>
+            Online Randevu
+        </a>
+        <nav class="nav-links">
+            <a href="#features" class="nav-link">Özellikler</a>
+            <a href="#how-it-works" class="nav-link">Nasıl Çalışır</a>
+            <a href="chatbot.html" class="nav-link">🤖 AI Chatbot</a>
+            <a href="#contact" class="nav-link">İletişim</a>
+        </nav>
         <div class="auth-buttons">
-            <a href="login.html" class="btn login-btn">Giriş Yap</a>
-            <a href="register.html" class="btn register-btn">Kayıt Ol</a>
+            <a href="login.html" class="login-btn">Giriş Yap</a>
+            <a href="register.html" class="register-btn">Kayıt Ol</a>
         </div>
-    </div>
+    </header>
 
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Online Randevu Sistemi ile İşletmenizi Dijitalleştirin</h1>
+            <p class="hero-subtitle">Müşterilerinize 7/24 randevu alma imkanı sağlayın. Kolay kullanımı, özelleştirilebilir yapısı ve uygun fiyatlarıyla işletmenizin vazgeçilmezi olacak.</p>
+            <div class="hero-buttons">
+                <a href="register.html" class="hero-btn primary">
+                    <span class="material-icons">person_add</span>
+                    Hemen Kayıt Ol
+                </a>
+                <a href="chatbot.html" class="hero-btn secondary">
+                    <span class="material-icons">smart_toy</span>
+                    AI Chatbot
+                </a>
+                <a href="#features" class="hero-btn secondary">
+                    <span class="material-icons">info</span>
+                    Daha Fazla Bilgi
+                </a>
+            </div>
+            <div class="hero-image">
+                <img src="https://cdn.pixabay.com/photo/2018/01/28/10/59/internet-3113279_1280.jpg" alt="Online Randevu Sistemi">
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <h2 class="section-title">Neden Online Randevu Sistemi?</h2>
+        <p class="section-subtitle">İşletmeniz için özel tasarlanmış randevu sistemimiz, müşteri deneyimini iyileştirirken operasyonel verimliliğinizi artırır.</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-icons">schedule</span>
+                </div>
+                <h3 class="feature-title">7/24 Randevu İmkanı</h3>
+                <p class="feature-text">Müşterileriniz diledikleri zaman, diledikleri yerden randevu alabilir, değiştirebilir veya iptal edebilir.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-icons">smartphone</span>
+                </div>
+                <h3 class="feature-title">Mobil Uyumlu</h3>
+                <p class="feature-text">Tamamen responsive tasarımı sayesinde her cihazda mükemmel görünür ve çalışır.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-icons">notifications</span>
+                </div>
+                <h3 class="feature-title">Otomatik Bildirimler</h3>
+                <p class="feature-text">SMS ve e-posta bildirimleri ile müşterilerinizi randevu öncesi bilgilendirebilirsiniz.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-icons">analytics</span>
+                </div>
+                <h3 class="feature-title">Gelişmiş Raporlar</h3>
+                <p class="feature-text">Müşteri davranışlarını analiz edin, işletmenizin performansını ölçün ve stratejilerinizi buna göre şekillendirin.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-icons">calendar_today</span>
+                </div>
+                <h3 class="feature-title">Takvim Entegrasyonu</h3>
+                <p class="feature-text">Google Takvim, iCal ve diğer popüler takvim uygulamalarıyla entegrasyonu sayesinde randevularınızı tek yerden yönetin.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-icons">security</span>
+                </div>
+                <h3 class="feature-title">Güvenli ve Özel</h3>
+                <p class="feature-text">Müşteri bilgileriniz güvenle saklanır, KVKK uyumlu yapımızla verileriniz koruma altındadır.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2 class="cta-title">İşletmeniz için Online Randevu Sistemini Keşfedin</h2>
+        <p class="cta-text">Hemen kayıt olun ve dijital dönüşümünüzü başlatın. Müşteri memnuniyetini artırırken operasyonel maliyetlerinizi azaltın.</p>
+        <a href="register.html" class="hero-btn primary">Şimdi Başlayın</a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Online Randevu</h3>
+                <p>İşletmeler için özel tasarlanmış, kullanımı kolay ve gelişmiş bir randevu yönetim sistemi.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><span class="material-icons">facebook</span></a>
+                    <a href="#" class="social-icon"><span class="material-icons">twitter</span></a>
+                    <a href="#" class="social-icon"><span class="material-icons">instagram</span></a>
+                    <a href="#" class="social-icon"><span class="material-icons">linkedin</span></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Bağlantılar</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Ana Sayfa</a></li>
+                    <li><a href="#features">Özellikler</a></li>
+                    <li><a href="#how-it-works">Nasıl Çalışır</a></li>
+                    <li><a href="#contact">İletişim</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Hizmetler</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Online Randevu</a></li>
+                    <li><a href="#">İşletme Yönetimi</a></li>
+                    <li><a href="#">Müşteri Hizmetleri</a></li>
+                    <li><a href="#">Mobil Uygulama</a></li>
+                    <li><a href="#">API Entegrasyonu</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>İletişim</h3>
+                <p><span class="material-icons">mail</span> info@onlinerandevu.com</p>
+                <p><span class="material-icons">phone</span> +90 212 123 45 67</p>
+                <p><span class="material-icons">location_on</span> İstanbul, Türkiye</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 Online Randevu Sistemi. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sayfa yüklendiğinde token kontrolü yap
+            const token = localStorage.getItem('token');
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            
+            if (token && userData) {
+                // Zaten giriş yapmış kullanıcı
+                const roleBasedRedirect = userData.role === 'customer' 
+                    ? '/customer-dashboard.html' 
+                    : '/business-dashboard.html';
+                    
+                // Auth butonlarını güncelle
+                const authButtons = document.querySelector('.auth-buttons');
+                authButtons.innerHTML = `
+                    <a href="${roleBasedRedirect}" class="login-btn">Panele Git</a>
+                    <a href="#" id="logout-btn" class="register-btn">Çıkış Yap</a>
+                `;
+                
+                // Çıkış butonuna event listener ekle
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userData');
+                    window.location.reload();
+                });
+            }
+            
+            // Smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
